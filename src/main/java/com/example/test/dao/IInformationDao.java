@@ -26,6 +26,7 @@ public interface IInformationDao {
                 @Param("aveenergy") String aveenergy, @Param("enweight") String enweight,
                 @Param("lenweight") String lenweight);
 
+    List<Information> getPatientByDoctor(@Param("doctorUsername") String doctorUsername);
 
     List<Information>  getAll();
 }

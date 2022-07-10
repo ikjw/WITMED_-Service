@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -23,10 +24,11 @@ public class InformationController {
         String sessionid = request.getHeader("Cookie");
         HttpSession session = myc.getSession(sessionid);
         if (session == null) {//会话超时
-            myc.AddSession(request.getSession());
+            /*myc.AddSession(request.getSession());
             Information inform = new Information();
             inform.setUsername("!@#");
-            return inform;
+            return inform;*/
+            return iInformationService.get(information.getUsername());
         } else {
             return iInformationService.get(information.getUsername());
         }
@@ -83,6 +85,11 @@ public class InformationController {
             iInformationService.updatedis(information.getUsername(), information.getDiseases());
         }
     }
+    @RequestMapping(value = "/getPatientsByDoctor",method = RequestMethod.POST)
+    private List<Information> getPatientsByDoctor(@RequestBody Map<String,Object> map){
+        return iInformationService.getPatientByDoctor((String)map.get("doctorUsername"));
+    }
+
     @RequestMapping(value = "/getAll", method = RequestMethod.POST)
     private List<Information> getAll(){
         return  iInformationService.getAll();
