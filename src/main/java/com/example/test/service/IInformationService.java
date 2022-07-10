@@ -13,6 +13,6 @@ public interface IInformationService {
     void updatedis(String username, String diseases);
 
     Information getdis(String username);
-
+    List<Information> getPatientByDoctor(String doctorUsername);
     List<Information> getAll();
 }

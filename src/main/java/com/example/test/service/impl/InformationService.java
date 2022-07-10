@@ -42,6 +42,7 @@ public class InformationService implements IInformationService {
         return iInformationDao.getdis(username);
     }
 
+    public List<Information> getPatientByDoctor(String doctorUsername){return iInformationDao.getPatientByDoctor(doctorUsername);}
     @Override
     public List<Information> getAll(){return iInformationDao.getAll();}
 }
