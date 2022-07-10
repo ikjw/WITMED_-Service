@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.IInformationDao">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.Information">
+    </resultMap>
+    <select id="get" resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
+        SELECT *
+        from information
+        where username = #{username}
+    </select>
+    <select id="getdis" resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
+        SELECT *
+        from information
+        where username = #{username}
+    </select>
+    <insert id="addnew" parameterType="com.example.test.entity.Information">
+        insert into information(username,clientName, birth, height1, weight1, date, num, age, energy, aveenergy, enweight,
+                                lenweight, diseases)
+        values (#{username},#{clientName}, #{birth}, #{height1}, #{weight1}, #{date}, #{num}, #{age}, #{energy},
+                #{aveenergy}, #{enweight}, #{lenweight}, #{diseases})
+    </insert>
+    <update id="update" parameterType="com.example.test.entity.Information">
+        update information
+        set birth     = #{birth},
+            height1   = #{height1},
+            weight1   = #{weight1},
+            date      = #{date},
+            num       = #{num},
+            age       = #{age},
+            energy    = #{energy},
+            aveenergy = #{aveenergy},
+            enweight  = #{enweight},
+            lenweight = #{lenweight}
+        where username = #{username}
+    </update>
+    <update id="updatedis" parameterType="com.example.test.entity.Information">
+        update information
+        set diseases=#{diseases}
+        where username = #{username}
+    </update>
+    <select id="getAll"  resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
+        select * from information
+    </select>
+</mapper>

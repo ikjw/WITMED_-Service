@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.IDoctorInfoDao">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.DoctorInfo">
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.entity.DoctorInfo">
+        insert into doctor_information(username, name, sex, age, domain, profile)
+        values (#{username}, #{name}, #{sex}, #{age}, #{domain}, #{profile})
+    </insert>
+    <update id="update" parameterType="com.example.test.entity.DoctorInfo">
+        update doctor_information
+        set name = #{name},
+        sex = #{sex},
+        age = #{age},
+        domain = #{domain},
+        profile = #{profile}
+        where username = #{username}
+    </update>
+    <select id="query" resultMap="BaseResultMap" parameterType="com.example.test.entity.DoctorInfo">
+        select *
+        from doctor_information
+        where username = #{username}
+    </select>
+    <delete id="delete" parameterType="com.example.test.entity.DoctorInfo">
+        delete from doctor_information where username = #{username}
+    </delete>
+
+    <select id="getList" resultMap="BaseResultMap" parameterType="com.example.test.entity.DoctorInfo">
+        SELECT  *
+        from doctor_information
+    </select>
+</mapper>

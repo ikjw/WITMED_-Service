@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.IFoodDao">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.Food">
+    </resultMap>
+    <select id="login1" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where name like "%"#{name}"%" </select>
+    <select id="login2" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where ingredients like "%"#{name}"%" </select>
+    <select id="login3" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where accessories like "%"#{name}"%" </select>
+    <select id="login4" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (name like "%"#{name}"%") or (ingredients like "%"#{name}"%") </select>
+    <select id="login5" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (name like "%"#{name}"%") or (accessories like "%"#{name}"%") </select>
+    <select id="login6" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (ingredients like "%"#{name}"%") or (accessories like "%"#{name}"%") </select>
+    <select id="login7" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (name like "%"#{name}"%") or (ingredients like "%"#{name}"%") or (accessories like "%"#{name}"%") </select>
+    <select id="idsearch" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where id = #{id} </select>
+</mapper>
+

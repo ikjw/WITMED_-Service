@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.ICaptchaDao">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.Captcha">
+    </resultMap>
+    <select id="getblob" resultMap="BaseResultMap" parameterType="com.example.test.entity.Captcha">
+        SELECT *
+        from picture
+        where id = #{id}
+    </select>
+</mapper>
