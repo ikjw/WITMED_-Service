@@ -1,18 +1,20 @@
 package com.example.test.entity;
 
+import java.sql.Date;
+
 public class Weight {
-    private int id;
+    private String username;
 
     private double weight;
 
-    private int week;
+    private Date date;
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public double getWeight() {
@@ -23,11 +25,11 @@ public class Weight {
         this.weight = weight;
     }
 
-    public int getWeek() {
-        return week;
+    public Date getDate() {
+        return date;
     }
 
-    public void setWeek(int week) {
-        this.week = week;
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

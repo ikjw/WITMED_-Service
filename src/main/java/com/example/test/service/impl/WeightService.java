@@ -9,6 +9,7 @@ import com.example.test.service.IWeightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -17,12 +18,17 @@ public class WeightService implements IWeightService {
     private IWeightDao iWeightDao;
 
     @Override
-    public Boolean add(int id, double weight, int week) {
-        return iWeightDao.add(id, weight, week);
+    public int add(String username, double weight, Date date) {
+        return iWeightDao.add(username,weight,date);
     }
 
     @Override
-    public List<Weight> view(int id) {
-        return iWeightDao.view(id);
+    public List<Weight> getWeightList(String username) {
+        return iWeightDao.getWeightList(username);
+    }
+
+    @Override
+    public Weight getRecentWeight(String username) {
+        return iWeightDao.getRecentWeight(username);
     }
 }
