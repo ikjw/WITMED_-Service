@@ -15,16 +15,34 @@ public class Information {
     private String lenweight;
     private String Diseases;
 
-    public void setBirth(int birth) {
-        this.birth = birth;
+    private double ffm;
+    private double muscle;
+    private double protein;
+    private double ucre;
+    public double getFfm() {
+        return ffm;
     }
 
-    public String getAveenergy() {
-        return aveenergy;
+    public void setFfm(double ffm) {
+        this.ffm = ffm;
     }
 
-    public void setAveenergy(String aveenergy) {
-        this.aveenergy = aveenergy;
+    public double getUcre() {
+        return ucre;
+    }
+
+    public void setUcre(double ucre) {
+        this.ucre = ucre;
+    }
+
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getClientName() {
@@ -35,31 +53,19 @@ public class Information {
         this.clientName = clientName;
     }
 
-    public String getDiseases() {
-        return Diseases;
-    }
-
-    public void setDiseases(String diseases) {
-        Diseases = diseases;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getBirth() {
         return birth;
+    }
+
+    public void setBirth(int birth) {
+        this.birth = birth;
     }
 
     public double getHeight1() {
         return height1;
     }
 
-    public void setHeight1(int height1) {
+    public void setHeight1(double height1) {
         this.height1 = height1;
     }
 
@@ -67,7 +73,7 @@ public class Information {
         return weight1;
     }
 
-    public void setWeight1(int weight1) {
+    public void setWeight1(double weight1) {
         this.weight1 = weight1;
     }
 
@@ -103,6 +109,14 @@ public class Information {
         this.energy = energy;
     }
 
+    public String getAveenergy() {
+        return aveenergy;
+    }
+
+    public void setAveenergy(String aveenergy) {
+        this.aveenergy = aveenergy;
+    }
+
     public String getEnweight() {
         return enweight;
     }
@@ -118,4 +132,31 @@ public class Information {
     public void setLenweight(String lenweight) {
         this.lenweight = lenweight;
     }
+
+    public String getDiseases() {
+        return Diseases;
+    }
+
+    public void setDiseases(String diseases) {
+        Diseases = diseases;
+    }
+
+
+    public double getMuscle() {
+        return muscle;
+    }
+
+    public void setMuscle(double muscle) {
+        this.muscle = muscle;
+    }
+
+    public double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(double protein) {
+        this.protein = protein;
+    }
+
+
 }
