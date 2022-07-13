@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface IFood2Dao {
-    Boolean add(@Param("user") String user, @Param("id") String id, @Param("cal") int cal, @Param("cdate") String cdate, @Param("time_slot") int time_slot);
+    int add(@Param("user") String user, @Param("id") String id, @Param("cal") int cal, @Param("cdate") String cdate, @Param("time_slot") int time_slot);
 
     List<Food2> day(@Param("user") String user, @Param("cdate") String cdate);
 

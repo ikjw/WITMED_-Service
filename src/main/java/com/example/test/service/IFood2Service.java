@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface IFood2Service {
-    Boolean add(String user, String id, int cal, String cdate, int time_slot);
+    int add(String user, String id, int cal, String cdate, int time_slot);
 
     List<Food2> day(String user, String cdate);
 }

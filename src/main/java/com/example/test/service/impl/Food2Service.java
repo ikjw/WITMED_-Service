@@ -15,7 +15,7 @@ public class Food2Service implements IFood2Service {
     private IFood2Dao iFood2Dao;
 
     @Override
-    public Boolean add(String user, String id, int cal, String cdate, int time_slot) {
+    public int add(String user, String id, int cal, String cdate, int time_slot) {
         return iFood2Dao.add(user, id, cal, cdate, time_slot);
     }
 
