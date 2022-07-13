@@ -22,14 +22,16 @@ public class InformationService implements IInformationService {
     public void addnew(Information information){
         iInformationDao.addnew(information.getUsername(),information.getClientName(),information.getBirth(),information.getHeight1(),information.getWeight1()
                 ,information.getDate(),information.getNum(),information.getAge(),information.getEnergy(),information.getAveenergy()
-                ,information.getEnweight(),information.getLenweight(),information.getDiseases());
+                ,information.getEnweight(),information.getLenweight(),information.getDiseases(), information.getFfm(), information.getMuscle(),
+                information.getProtein(), information.getUcre());
     }
 
     @Override
     public void update(Information information) {
         iInformationDao.update(information.getUsername(),information.getBirth(),information.getHeight1(),information.getWeight1()
         ,information.getDate(),information.getNum(),information.getAge(),information.getEnergy(),information.getAveenergy()
-        ,information.getEnweight(),information.getLenweight());
+        ,information.getEnweight(),information.getLenweight(), information.getFfm(), information.getMuscle(),
+                information.getProtein(), information.getUcre());
     }
 
     @Override

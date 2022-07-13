@@ -14,7 +14,8 @@ public interface IInformationDao {
                 @Param("weight1") double weight1, @Param("date") String date,
                 @Param("num") String num, @Param("age") int age,@Param("energy") String energy,
                 @Param("aveenergy") String aveenergy, @Param("enweight") String enweight,
-                @Param("lenweight") String lenweight,@Param("diseases")String diseases);
+                @Param("lenweight") String lenweight,@Param("diseases")String diseases,
+                @Param("ffm")double ffm,@Param("muscle") double muscle,@Param("protein") double protein,@Param("UCrE_24") double UCrE_24);
 
     void updatedis(@Param("username")String username, @Param("diseases")String diseases);
 
@@ -24,7 +25,8 @@ public interface IInformationDao {
                 @Param("weight1") double weight1, @Param("date") String date,
                 @Param("num") String num, @Param("age") int age,@Param("energy") String energy,
                 @Param("aveenergy") String aveenergy, @Param("enweight") String enweight,
-                @Param("lenweight") String lenweight);
+                @Param("lenweight") String lenweight,
+                @Param("ffm")double ffm,@Param("muscle") double muscle,@Param("protein") double protein,@Param("UCrE_24") double UCrE_24);
 
     List<Information> getPatientByDoctor(@Param("doctorUsername") String doctorUsername);
 

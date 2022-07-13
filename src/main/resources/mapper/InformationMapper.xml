@@ -15,9 +15,9 @@
     </select>
     <insert id="addnew" parameterType="com.example.test.entity.Information">
         insert into information(username,clientName, birth, height1, weight1, date, num, age, energy, aveenergy, enweight,
-                                lenweight, diseases)
+                                lenweight, diseases,ffm,protein,muscle,ucre)
         values (#{username},#{clientName}, #{birth}, #{height1}, #{weight1}, #{date}, #{num}, #{age}, #{energy},
-                #{aveenergy}, #{enweight}, #{lenweight}, #{diseases})
+                #{aveenergy}, #{enweight}, #{lenweight}, #{diseases},#{ffm},#{protein},#{muscle},#{UCrE_24})
     </insert>
     <update id="update" parameterType="com.example.test.entity.Information">
         update information
@@ -30,7 +30,11 @@
             energy    = #{energy},
             aveenergy = #{aveenergy},
             enweight  = #{enweight},
-            lenweight = #{lenweight}
+            lenweight = #{lenweight},
+            ffm = #{ffm},
+            protein = #{protein},
+            muscle = #{muscle},
+            UCrE_24 = #{ucre}
         where username = #{username}
     </update>
     <update id="updatedis" parameterType="com.example.test.entity.Information">

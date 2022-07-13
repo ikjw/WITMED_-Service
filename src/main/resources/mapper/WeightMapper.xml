@@ -4,9 +4,20 @@
     <resultMap id="BaseResultMap" type="com.example.test.entity.Weight">
     </resultMap>
     <insert id="add"  parameterType="com.example.test.entity.Weight">
-        insert into preg(id, weight, week) values (#{id},#{weight},#{week})
+        insert into `weight`(username,weight,date)
+        values(#{username},#{weight},#{date})
+        on duplicate key update weight=#{weight};
     </insert>
-    <select id="view" resultMap="BaseResultMap" parameterType="com.example.test.entity.Weight">
-        select id,weight,week from preg where id=#{id}
+    <select id="getWeightList" resultMap="BaseResultMap" parameterType="com.example.test.entity.Weight">
+        select * from weight where username=#{username}
+    </select>
+    <select id="getRecentWeight" resultMap="BaseResultMap" parameterType="com.example.test.entity.Weight">
+        SELECT
+            *
+        FROM
+                ( SELECT * FROM weight WHERE username = #{username} ) AS a
+        ORDER BY
+            date DESC
+        LIMIT 1
     </select>
 </mapper>
