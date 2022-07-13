@@ -4,19 +4,19 @@
     <resultMap id="BaseResultMap" type="com.example.test.entity.Bg">
     </resultMap>
     <insert id="add"  parameterType="com.example.test.entity.Bg">
-        insert into bg_sum(id, bg_value, time, time_slot) values (#{id},#{bg_value},#{time},#{time_slot})
+        insert into bg_sum(username, bg_value, time, time_slot) values (#{username},#{bg_value},#{time},#{time_slot})
     </insert>
     <select id="day" resultMap="BaseResultMap" parameterType="com.example.test.entity.Bg">
-        select id,bg_value,time,time_slot from bg_sum where id=#{id} and time like CONCAT('%',#{time},'%')
+        select username,bg_value,time,time_slot from bg_sum where username = #{username} and time like CONCAT('%',#{time},'%')
     </select>
     <select id="week" resultMap="BaseResultMap" parameterType="com.example.test.entity.Bg">
-        select id,bg_value,time,time_slot from bg_sum
-        where id=#{id} and time between DATE_SUB(#{time}, INTERVAL 7 DAY) and #{time}
+        select username,bg_value,time,time_slot from bg_sum
+        where username=#{username} and time between DATE_SUB(#{time}, INTERVAL 7 DAY) and #{time}
         order by time asc
     </select>
     <select id="month" resultMap="BaseResultMap" parameterType="com.example.test.entity.Bg">
-        select id,bg_value,time,time_slot from bg_sum
-        where id=#{id} and time between DATE_SUB(#{time}, INTERVAL 30 DAY) and #{time}
+        select username,bg_value,time,time_slot from bg_sum
+        where username=#{username} and time between DATE_SUB(#{time}, INTERVAL 30 DAY) and #{time}
         order by time asc
     </select>
 </mapper>
