@@ -3,18 +3,18 @@
 <mapper namespace="com.example.test.dao.ILoginDao">
     <resultMap id="BaseResultMap" type="com.example.test.entity.Login">
     </resultMap>
-    <select id="login" resultMap="BaseResultMap" parameterType="com.example.test.entity.Login">
+    <select id="queryByAll" resultMap="BaseResultMap" parameterType="com.example.test.entity.Login">
         SELECT *
         from login
         where username = #{username}
           and password = #{password}
+          and role = #{role}
     </select>
-    <select id="loginuser" resultMap="BaseResultMap" parameterType="com.example.test.entity.Login">
-        SELECT *
-        from login
-        where username = #{username}
-    </select>
-    <select id="query" resultMap="BaseResultMap" parameterType="com.example.test.entity.Login">
+    <insert id="insert" parameterType="com.example.test.entity.Login">
+        insert into login(username,password,role)
+        values (#{username},#{password},#{role})
+    </insert>
+    <select id="queryByUsername" resultMap="BaseResultMap" parameterType="com.example.test.entity.Login">
         SELECT *
         from login
         where username = #{username}

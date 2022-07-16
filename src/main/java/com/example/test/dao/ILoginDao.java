@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ILoginDao {
-    Login login(@Param("username") String username, @Param("password") String password);
-    Login loginuser(@Param("username") String username, @Param("password") String password, @Param("role") int role);
-    Login query(@Param("username") String username);
+    int insert(@Param("username")String username,@Param("password") String password,@Param("role") int role);
+    Login queryByAll(@Param("username") String username, @Param("password") String password, @Param("role") int role);
+    Login queryByUsername(@Param("username") String username);
 }
 

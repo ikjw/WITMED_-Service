@@ -1,4 +1,4 @@
-package com.example.test.entity;
+package com.example.test.configBean;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

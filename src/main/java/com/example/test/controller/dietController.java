@@ -2,7 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.entity.Information;
 import com.example.test.entity.Weight;
-import com.example.test.entity.dietPlanConfig;
+import com.example.test.configBean.dietPlanConfig;
 import com.example.test.entity.dietplan;
 import com.example.test.service.IInformationService;
 import com.example.test.service.IWeightService;

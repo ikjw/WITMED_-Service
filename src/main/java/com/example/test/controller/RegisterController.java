@@ -30,7 +30,7 @@ public class RegisterController {
     private void register(@RequestBody Login register) {
         iRegisterService.register(register.getUsername(), register.getPassword());
     }
-    @RequestMapping(value = "/register/doctor", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/register/doctor", method = RequestMethod.POST)
     private Map<String,Object> registerDoctor(@RequestBody Map<String,Object> registerInfo) {
         Map<String,Object> ret = new HashMap<>();
         String[] Keys = {"username","password","role","id","name","sex","age","domain","profile"};
@@ -65,7 +65,7 @@ public class RegisterController {
             ret.put("code",doctorRet+loginRet);
         }
         return ret;//2 成功 1 注册成功 信息初始化失败  0 注册失败
-    }
+    }*/
 
 }
 
