@@ -66,10 +66,10 @@ public class InformationController {
         String sessionid = request.getHeader("Cookie");
         HttpSession session = myc.getSession(sessionid);
         if(session == null){
-            myc.AddSession(request.getSession());
+           /* myc.AddSession(request.getSession());
             Information temp = new Information();
-            temp.setUsername("!@#");
-            return temp;
+            temp.setUsername("!@#");*/
+            return iInformationService.getdis(information.getUsername());
         }else{
             return iInformationService.getdis(information.getUsername());
         }
@@ -80,7 +80,7 @@ public class InformationController {
         String sessionid = request.getHeader("Cookie");
         HttpSession session = myc.getSession(sessionid);
         if (session == null) {
-            myc.AddSession(request.getSession());
+            iInformationService.updatedis(information.getUsername(), information.getDiseases());
         } else {
             iInformationService.updatedis(information.getUsername(), information.getDiseases());
         }
