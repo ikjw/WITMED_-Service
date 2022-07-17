@@ -4,6 +4,7 @@ import com.example.test.dao.IInformationDao;
 import com.example.test.entity.Information;
 import com.example.test.service.IInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,32 +20,29 @@ public class InformationService implements IInformationService {
     }
 
     @Override
-    public void addnew(Information information){
-        iInformationDao.addnew(information.getUsername(),information.getClientName(),information.getBirth(),information.getHeight1(),information.getWeight1()
+    public int init(Information information){
+        return iInformationDao.insert(information.getUsername(),information.getClientName(),information.getBirth(),information.getHeight1(),information.getWeight1()
                 ,information.getDate(),information.getNum(),information.getAge(),information.getEnergy(),information.getAveenergy()
                 ,information.getEnweight(),information.getLenweight(),information.getDiseases(), information.getFfm(), information.getMuscle(),
                 information.getProtein(), information.getUcre());
     }
 
     @Override
-    public void update(Information information) {
-        iInformationDao.update(information.getUsername(),information.getBirth(),information.getHeight1(),information.getWeight1()
+    public int update(Information information) {
+        return iInformationDao.update(information.getUsername(),information.getClientName(),information.getBirth(),information.getHeight1(),information.getWeight1()
         ,information.getDate(),information.getNum(),information.getAge(),information.getEnergy(),information.getAveenergy()
         ,information.getEnweight(),information.getLenweight(), information.getFfm(), information.getMuscle(),
                 information.getProtein(), information.getUcre());
     }
 
     @Override
-    public void updatedis(String username, String diseases) {
-        iInformationDao.updatedis(username, diseases);
+    public int updateDisease(String username, String diseases) {
+        return iInformationDao.updatedis(username, diseases);
     }
 
     @Override
-    public Information getdis(String username) {
-        return iInformationDao.getdis(username);
+    public List<Information> getByDoctor(String doctorUsername){
+        return iInformationDao.getByDoctor(doctorUsername);
     }
 
-    public List<Information> getPatientByDoctor(String doctorUsername){return iInformationDao.getPatientByDoctor(doctorUsername);}
-    @Override
-    public List<Information> getAll(){return iInformationDao.getAll();}
 }

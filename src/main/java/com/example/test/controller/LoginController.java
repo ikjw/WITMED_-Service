@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * 该类的自定义 返回码范围为 100000 - 100100
+ * 该类的自定义 返回码范围为 100100 - 100199
  * 100001:账号或密码错误
  */
 @RestController
@@ -27,7 +27,7 @@ public class LoginController {
             if(code == 1){
                 result = new RespResult<>("",envConfig.getEnv(),"");
             }else{
-                result = new RespResult<>(100001,"账号或密码错误","账号或密码错误","",envConfig.getEnv(),"");
+                result = new RespResult<>(100101,"账号或密码错误","账号或密码错误","",envConfig.getEnv(),"");
             }
         }else{
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", envConfig.getEnv(), "");
@@ -42,7 +42,7 @@ public class LoginController {
             if(code == 1){
                 result = new RespResult<>("",envConfig.getEnv(),"");
             }else{
-                result = new RespResult<>(100002,"用户名重复","用户名重复","",envConfig.getEnv(),"");
+                result = new RespResult<>(100102,"用户名重复","用户名重复","",envConfig.getEnv(),"");
             }
         }else{
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", envConfig.getEnv(), "");

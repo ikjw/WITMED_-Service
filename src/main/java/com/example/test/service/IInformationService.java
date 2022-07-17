@@ -7,12 +7,11 @@ import java.util.List;
 public interface IInformationService {
     Information get(String username);
 
-    void addnew(Information information);
-    void update(Information information);
+    int init(Information information);
 
-    void updatedis(String username, String diseases);
+    int update(Information information);
 
-    Information getdis(String username);
-    List<Information> getPatientByDoctor(String doctorUsername);
-    List<Information> getAll();
+    int updateDisease(String username,String disease);
+
+    List<Information> getByDoctor(String doctorUsername);
 }

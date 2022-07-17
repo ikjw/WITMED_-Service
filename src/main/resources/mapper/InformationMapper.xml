@@ -8,20 +8,16 @@
         from information
         where username = #{username}
     </select>
-    <select id="getdis" resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
-        SELECT *
-        from information
-        where username = #{username}
-    </select>
-    <insert id="addnew" parameterType="com.example.test.entity.Information">
+    <insert id="insert" parameterType="com.example.test.entity.Information">
         insert into information(username,clientName, birth, height1, weight1, date, num, age, energy, aveenergy, enweight,
                                 lenweight, diseases,ffm,protein,muscle,ucre)
         values (#{username},#{clientName}, #{birth}, #{height1}, #{weight1}, #{date}, #{num}, #{age}, #{energy},
-                #{aveenergy}, #{enweight}, #{lenweight}, #{diseases},#{ffm},#{protein},#{muscle},#{UCrE_24})
+                #{aveenergy}, #{enweight}, #{lenweight}, #{diseases},#{ffm},#{protein},#{muscle},#{ucre})
     </insert>
     <update id="update" parameterType="com.example.test.entity.Information">
         update information
         set birth     = #{birth},
+            clientName = #{clientName},
             height1   = #{height1},
             weight1   = #{weight1},
             date      = #{date},
@@ -34,7 +30,7 @@
             ffm = #{ffm},
             protein = #{protein},
             muscle = #{muscle},
-            UCrE_24 = #{ucre}
+            ucre = #{ucre}
         where username = #{username}
     </update>
     <update id="updatedis" parameterType="com.example.test.entity.Information">
@@ -42,10 +38,7 @@
         set diseases=#{diseases}
         where username = #{username}
     </update>
-    <select id="getAll"  resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
-        select * from information
-    </select>
-    <select id="getPatientByDoctor"  resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
+    <select id="getByDoctor"  resultMap="BaseResultMap" parameterType="com.example.test.entity.Information">
         select * from information
         where username in (select patient_username from doctor_patient where doctor_username=#{doctorUsername})
     </select>

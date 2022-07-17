@@ -1,8 +1,15 @@
 package com.example.test.controller;
 
+import com.example.test.configBean.envConfig;
 import com.example.test.entity.Information;
 import com.example.test.service.IInformationService;
 import com.example.test.utils.MySessionContext;
+import com.example.test.utils.RespResult;
+import com.example.test.utils.enums.BaseRespResultCode;
+import com.fasterxml.jackson.databind.ser.Serializers;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,86 +19,91 @@ import java.util.List;
 import java.util.Map;
 
 
+/**
+ * 该类的自定义 返回码范围为 100200 - 100299
+ * 100200:账号或密码错误
+ */
+
+@Slf4j
 @RestController
 @RequestMapping(value = "/information")
 public class InformationController {
     @Autowired
     private IInformationService iInformationService;
-
-    @RequestMapping(value = "/get", method = RequestMethod.POST)
-    private Information get(HttpServletRequest request, @RequestBody Information information) {
-        MySessionContext myc = MySessionContext.getInstance();
-        String sessionid = request.getHeader("Cookie");
-        HttpSession session = myc.getSession(sessionid);
-        if (session == null) {//会话超时
-            /*myc.AddSession(request.getSession());
-            Information inform = new Information();
-            inform.setUsername("!@#");
-            return inform;*/
-            return iInformationService.get(information.getUsername());
-        } else {
-            return iInformationService.get(information.getUsername());
-        }
-    }
-
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    private void add(HttpServletRequest request, @RequestBody Information information) {
-        HttpSession session = request.getSession(true);
-        session.setMaxInactiveInterval(MySessionContext.getSessiontime());//有效时间
-        session.setAttribute("username", information.getUsername());
-        MySessionContext myc = MySessionContext.getInstance();
-        myc.AddSession(session);
-        iInformationService.addnew(information);
-    }
-
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    private void update(HttpServletRequest request, @RequestBody Information information) {
-        MySessionContext myc = MySessionContext.getInstance();
-        String sessionid = request.getHeader("Cookie");
-        HttpSession session = myc.getSession(sessionid);
-        if (session == null) {//会话超时
-            myc.AddSession(request.getSession());
-        } else {
-            /* Information inform = get(request, information);
-            String temp=inform.getWeight2();
-            String[] tempw=temp.split(";");
-            int len = Integer.parseInt(inform.getNum());*/
-            iInformationService.update(information);
-        }
-    }
-
-    @RequestMapping(value = "/getdis",method = RequestMethod.POST)
-    private Information getdis(HttpServletRequest request,@RequestBody Information information){
-        MySessionContext myc = MySessionContext.getInstance();
-        String sessionid = request.getHeader("Cookie");
-        HttpSession session = myc.getSession(sessionid);
-        if(session == null){
-           /* myc.AddSession(request.getSession());
-            Information temp = new Information();
-            temp.setUsername("!@#");*/
-            return iInformationService.getdis(information.getUsername());
+    @Autowired
+    private envConfig envConfig;
+    @PostMapping("/init")
+    public RespResult<Information> init(@RequestBody Information info){
+        RespResult<Information> respResult;
+        if(info.getUsername()==null){
+            respResult = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null,envConfig.getEnv(),"");
         }else{
-            return iInformationService.getdis(information.getUsername());
+            try{
+                int code = iInformationService.init(info);
+                respResult = new RespResult<>(info, envConfig.getEnv(), "");
+            }catch (Exception e){
+                respResult = new RespResult<>(100200,"信息已初始化，请勿重复提交",e.getMessage(),info, envConfig.getEnv(), "");
+            }
         }
+        return respResult;
     }
-    @RequestMapping(value = "/updatedis", method = RequestMethod.POST)
-    private void updatedis(HttpServletRequest request, @RequestBody Information information) {
-        MySessionContext myc = MySessionContext.getInstance();
-        String sessionid = request.getHeader("Cookie");
-        HttpSession session = myc.getSession(sessionid);
-        if (session == null) {
-            iInformationService.updatedis(information.getUsername(), information.getDiseases());
-        } else {
-            iInformationService.updatedis(information.getUsername(), information.getDiseases());
+    @PostMapping("/update")
+    public RespResult<Information> update(@RequestBody Information info){
+        RespResult<Information> respResult;
+        if(info.getUsername()==null || info.getClientName()==null){
+            respResult = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null,envConfig.getEnv(),"");
+        }else{
+            int code = iInformationService.update(info);
+            if(code == 0){
+                respResult = new RespResult<>(100201,"更新失败，请稍后重试","该用户不存在",info, envConfig.getEnv(),"");
+            }else{
+                respResult = new RespResult<>(info, envConfig.getEnv(), "");
+            }
         }
+        return respResult;
     }
-    @RequestMapping(value = "/getPatientsByDoctor",method = RequestMethod.POST)
-    private List<Information> getPatientsByDoctor(@RequestBody Map<String,Object> map){
-        return iInformationService.getPatientByDoctor((String)map.get("doctorUsername"));
+    @PostMapping("/updateDisease")
+    public RespResult<Information> updateDisease(@RequestBody Information info){
+        RespResult<Information> respResult;
+        if(info.getUsername()==null || info.getDiseases()==null){
+            respResult = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null,envConfig.getEnv(),"");
+        }else{
+            int code = iInformationService.updateDisease(info.getUsername(),info.getDiseases());
+            if(code == 0){
+                respResult = new RespResult<>(100201,"更新失败，请稍后重试","该用户不存在",info, envConfig.getEnv(),"");
+            }else{
+                respResult = new RespResult<>(info, envConfig.getEnv(), "");
+            }
+        }
+        return respResult;
+    }
+    @PostMapping("/get")
+    public RespResult<Information> get(@RequestBody Information info){
+        RespResult<Information> respResult;
+        if(info.getUsername()==null){
+            respResult = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null,envConfig.getEnv(),"");
+        }else{
+            Information information = iInformationService.get(info.getUsername());
+            if(information == null){
+                respResult = new RespResult<>(100201,"未初始化信息，请先初始化信息","该用户不存在",info, envConfig.getEnv(),"");
+            }else{
+                respResult = new RespResult<>(information, envConfig.getEnv(), "");
+            }
+        }
+        return respResult;
+    }
+    @PostMapping("/getByDoctor")
+    public RespResult<List<Information>> get(@RequestBody Map<String,Object> map){
+        RespResult<List<Information>> respResult;
+        String doctorUsername = (String) map.get("doctorUsername");
+        if(doctorUsername==null){
+            respResult = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null,envConfig.getEnv(),"");
+        }else{
+            List<Information> informations = iInformationService.getByDoctor(doctorUsername);
+            respResult = new RespResult<>(informations, envConfig.getEnv(), "");
+        }
+        return respResult;
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.POST)
-    private List<Information> getAll(){
-        return  iInformationService.getAll();
-    }
+
 }
