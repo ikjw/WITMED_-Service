@@ -1,7 +1,6 @@
 package com.example.test.entity;
 
 public class DoctorInfo {
-    private Integer id;
     private String username;
     private String name;
     private Integer sex;
@@ -9,14 +8,6 @@ public class DoctorInfo {
     private String domain;
     private String profile;
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return username;

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * 该类的自定义 返回码范围为 100100 - 100199
- * 100001:账号或密码错误
  */
 @RestController
 public class LoginController {
