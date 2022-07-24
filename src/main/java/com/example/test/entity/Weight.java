@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Weight {
     private String username;
 
-    private double weight;
+    private Double weight;
 
     private Date date;
 
@@ -17,7 +17,7 @@ public class Weight {
         this.username = username;
     }
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 

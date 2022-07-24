@@ -25,7 +25,6 @@ class TestApplicationTests {
     private WeightService service;
     @Test
     void contextLoads() {
-       List<Weight> lst =  service.getWeightList("1584643004");
        Weight weight= service.getRecentWeight("1584643004");
     }
 

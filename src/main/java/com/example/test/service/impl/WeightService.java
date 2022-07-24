@@ -23,8 +23,8 @@ public class WeightService implements IWeightService {
     }
 
     @Override
-    public List<Weight> getWeightList(String username) {
-        return iWeightDao.getWeightList(username);
+    public List<Weight> getWeightList(String username, Date start, Date end) {
+        return iWeightDao.getWeightList(username,start,end);
     }
 
     @Override

@@ -9,7 +9,7 @@
         on duplicate key update weight=#{weight};
     </insert>
     <select id="getWeightList" resultMap="BaseResultMap" parameterType="com.example.test.entity.Weight">
-        select * from weight where username=#{username}
+        select * from weight where username=#{username} and date &gt;= #{start} and date &lt;= #{end}
     </select>
     <select id="getRecentWeight" resultMap="BaseResultMap" parameterType="com.example.test.entity.Weight">
         SELECT
