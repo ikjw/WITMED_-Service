@@ -5,5 +5,5 @@ import com.example.test.entity.Disease;
 import java.util.List;
 
 public interface IDiseaseService {
-    List<Disease> get(String name);
+    List<Disease> get(String keyword,int page);
 }

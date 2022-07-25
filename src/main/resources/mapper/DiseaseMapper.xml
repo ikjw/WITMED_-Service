@@ -6,7 +6,7 @@
     <select id="get" resultMap="BaseResultMap" parameterType="com.example.test.entity.Disease">
         SELECT DISTINCT *
         from diseases
-        where name like "%"#{name}"%" limit 100
+        where name like "%"#{keyword}"%" limit #{ignoreNum},#{numOfpage}
     </select>
 </mapper>
 

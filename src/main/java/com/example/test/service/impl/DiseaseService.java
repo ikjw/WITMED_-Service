@@ -14,7 +14,7 @@ public class DiseaseService implements IDiseaseService {
     private IDiseaseDao iDiseaseDao;
 
     @Override
-    public List<Disease> get(String name){
-        return iDiseaseDao.get(name);
+    public List<Disease> get(String keyword,int pageIndex){
+        return iDiseaseDao.get(keyword,(pageIndex-1)*50,50);
     }
 }

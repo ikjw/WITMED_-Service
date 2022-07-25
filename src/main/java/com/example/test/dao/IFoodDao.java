@@ -10,12 +10,6 @@ import java.util.List;
 @EnableAutoConfiguration
 @Repository
 public interface IFoodDao {
-    List<Food> login1(@Param("name") String name);
-    List<Food> login2(@Param("name") String name);
-    List<Food> login3(@Param("name") String name);
-    List<Food> login4(@Param("name") String name);
-    List<Food> login5(@Param("name") String name);
-    List<Food> login6(@Param("name") String name);
-    List<Food> login7(@Param("name") String name);
-    List<Food> idsearch(@Param("id") int id);
+    List<Food> get(@Param("keyword") String keyword,@Param("ignoreNum")int ignoreNum,@Param("numOfpage") int numOfpage);
+    Food getById(@Param("id") int id);
 }
