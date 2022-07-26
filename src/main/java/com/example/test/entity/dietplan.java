@@ -5,8 +5,8 @@ public class dietplan {
     private String doctorUsername;
     private String start;
     private String end;
-    private int totalEnergy;
-    private int totalFood;
+    private Integer totalEnergy;
+    private Integer totalFood;
     private String mainFood;//
     private String vegetables;//
     private String fruit;
@@ -49,7 +49,7 @@ public class dietplan {
         this.end = end;
     }
 
-    public int getTotalEnergy() {
+    public Integer getTotalEnergy() {
         return totalEnergy;
     }
 
@@ -57,7 +57,7 @@ public class dietplan {
         this.totalEnergy = totalEnergy;
     }
 
-    public int getTotalFood() {
+    public Integer getTotalFood() {
         return totalFood;
     }
 
