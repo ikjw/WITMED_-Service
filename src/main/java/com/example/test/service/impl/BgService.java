@@ -16,26 +16,26 @@ public class BgService implements IBgService {
     private IBgDao iBgDao;
 
     @Override
-    public Boolean add(int id, double bg_value, String time, int time_slot) {
-        return iBgDao.add(id, bg_value, time, time_slot);
+    public Boolean add(String username, double bg_value, String time, int time_slot) {
+        return iBgDao.add(username, bg_value, time, time_slot);
     }
 
     @Override
-    public List<Bg> day(int id, String time) {
-        return iBgDao.day(id, time);
-    }
-
-    ;
-
-    @Override
-    public List<Bg> week(int id, String time) {
-        return iBgDao.week(id, time);
+    public List<Bg> day(String username, String time) {
+        return iBgDao.day(username, time);
     }
 
     ;
 
     @Override
-    public List<Bg> month(int id, String time) {
-        return iBgDao.month(id, time);
+    public List<Bg> week(String username, String time) {
+        return iBgDao.week(username, time);
+    }
+
+    ;
+
+    @Override
+    public List<Bg> month(String username, String time) {
+        return iBgDao.month(username, time);
     }
 }

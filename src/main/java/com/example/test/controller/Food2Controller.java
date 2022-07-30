@@ -17,7 +17,7 @@ public class Food2Controller {
     private IFood2Service iFood2Service;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    private Boolean add(@RequestBody Food2 food2){
+    private int add(@RequestBody Food2 food2){
         return iFood2Service.add(food2.getUser(), food2.getId(), food2.getCal(), food2.getCdate(), food2.getTime_slot());
     }
 

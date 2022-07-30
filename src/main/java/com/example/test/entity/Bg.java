@@ -7,7 +7,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Bg {
-    private int id;
+    private String username;
 
     private double bg_value;
 
@@ -15,20 +15,13 @@ public class Bg {
 
     private int time_slot;
 
-    public int getId() {
-        return id;
+
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public double getBg_value() {
@@ -37,6 +30,14 @@ public class Bg {
 
     public void setBg_value(double bg_value) {
         this.bg_value = bg_value;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public int getTime_slot() {
