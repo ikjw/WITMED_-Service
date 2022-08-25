@@ -34,7 +34,7 @@
             ffm = #{ffm},
             protein = #{protein},
             muscle = #{muscle},
-            UCrE_24 = #{ucre}
+            ucre = #{UCrE_24}
         where username = #{username}
     </update>
     <update id="updatedis" parameterType="com.example.test.entity.Information">

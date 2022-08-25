@@ -18,4 +18,7 @@ public interface IFoodDao {
     List<Food> login6(@Param("name") String name);
     List<Food> login7(@Param("name") String name);
     List<Food> idsearch(@Param("id") int id);
+
+    List<Food> get(@Param("keyword") String keyword,@Param("ignoreNum")int ignoreNum,@Param("numOfpage") int numOfpage);
+    Food getById(@Param("id") int id);
 }

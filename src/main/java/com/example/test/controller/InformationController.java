@@ -51,6 +51,7 @@ public class InformationController {
         HttpSession session = myc.getSession(sessionid);
         if (session == null) {//会话超时
             myc.AddSession(request.getSession());
+            iInformationService.update(information);
         } else {
             /* Information inform = get(request, information);
             String temp=inform.getWeight2();

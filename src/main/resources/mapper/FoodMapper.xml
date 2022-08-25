@@ -11,5 +11,20 @@
     <select id="login6" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (ingredients like "%"#{name}"%") or (accessories like "%"#{name}"%") </select>
     <select id="login7" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where (name like "%"#{name}"%") or (ingredients like "%"#{name}"%") or (accessories like "%"#{name}"%") </select>
     <select id="idsearch" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food"> SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion from food where id = #{id} </select>
+
+
+
+    <select id="get" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food">
+        SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion
+        from food where
+            name like "%"#{keyword}"%"
+                      or ingredients like "%"#{keyword}"%"
+                     or accessories like "%"#{keyword}"%"
+                     or label like "%"#{keyword}"%"
+        limit #{ignoreNum},#{numOfpage} </select>
+
+    <select id="getById" resultMap="BaseResultMap" parameterType="com.example.test.entity.Food">
+        SELECT DISTINCT id, name, ingredients, accessories, introduction, label, cooking, favor, functions, target, disease, constitution, cuisine, snack, type, kitchenware, occasion
+        from food where id = #{id} </select>
 </mapper>
 

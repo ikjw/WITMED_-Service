@@ -22,4 +22,14 @@ public class FoodService implements IFoodService {
     public List<Food> login6(String name) {return iFoodDao.login6(name);}
     public List<Food> login7(String name) {return iFoodDao.login7(name);}
     public List<Food> idsearch(int id) {return iFoodDao.idsearch(id);}
+
+    @Override
+    public List<Food> get(String keyword, int pageIndex) {
+        return iFoodDao.get(keyword,(pageIndex-1)*20,20);
+    }
+
+    @Override
+    public Food getById(int id) {
+        return  iFoodDao.getById(id);
+    }
 }

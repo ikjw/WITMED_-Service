@@ -14,4 +14,7 @@ public interface IFoodService {
     List<Food> login6(String name);
     List<Food> login7(String name);
     List<Food> idsearch(int id);
+
+    List<Food> get(String keyword,int pageIndex);
+    Food getById(int id);
 }
