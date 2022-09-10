@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.old.old_dao.IFavorDao">
+    <resultMap id="BaseResultMap" type="com.example.test.old.entity.favor">
+    </resultMap>
+    <insert id="addfavor" parameterType="com.example.test.old.entity.favor">
+        INSERT INTO `favor` (username, foodid) VALUES (#{username}, #{foodid})
+    </insert>
+    <delete id="deletefavor" parameterType="com.example.test.old.entity.favor">
+        delete from `favor` where username = #{username} and foodid = #{foodid}
+    </delete>
+    <select id="searchfavor" resultMap="BaseResultMap" parameterType="com.example.test.old.entity.favor">
+        SELECT DISTINCT username, foodid from favor where username = #{username} and foodid = #{foodid}
+    </select>
+    <select id="favorlist" resultMap="BaseResultMap" parameterType="com.example.test.old.entity.favor">
+        SELECT DISTINCT username, foodid from favor where username = #{username}
+    </select>
+</mapper>
+

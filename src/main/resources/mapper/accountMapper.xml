@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.accountDao">
+    <resultMap id="result" type="com.example.test.bean.account">
+        <result property="UID" column="UID"/>
+        <result property="password" column="password"/>
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="type" column="type"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="weChatId" column="wechat_id"/>
+    </resultMap>
+    <select id="query" resultMap="result">
+        select UID,phone,mail,type,register_time,wechat_id,password
+        from account
+        where (UID=#{param1} or mail=#{param1} or phone=#{param1} or mail=#{param1})
+          and type = #{param2}
+    </select>
+</mapper>

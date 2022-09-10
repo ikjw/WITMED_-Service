@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.old.old_dao.ISleepDao">
+    <resultMap id="BaseResultMap" type="com.example.test.old.entity.datapointBean.sleepDataPoint">
+    </resultMap>
+    <insert id="insert"  parameterType="com.example.test.old.entity.datapointBean.sleepDataPoint">
+        insert into sleep(username, type, startTime,endTime) values (#{username},#{type},#{startTime},#{endTime})
+    </insert>
+    <select id="query" resultMap="BaseResultMap" parameterType="com.example.test.old.entity.datapointBean.sleepDataPoint">
+        select id,username,type,startTime,endTime from sleep where username=#{username} and (startTime &gt;=#{from} or startTime &lt;= #{to})
+    </select>
+</mapper>

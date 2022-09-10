@@ -1,52 +1,62 @@
 package com.example.test.controller;
 
-import com.example.test.configBean.envConfig;
-import com.example.test.entity.Login;
-import com.example.test.utils.enums.BaseRespResultCode;
-import com.example.test.service.ILoginService;
-import com.example.test.utils.RespResult;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.test.bean.account;
+import com.example.test.config.envConfig;
+import com.example.test.controller.intf.IPermission;
+import com.example.test.service.intf.accountService;
+import com.example.test.utils.Imp.BaseRespResultCode;
+import com.example.test.utils.Imp.RespResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.util.Map;
 
-/**
- * 该类的自定义 返回码范围为 100100 - 100199
- */
 @RestController
-public class LoginController {
-    @Autowired
-    private ILoginService iLoginService;
-    @Autowired
-    private envConfig envConfig;
+@RequestMapping("/api/v2/")
+public class LoginController implements IPermission {
+    @Resource
+    accountService atService;
+    @Resource
+    envConfig config;
+    /**
+     * 登录功能
+     * pre-condition：
+     * account，password，type都不为空
+     * post-condition：
+     * 登录成功，将账号UID以及type存入session中；
+     * 用户名不存在，返回100101错误码
+     * 密码错误，返回100102错误码
+     */
     @PostMapping("/login")
-    private RespResult<String> login(@RequestBody Login login) {
-        RespResult<String> result;
-        if(login.getUsername()!=null && login.getPassword()!=null && login.getRole()!=null){
-            int code = iLoginService.login(login);
-            if(code == 1){
-                result = new RespResult<>("",envConfig.getEnv(),"");
-            }else{
-                result = new RespResult<>(100101,"账号或密码错误","账号或密码错误","",envConfig.getEnv(),"");
+    public RespResult<?> login(@RequestBody Map<String,String> map, HttpSession session){
+        RespResult<?> result;
+        String at = map.getOrDefault("account",null);
+        String password = map.getOrDefault("password",null);
+        int type = -1;
+        if(map.containsKey("type")){
+            try{
+                type = Integer.parseInt(map.get("type"));
+            }catch (NumberFormatException e){
+                type = -1;
             }
-        }else{
-            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", envConfig.getEnv(), "");
         }
-        return result;
-    }
-    @PostMapping("/register")
-    private RespResult<String> register(@RequestBody Login login){
-        RespResult<String> result;
-        if(login.getUsername()!=null && login.getPassword()!=null && login.getRole()!=null){
-            int code = iLoginService.register(login);
-            if(code == 1){
-                result = new RespResult<>("",envConfig.getEnv(),"");
-            }else{
-                result = new RespResult<>(100102,"用户名重复","用户名重复","",envConfig.getEnv(),"");
-            }
+        if(at!=null && password !=null && type != -1){
+           account var = atService.login(at,type);
+           if(var == null){
+               //账号不存在
+               result = new RespResult<>(100101,"账号不存在","账号不存在","", config.getEnv(), "");
+           }else if(var.getPassword().equals(password)){
+               //登录成功
+               result = new RespResult<>(BaseRespResultCode.OK,"",config.getEnv(),"");
+               session.setAttribute("UID",var.getUID());
+               session.setAttribute("type",var.getType());
+           }else{
+               result = new RespResult<>(100102,"密码错误","密码错误","",config.getEnv(),"");
+           }
         }else{
-            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", envConfig.getEnv(), "");
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
         }
         return result;
     }
 }
-

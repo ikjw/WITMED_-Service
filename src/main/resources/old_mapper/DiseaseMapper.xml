@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.old.old_dao.IDiseaseDao">
+    <resultMap id="BaseResultMap" type="com.example.test.old.entity.Disease">
+    </resultMap>
+    <select id="get" resultMap="BaseResultMap" parameterType="com.example.test.old.entity.Disease">
+        SELECT DISTINCT *
+        from diseases
+        where name like "%"#{keyword}"%" limit #{ignoreNum},#{numOfpage}
+    </select>
+</mapper>
+

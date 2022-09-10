@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver_class_name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/food?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&userSSL=false
+    url: jdbc:mysql://47.93.0.194:3306/database_v2?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8&userSSL=false
     username: root
-    password: 123456
+    password: a15924786020
   servlet:
     multipart:
       max-file-size: 100MB
@@ -12,7 +12,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.test.entity
+  type-aliases-package: com.example.test.bean
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
