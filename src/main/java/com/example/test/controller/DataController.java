@@ -138,7 +138,15 @@ public class DataController implements IPermission {
                 return  result;
             }
         }else if(dataType.equals("weight")){
-            //todo
+            try{
+                List<weight> lst;
+                lst = fastJsonUtils.linkedMapTypeListToObjectList(data, weight[].class);
+                total = lst.size();
+                success = weightService.batchInsert(lst,UID);
+            }catch (Exception e) {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                result.setDetailMessage(e.getMessage());
+            }
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
             return  result;
