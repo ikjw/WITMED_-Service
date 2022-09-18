@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.test.dao.weightDao">
+    <resultMap id="result" type="com.example.test.bean.weight">
+        <result property="UID" column="UID"/>
+        <result property="value" column="value"/>
+        <result property="date" column="date"/>
+        <result property="source" column="source"/>
+        <result property="detail" column="detail"/>
+    </resultMap>
+    <select id="query" resultMap="result">
+        select UID,value,date,source,detail
+        from weight
+        where UID=#{param1}
+        and (date &gt;= #{param2} and date &lt; #{param3})
+    </select>
+    <select id="queryRecent" resultMap="result">
+        select UID,value,date,source,detail
+        from ( select * from weight where UID = #{param1}) as a
+        order by time desc limit 1
+    </select>
 
+    <insert id="insert" parameterType="com.example.test.bean.bloodSugar">
+        insert into weight(UID, value, date, source, detail)
+        VALUES(#{UID},#{value},#{date},#{source},#{detail})
+    </insert>
 </mapper>

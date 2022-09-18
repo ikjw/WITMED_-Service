@@ -1,9 +1,11 @@
 package com.example.test.controller;
 
 import com.example.test.bean.bloodSugar;
+import com.example.test.bean.weight;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.bloodSugarService;
+import com.example.test.service.intf.weightService;
 import com.example.test.utils.CheckPreCondition;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -32,6 +35,7 @@ public class DataController implements IPermission {
     envConfig config;
     @Resource
     bloodSugarService sugarService;
+    weightService weightService;
     /**
      * ResponseBody:
      * {
@@ -81,8 +85,10 @@ public class DataController implements IPermission {
             List<bloodSugar> lst = sugarService.query(UID,from,to);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
         }else if(dataType.equals("weight")){
-            //这一行写的时候删了
-            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
+            LocalDate new_from = from.toLocalDate();
+            LocalDate new_to = to.toLocalDate();
+            List<weight> lst = weightService.query(UID,new_from,new_to);
+            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
             //todo
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
