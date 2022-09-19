@@ -105,6 +105,7 @@
     </dependencies>
 
     <build>
+        <finalName>Service-v2-dev</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

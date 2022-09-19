@@ -35,6 +35,7 @@ public class DataController implements IPermission {
     envConfig config;
     @Resource
     bloodSugarService sugarService;
+    @Resource
     weightService weightService;
     /**
      * ResponseBody:
@@ -146,6 +147,7 @@ public class DataController implements IPermission {
             }catch (Exception e) {
                 result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
                 result.setDetailMessage(e.getMessage());
+                return result;
             }
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
