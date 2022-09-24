@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.insulinRecordDao">
+    <resultMap id="result" type="com.example.test.bean.insulinRecord">
+        <result property="UID" column="UID"/>
+        <result property="count" column="count"/>
+        <result property="time" column="time"/>
+        <result property="source" column="source"/>
+        <result property="detail" column="detail"/>
+        <association property="M" javaType="com.example.test.bean.medicine" select="getMedicine" column="mID">
+            <result property="mID" column="mID"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.test.bean.insulinRecord">
+        insert into insulin_record (UID,mID,count,time,source,detail)values(#{UID},#{M.mID},#{count},#{time},#{source},#{detail});
+    </insert>
+
+    <select id="query" resultMap="result">
+        select * from insulin_record where UID = #{mUID}  and (time &gt;= #{from} and time &lt; #{to})
+    </select>
+
+    <select id="getMedicine" resultType="com.example.test.bean.medicine">
+        select mID,name from medicine where mID = #{mID}
+    </select>
+</mapper>

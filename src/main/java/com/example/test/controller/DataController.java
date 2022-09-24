@@ -1,16 +1,16 @@
 package com.example.test.controller;
 
 import com.example.test.bean.bloodSugar;
+import com.example.test.bean.insulinRecord;
 import com.example.test.bean.weight;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.bloodSugarService;
+import com.example.test.service.intf.insulinRecordService;
 import com.example.test.service.intf.weightService;
-import com.example.test.utils.CheckPreCondition;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import com.example.test.utils.fastJsonUtils;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,6 +37,8 @@ public class DataController implements IPermission {
     bloodSugarService sugarService;
     @Resource
     weightService weightService;
+    @Resource(name = "insulinRecordServiceImp")
+    insulinRecordService insulinService;
     /**
      * ResponseBody:
      * {
@@ -90,7 +92,9 @@ public class DataController implements IPermission {
             LocalDate new_to = to.toLocalDate();
             List<weight> lst = weightService.query(UID,new_from,new_to);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-            //todo
+        }else if(dataType.equals("insulin")){
+            List<insulinRecord> lst = insulinService.query(UID,from,to);
+            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
         }
@@ -145,6 +149,17 @@ public class DataController implements IPermission {
                 total = lst.size();
                 success = weightService.batchInsert(lst,UID);
             }catch (Exception e) {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                result.setDetailMessage(e.getMessage());
+                return result;
+            }
+        }else if(dataType.equals("insulin")){
+            try{
+                List<insulinRecord> lst;
+                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,insulinRecord[].class);
+                total = lst.size();
+                success = insulinService.batchInsert(lst,UID);
+            }catch (Exception e){
                 result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
                 result.setDetailMessage(e.getMessage());
                 return result;
