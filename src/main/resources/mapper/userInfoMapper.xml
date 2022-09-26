@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.userInfoDao">
+    <resultMap id="result" type="com.example.test.bean.userInfo">
+        <result property="UID" column="UID"/>
+        <result property="name" column="name"/>
+        <result property="gender" column="gender"/>
+        <result property="birthDay" column="birthday"/>
+        <result property="faceBase64" column="face_base64"/>
+    </resultMap>
+    <select id="query" resultMap="result">
+        select UID,name,gender,birthDay,face_base64
+        from user_info
+        where UID=#{param1}
+        or name=#{param1}
+    </select>
+    <insert id="insert" parameterType="com.example.test.bean.userInfo">
+        insert into user_info(UID, name, gender, birthday, face_base64)
+        VALUES(#{UID},#{name},#{gender},#{birthDay},#{faceBase64})
+    </insert>
+    <update id="update" parameterType="com.example.test.bean.userInfo">
+        update user_info set name=#{name},gender=#{gender},birthday=#{birthDay},face_base64=#{faceBase64}
+        where UID =#{UID}
+    </update>
+</mapper>
