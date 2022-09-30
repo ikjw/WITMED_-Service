@@ -1,13 +1,19 @@
 package com.example.test.controller;
 
 import com.example.test.bean.bloodSugar;
+import com.example.test.bean.sleep;
+import com.example.test.bean.heartRate;
 import com.example.test.bean.insulinRecord;
 import com.example.test.bean.weight;
+import com.example.test.bean.bloodOxygen;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.bloodSugarService;
+import com.example.test.service.intf.heartRateService;
 import com.example.test.service.intf.insulinRecordService;
 import com.example.test.service.intf.weightService;
+import com.example.test.service.intf.sleepService;
+import com.example.test.service.intf.bloodOxygenService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import com.example.test.utils.fastJsonUtils;
@@ -39,6 +45,12 @@ public class DataController implements IPermission {
     weightService weightService;
     @Resource(name = "insulinRecordServiceImp")
     insulinRecordService insulinService;
+    @Resource
+    heartRateService heartRateService;
+    @Resource(name = "sleepServiceImp")
+    sleepService sleepService;
+    @Resource
+    bloodOxygenService bloodOxygenService;
     /**
      * ResponseBody:
      * {
@@ -95,7 +107,16 @@ public class DataController implements IPermission {
         }else if(dataType.equals("insulin")){
             List<insulinRecord> lst = insulinService.query(UID,from,to);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else{
+        }else if (dataType.equals("heartRate")) {
+            List<heartRate> lst = heartRateService.query(UID,from,to);
+            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+        } else if (dataType.equals("sleep")) {
+            List<sleep> lst = sleepService.query(UID,from,to);
+            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+        }else if (dataType.equals("bloodOxygen")) {
+            List<bloodOxygen> lst = bloodOxygenService.query(UID,from,to);
+            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+        } else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
         }
         return result;
@@ -164,7 +185,40 @@ public class DataController implements IPermission {
                 result.setDetailMessage(e.getMessage());
                 return result;
             }
-        }else{
+        }else if (dataType.equals("heartRate")) {
+            try {
+                List<heartRate> lst;
+                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,heartRate[].class);
+                total =lst.size();
+                success = heartRateService.batchInsert(lst,UID);
+            } catch (Exception e) {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                result.setDetailMessage(e.getMessage());
+                return result;
+            }
+        } else if (dataType.equals("sleep")) {
+            try {
+                List<sleep> lst;
+                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,sleep[].class);
+                total =lst.size();
+                success = sleepService.batchInsert(lst,UID);
+            } catch (Exception e) {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                result.setDetailMessage(e.getMessage());
+                return result;
+            }
+        }else if (dataType.equals("bloodOxygen")) {
+            try {
+                List<bloodOxygen> lst;
+                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,bloodOxygen[].class);
+                total =lst.size();
+                success = bloodOxygenService.batchInsert(lst,UID);
+            } catch (Exception e) {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                result.setDetailMessage(e.getMessage());
+                return result;
+            }
+        } else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
             return  result;
         }

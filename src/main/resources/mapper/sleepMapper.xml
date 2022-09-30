@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.sleepDao">
+    <resultMap id="result" type="com.example.test.bean.sleep">
+        <result property="UID" column="UID"/>
+        <result property="start" column="start"/>
+        <result property="end" column="end"/>
+        <result property="type" column="type"/>
+        <result property="source" column="source"/>
+        <result property="detail" column="detail"/>
+    </resultMap>
+    <select id="query" resultMap="result">
+        select UID,start,end,type,source,detail
+        from sleep
+        where UID=#{param1}
+        and (start &gt;= #{param2} and start &lt; #{param3})
+    </select>
+    <insert id="insert" parameterType="com.example.test.bean.sleep">
+        insert into sleep (UID,start,end,type,source,detail)
+        values(#{UID},#{start},#{end},#{type},#{source},#{detail})
+    </insert>
+</mapper>
