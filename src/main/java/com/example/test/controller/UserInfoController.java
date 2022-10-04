@@ -17,7 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/api/v2/info")
+@RequestMapping("/api/v2/user/info")
 public class UserInfoController implements IPermission {
     @Override
     public boolean hasPermission(String username, int role, String URI) {

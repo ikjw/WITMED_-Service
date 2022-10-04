@@ -52,11 +52,15 @@ public class DataController implements IPermission {
     @Resource
     bloodOxygenService bloodOxygenService;
     /**
-     * ResponseBody:
+     * RequestBody:
      * {
      *     "dataType":"bloodSugar",//不能为空
      *     "from":"yyyy-MM-dd HH:mm:ss",
      *     "to":"yyyy-MM-dd HH:mm:ss"
+     * }
+     * ResponseBody:
+     * {
+     *     data:[]
      * }
      * pre-condition:
      * ResponseBody中dataType不能为空
@@ -123,10 +127,15 @@ public class DataController implements IPermission {
     }
 
     /**
-     * ResponseBody:
+     * RequestBody:
      * {
      *     "dataType":"bloodSugar",//不能为空
      *     "data":[]
+     * }
+     * ResponseBody:
+     * {
+     *     total:5,
+     *     success:4
      * }
      * pre-condition:
      * ResponseBody中dataType不能为空
@@ -229,5 +238,23 @@ public class DataController implements IPermission {
         return result;
     }
 
+
+    /**
+     * RequestBody:
+     * {
+     *     "dataType":"bloodSugar",//不能为空
+     *     "data":[]
+     * }
+     * ResponseBody:
+     * {
+     *     data:{}
+     * }
+     * 获取最近的一次数据
+     */
+    @PostMapping("recent")
+    public RespResult<?> add(@RequestBody Map<String,String> map){
+        // todo
+        return null;
+    }
 
 }
