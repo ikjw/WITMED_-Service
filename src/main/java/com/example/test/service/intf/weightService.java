@@ -1,10 +1,9 @@
 package com.example.test.service.intf;
 
-import com.example.test.bean.bloodSugar;
+
 import com.example.test.bean.weight;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface weightService {
@@ -55,4 +54,12 @@ public interface weightService {
      * @return 满足post-condition的所有血糖数据组成的列表
      */
     List<weight> query(String mUID, LocalDate from, LocalDate to);
+    /**
+     * pre-condition:
+     * mUID不为空
+     * 查询 最近记录
+     * @param mUID 用户唯一标识
+     * @return 最近的一条血糖数据
+     */
+    weight queryRecent(String mUID);
 }

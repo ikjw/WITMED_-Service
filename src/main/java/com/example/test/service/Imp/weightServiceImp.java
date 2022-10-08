@@ -53,4 +53,9 @@ public class weightServiceImp implements weightService {
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return weightDao.query(mUID,from.format(fm),to.format(fm));
     }
+    @Override
+    public weight queryRecent(String mUID){
+        CheckPreCondition.notNull(mUID);
+        return weightDao.queryRecent(mUID);
+    }
 }

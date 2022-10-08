@@ -50,4 +50,10 @@ public class bloodSugarServiceImp implements bloodSugarService {
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return sugarDao.query(mUID,from.format(fm),to.format(fm));
     }
+    @Override
+    public bloodSugar queryRecent(String mUID)
+    {
+        CheckPreCondition.notNull(mUID);
+        return sugarDao.queryRecent(mUID);
+    }
 }

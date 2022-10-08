@@ -52,4 +52,12 @@ public interface bloodSugarService {
      * @return 满足post-condition的所有血糖数据组成的列表
      */
     List<bloodSugar> query(String mUID, LocalDateTime from, LocalDateTime to);
+    /**
+     * pre-condition:
+     * mUID不为空
+     * 查询 最近记录
+     * @param mUID 用户唯一标识
+     * @return 最近的一条血糖数据
+     */
+    bloodSugar queryRecent(String mUID);
 }

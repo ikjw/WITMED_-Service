@@ -17,7 +17,7 @@
     <select id="queryRecent" resultMap="result">
         select UID,value,date,source,detail
         from ( select * from weight where UID = #{param1}) as a
-        order by time desc limit 1
+        order by date desc limit 1
     </select>
 
     <insert id="insert" parameterType="com.example.test.bean.bloodSugar">

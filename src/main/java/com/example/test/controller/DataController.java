@@ -251,10 +251,26 @@ public class DataController implements IPermission {
      * }
      * 获取最近的一次数据
      */
-    @PostMapping("recent")
-    public RespResult<?> add(@RequestBody Map<String,String> map){
+    @PostMapping("/recent")
+    public RespResult<?> recent(@RequestBody Map<String,String> map,HttpSession session){
         // todo
-        return null;
+        String UID = (String) session.getAttribute("UID");
+        String dataType = (String) map.get("dataType");
+        RespResult<?> result;
+        if(dataType==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        if(dataType.equals("bloodSugar")){
+            bloodSugar bloodSugar = sugarService.queryRecent(UID);
+            result = new RespResult<>(BaseRespResultCode.OK,bloodSugar, config.getEnv(), "");
+        } else if (dataType.equals("weight")) {
+            weight weight = weightService.queryRecent(UID);
+            result = new RespResult<>(BaseRespResultCode.OK,weight, config.getEnv(), "");
+        } else {
+            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
+        }
+        return result;
     }
 
 }
