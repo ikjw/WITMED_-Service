@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
-
+/**
+ *  该Controller 所有人都能访问
+ *  错误码范围：[100100,100199]
+ **/
 @RestController
 @RequestMapping("/api/v2/")
 public class LoginController implements IPermission {
+
     @Resource
     accountService atService;
     @Resource

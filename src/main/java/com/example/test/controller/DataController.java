@@ -29,10 +29,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
-
+/**
+ *  该Controller只能由管理员或用户访问
+ *  错误码范围：[100200,100299]
+ **/
 @RestController
 @RequestMapping("/api/v2/data")
 public class DataController implements IPermission {
+
     @Override
     public boolean hasPermission(String username, int role, String URI) {
         return role == 1 || role == 3;

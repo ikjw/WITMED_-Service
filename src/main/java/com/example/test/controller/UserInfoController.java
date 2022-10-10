@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-
+/**
+ *  该Controller只能由管理员或用户访问
+ *  错误码范围：[100300,100399]
+ **/
 @RestController
 @RequestMapping("/api/v2/user/info")
 public class UserInfoController implements IPermission {
+
     @Override
     public boolean hasPermission(String username, int role, String URI) {
         return role == 1 || role == 3;
