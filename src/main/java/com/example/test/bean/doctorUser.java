@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class doctorUser {
     private int id;
     private String dUID;
+    private String uUID;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
     private int state;

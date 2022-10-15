@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping(value="/doctorInfo")
-public class DoctorInfoController implements IPermission {
+public class old_DoctorInfoController implements IPermission {
     @Autowired
     private IDoctorInfoService service;
 

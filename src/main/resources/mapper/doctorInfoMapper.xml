@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.doctorInfoDao">
+    <resultMap id="result" type="com.example.test.bean.doctorInfo">
+        <result property="UID" column="UID"/>
+        <result property="name" column="name"/>
+        <result property="birthDay" column="birthday"/>
+        <result property="faceBase64" column="face_base64"/>
+        <result property="domain" column="domain"/>
+        <result property="profile" column="profile"/>
+    </resultMap>
+    <select id="query" resultMap="result">
+        select UID,name,gender,birthday,face_base64,domain,profile
+        from doctor_info
+        where UID=#{param1}
+        or name=#{param1}
+    </select>
+    <insert id="insert" parameterType="com.example.test.bean.doctorInfo">
+        insert into doctor_info (UID,name,gender,birthday,face_base64,domain,profile)
+        values(#{UID},#{name},#{gender},#{birthDay},#{faceBase64},#{domain},#{profile})
+    </insert>
+    <update id="update" parameterType="com.example.test.bean.doctorInfo">
+        update doctor_info set name=#{name},gender=#{gender},birthday=#{birthDay},face_base64=#{faceBase64},domain=#{domain},profile=#{profile}
+        where UID =#{UID}
+    </update>
+</mapper>
