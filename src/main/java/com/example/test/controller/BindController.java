@@ -81,5 +81,43 @@ public class BindController implements IPermission {
         return result;
     }
 
+    /**
+     * 患者访问，获取与该患者绑定医生
+     * 无请求体
+     * 响应体:
+     * {
+     *     data:{
+     *         "UID":"xxxxx",
+     *         "UID":"",
+     *         "name":"张三",
+     *         "gender":1, //0女 1 男
+     *         "birthday":"2019-01-05",
+     *         "faceBase64":"",
+     *         "domain":"",//专业领域
+     *         "profile:""//个人简介
+     *     }
+     * }
+     * @param session
+     * @return
+     */
+    @PostMapping("/getDoctor")
+    public RespResult<?> getDoctor(HttpSession session){
+        return null;
+    }
+
+    /**
+     * 医生访问，获取与该医生绑定的所有患者的基本信息
+     * 无请求体
+     * 响应体:
+     * {
+     *     data
+     * }
+     * @param session
+     * @return
+     */
+    @PostMapping("/getPatient")
+    public RespResult<?> getPatient(HttpSession session){
+        return null;
+    }
 
 }

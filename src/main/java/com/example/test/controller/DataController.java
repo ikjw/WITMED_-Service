@@ -112,7 +112,7 @@ public class DataController implements IPermission {
             LocalDate new_to = to.toLocalDate();
             List<weight> lst = weightService.query(UID,new_from,new_to);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if(dataType.equals("insulin")){
+        }else if(dataType.equals("insulinRecord")){
             List<insulinRecord> lst = insulinService.query(UID,from,to);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
         }else if (dataType.equals("heartRate")) {
@@ -187,7 +187,7 @@ public class DataController implements IPermission {
                 result.setDetailMessage(e.getMessage());
                 return result;
             }
-        }else if(dataType.equals("insulin")){
+        }else if(dataType.equals("insulinRecord")){
             try{
                 List<insulinRecord> lst;
                 lst = fastJsonUtils.linkedMapTypeListToObjectList(data,insulinRecord[].class);
