@@ -3,6 +3,8 @@ package com.example.test.dao;
 import com.example.test.bean.doctorUser;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface doctorUserDao {
     /**
@@ -21,7 +23,7 @@ public interface doctorUserDao {
      * @param at uUID
      * @return doctorInfo对象
      */
-    doctorUser query(String at);
+    List<doctorUser> query(String at);
     /**
      * pre-condition:
      * at不为空

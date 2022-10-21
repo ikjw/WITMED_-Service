@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -47,5 +48,14 @@ public class doctorUserServiceImp implements doctorUserService {
             return 0;
         int success = doctorUserDao.update(uUID);
         return success;
+    }
+    @Override
+    public List<doctorUser> getDoctor(String uUID){
+        CheckPreCondition.notNull(uUID);
+        return doctorUserDao.query(uUID);
+    }
+    public List<doctorUser> getPatient(String dUID){
+        CheckPreCondition.notNull(dUID);
+        return doctorUserDao.query(dUID);
     }
 }

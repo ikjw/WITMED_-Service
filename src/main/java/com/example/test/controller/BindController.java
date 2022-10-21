@@ -1,9 +1,14 @@
 package com.example.test.controller;
+import com.example.test.bean.doctorUser;
+import com.example.test.bean.userInfo;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.doctorUserService;
+import com.example.test.service.intf.userInfoService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
+import com.example.test.service.intf.doctorInfoService;
+import com.example.test.bean.doctorInfo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
+import java.util.*;
 
 /**
  *  该Controller所有人都能访问
@@ -25,9 +30,13 @@ public class BindController implements IPermission {
     envConfig config;
     @Resource
     doctorUserService doctorUserService;
+    @Resource(name = "doctorInfoServiceImp")
+    doctorInfoService doctorINfoService;
+    @Resource
+    userInfoService userInfoService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 2;
+        return role == 2||role == 1;
     }
     /**
      * 只有医生用户可以访问
@@ -102,7 +111,16 @@ public class BindController implements IPermission {
      */
     @PostMapping("/getDoctor")
     public RespResult<?> getDoctor(HttpSession session){
-        return null;
+        String uUID = (String) session.getAttribute("UID");
+        RespResult<?> result;
+        if(uUID==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        List<doctorUser> lst = doctorUserService.getDoctor(uUID);
+        doctorUser doctorUser = lst.get(0);
+        result = new RespResult<>(BaseRespResultCode.OK,doctorINfoService.query(doctorUser.getDUID()),config.getEnv(), "");
+        return result;
     }
 
     /**
@@ -117,7 +135,21 @@ public class BindController implements IPermission {
      */
     @PostMapping("/getPatient")
     public RespResult<?> getPatient(HttpSession session){
-        return null;
+        String dUID = (String) session.getAttribute("UID");
+        RespResult<?> result;
+        if(dUID==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        List<doctorUser> lst = doctorUserService.getDoctor(dUID);
+        userInfo userInfo;
+        List<userInfo> userInfoList = new ArrayList<>();
+        for (doctorUser doctorUser : lst) {
+            userInfo = userInfoService.query(doctorUser.getUUID());
+            boolean b = Collections.addAll(userInfoList,userInfo);
+        }
+        result = new RespResult<>(BaseRespResultCode.OK,userInfoList,config.getEnv(), "");
+        return result;
     }
 
 }

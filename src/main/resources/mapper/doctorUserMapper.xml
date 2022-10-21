@@ -15,7 +15,7 @@
     <select id="query" resultMap="result">
         select id,dUID,uUID,time,state
         from doctor_user
-        where uUID=#{param1}
+        where (uUID=#{param1} or dUID=#{param1}) and state = 1
     </select>
     <update id="update">
         update doctor_user set state = 0
