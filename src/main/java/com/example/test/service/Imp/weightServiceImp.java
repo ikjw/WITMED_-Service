@@ -4,7 +4,6 @@ import com.example.test.bean.bloodSugar;
 import com.example.test.bean.weight;
 import com.example.test.dao.bloodSugarDao;
 import com.example.test.dao.weightDao;
-import com.example.test.old.old_dao.IWeightDao;
 import com.example.test.service.intf.weightService;
 import com.example.test.utils.CheckPreCondition;
 import lombok.extern.slf4j.Slf4j;

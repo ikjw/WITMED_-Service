@@ -27,33 +27,34 @@ public class PermissionInterceptor implements HandlerInterceptor {
     }
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        HandlerMethod method = ((HandlerMethod) handler);
-        response.setCharacterEncoding("UTF-8");
-        Class<?> clazz = method.getBeanType();
-        Class<?>[] classes = clazz.getInterfaces();
-        if(Arrays.asList(classes).contains(IPermission.class)){
-            HttpSession session = request.getSession();
-            String username = (String) session.getAttribute("UID");
-            Integer role = (Integer) session.getAttribute("type");
-            if(username == null || role == null){
-                PrintWriter writer = response.getWriter();
-                RespResult<?> result = new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
-                ObjectMapper objectMapper = new ObjectMapper();
-                writer.println(objectMapper.writeValueAsString(result));
-                return false;
-            }
-            IPermission permission = (IPermission) clazz.getConstructor().newInstance();
-            if(permission.hasPermission(username, role, request.getRequestURI())){
-                return true;
-            }else{
-                PrintWriter writer = response.getWriter();
-                RespResult<?> result = new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"",config.getEnv(),"");
-                ObjectMapper objectMapper = new ObjectMapper();
-                writer.println(objectMapper.writeValueAsString(result));
-                return false;
+        if(handler instanceof  HandlerMethod){
+            HandlerMethod method = ((HandlerMethod) handler);
+            response.setCharacterEncoding("UTF-8");
+            Class<?> clazz = method.getBeanType();
+            Class<?>[] classes = clazz.getInterfaces();
+            if(Arrays.asList(classes).contains(IPermission.class)){
+                HttpSession session = request.getSession();
+                String username = (String) session.getAttribute("UID");
+                Integer role = (Integer) session.getAttribute("type");
+                if(username == null || role == null){
+                    PrintWriter writer = response.getWriter();
+                    RespResult<?> result = new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    writer.println(objectMapper.writeValueAsString(result));
+                    return false;
+                }
+                IPermission permission = (IPermission) clazz.getConstructor().newInstance();
+                if(permission.hasPermission(username, role, request.getRequestURI())){
+                    return true;
+                }else{
+                    PrintWriter writer = response.getWriter();
+                    RespResult<?> result = new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"",config.getEnv(),"");
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    writer.println(objectMapper.writeValueAsString(result));
+                    return false;
+                }
             }
         }
-
         return true;
     }
 

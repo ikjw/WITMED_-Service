@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.dietRecordDao">
+    <resultMap id="result" type="com.example.test.bean.dietRecord">
+        <result property="id" column="id"/>
+        <result property="UID" column="UID"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="amount" column="amount"/>
+        <result property="startTime" column="startTime"/>
+        <result property="endTime" column="endTime"/>
+        <result property="img" column="img"/>
+        <result property="source" column="source"/>
+        <result property="detail" column="detail"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.bean.dietRecord">
+        insert into diet_record(UID, name, type, amount,startTime,endTime,img,detail,source)
+        VALUES(#{UID},#{name},#{type},#{amount},#{startTime},#{endTime},#{img},#{detail},#{source})
+    </insert>
+    <select id="query" resultMap="result">
+        select id,UID, name, type, amount,startTime,endTime,img,detail,source
+        from diet_record
+        where UID=#{param1}
+          and (startTime &gt;= #{param2} and startTime &lt; #{param3})
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.stepRecordDao">
+    <resultMap id="result" type="com.example.test.bean.stepRecord">
+        <result property="UID" column="UID"/>
+        <result property="start" column="start"/>
+        <result property="end" column="end"/>
+        <result property="step" column="step"/>
+        <result property="source" column="source"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.bean.stepRecord">
+        insert into step_record (UID,start,end,step,source)
+        values(#{UID},#{start},#{end},#{step},#{source})
+    </insert>
+</mapper>

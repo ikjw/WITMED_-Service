@@ -121,6 +121,7 @@ public class BindController implements IPermission {
         doctorUser doctorUser = lst.get(0);
         result = new RespResult<>(BaseRespResultCode.OK,doctorINfoService.query(doctorUser.getDUID()),config.getEnv(), "");
         return result;
+
     }
 
     /**

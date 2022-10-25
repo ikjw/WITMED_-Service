@@ -9,4 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class envConfig {
     private String env;
+    private String imgPath;
 }

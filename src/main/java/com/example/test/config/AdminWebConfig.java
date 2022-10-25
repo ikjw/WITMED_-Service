@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,13 @@ public class AdminWebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new PermissionInterceptor(config))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/v2/login","/login","/register");
+                .excludePathPatterns("/api/v2/login","/login","/register","/image/**");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/image/").addResourceLocations("file:"+config.getImgPath());
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 
 }

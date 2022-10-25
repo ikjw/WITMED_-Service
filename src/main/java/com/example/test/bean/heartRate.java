@@ -1,6 +1,7 @@
 package com.example.test.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class heartRate {
+    @JsonProperty("UID")
     private String UID;
     private int value;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

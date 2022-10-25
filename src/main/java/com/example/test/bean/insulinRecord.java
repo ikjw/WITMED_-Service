@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class insulinRecord {
+    @JsonProperty("UID")
     String UID;
     medicine M;
     int count;

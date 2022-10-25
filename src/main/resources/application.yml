@@ -8,6 +8,14 @@ spring:
     multipart:
       max-file-size: 100MB
       max-request-size: 100MB
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: [file:D:\Smartheal\service\static\]
+#  web:
+#    resources:
+#      static-locations: D:\Smartheal\service\static\
 
 
 mybatis:
@@ -23,7 +31,7 @@ logging:
 
 
 server:
-  port: 6666
+  port: 8888
 
 diet plan:
   pythonExe: E:\Anaconda3\envs\sklearn\python.exe
@@ -32,3 +40,4 @@ diet plan:
 
 config:
   env: dev
+  imagPath: D:\Smartheal\service\static\images\
