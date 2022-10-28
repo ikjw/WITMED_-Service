@@ -7,5 +7,4 @@ public interface registerService {
 
     int addAccount(account account);
 
-    String getCode();
 }
