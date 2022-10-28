@@ -15,4 +15,10 @@ public interface accountDao {
      * @return account对象
      */
     account query( String at, int type);
+    /**
+     * 插入
+     *
+     * @return 1/0
+     */
+    int insert(account account);
 }

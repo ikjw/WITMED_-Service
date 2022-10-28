@@ -58,4 +58,13 @@ public class doctorUserServiceImp implements doctorUserService {
         CheckPreCondition.notNull(dUID);
         return doctorUserDao.query(dUID);
     }
+    @Override
+    public int Find(String dUID,String uUID){
+        CheckPreCondition.notNull(dUID);
+        CheckPreCondition.notNull(uUID);
+        if (doctorUserDao.find(dUID,uUID) == null) {
+            return 0;
+        }
+        else return 1;
+    }
 }

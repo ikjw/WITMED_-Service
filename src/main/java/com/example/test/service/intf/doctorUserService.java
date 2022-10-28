@@ -42,4 +42,13 @@ public interface doctorUserService {
      * @return List <doctorUser>
      */
     List<doctorUser> getPatient(String dUID);
+    /**
+     * pre-condition:
+     * dUID,uUID不为空
+     * post-condition：
+     *
+     * @param  dUID,uUID
+     * @return doctorUser
+     */
+    int Find(String dUID,String uUID);
 }

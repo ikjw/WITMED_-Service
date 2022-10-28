@@ -2,6 +2,7 @@ package com.example.test.service.Imp;
 
 import com.example.test.bean.sleep;
 import com.example.test.bean.stepRecord;
+import com.example.test.dao.bloodOxygenDao;
 import com.example.test.dao.stepRecordDao;
 import com.example.test.service.intf.stepRecordService;
 import com.example.test.utils.CheckPreCondition;
@@ -10,6 +11,8 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 @Service
 @Slf4j
@@ -44,5 +47,13 @@ public class stepRecordServiceImp implements stepRecordService {
             result +=insert(mUID,record);
         }
         return result;
+    }
+    @Override
+    public List<stepRecord> query(String UID, LocalDateTime from,LocalDateTime to){
+        CheckPreCondition.notNull(UID);
+        CheckPreCondition.notNull(from);
+        CheckPreCondition.notNull(to);
+        DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return recordDao.query(UID, from.format(fm),to.format(fm));
     }
 }

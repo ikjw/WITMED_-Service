@@ -16,4 +16,8 @@
         where (UID=#{param1} or mail=#{param1} or phone=#{param1} or mail=#{param1})
           and type = #{param2}
     </select>
+    <insert id="insert" parameterType="com.example.test.bean.account">
+        insert into account (UID,password,phone,mail,type,register_time,wechat_id)
+        VALUES(#{UID},#{password},#{phone},#{mail},#{type},#{registerTime},#{wechatId})
+    </insert>
 </mapper>
