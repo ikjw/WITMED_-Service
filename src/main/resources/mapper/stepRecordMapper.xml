@@ -12,4 +12,10 @@
         insert into step_record (UID,start,end,step,source)
         values(#{UID},#{start},#{end},#{step},#{source})
     </insert>
+    <select id="query" resultMap="result">
+        select UID,start,end,step
+        from step_record
+        where UID=#{param1}
+        and (start &gt;= #{param2} and end =&lt; #{param3})
+    </select>
 </mapper>

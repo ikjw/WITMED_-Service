@@ -33,4 +33,12 @@ public interface doctorUserDao {
      * @return 1,0
      */
     int update(String at);
+    /**
+     * pre-condition:
+     * uUID,dUID不为空
+     * post-condition：
+     * 查询医患关系
+     * @return doctorInfo对象
+     */
+    doctorUser find(String dUID,String uUID);
 }

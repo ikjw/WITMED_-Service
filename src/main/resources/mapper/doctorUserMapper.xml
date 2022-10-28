@@ -21,4 +21,9 @@
         update doctor_user set state = 0
         where uUID=#{param1}
     </update>
+    <select id="find" resultMap="result">
+        select id,dUID,uUID,time,state
+        from doctor_user
+        where (uUID=#{param2} and dUID=#{param1}) and state = 1
+    </select>
 </mapper>
