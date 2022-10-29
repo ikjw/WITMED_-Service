@@ -2,12 +2,14 @@ package com.example.test.service.Imp;
 
 import com.aliyun.tea.TeaModel;
 import com.example.test.bean.account;
+import com.example.test.config.registerConfig;
 import com.example.test.dao.accountDao;
 import com.example.test.service.intf.registerService;
 import com.example.test.utils.CheckPreCondition;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 
 @Service
 public class registerServiceImp implements registerService {
@@ -23,19 +25,24 @@ public class registerServiceImp implements registerService {
     }
     @Resource
     accountDao accountDao;
+    @Resource
+    registerConfig registerConfig;
     @Override
     public String sendMs(String phone) {
+        int p  = (int)((Math.random()*9+1)*1000);
+        String code = String.valueOf(p);
+        String templateParam = String.format("{\"code\":\"%s\"}",code);
         com.aliyun.dysmsapi20170525.Client client = null;
         try {
-            client = registerServiceImp.createClient("LTAI5tP8KFown9kHhpbSmVRD", "c2ZVcjqmDY5iUKvwzNQj3ZPiNUoUoc");
+            client = registerServiceImp.createClient(registerConfig.getAccessKeyId(), registerConfig.getAccessKeySecret());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
         com.aliyun.dysmsapi20170525.models.SendSmsRequest sendSmsRequest = new com.aliyun.dysmsapi20170525.models.SendSmsRequest()
-                .setSignName("阿里云短信测试")
-                .setTemplateCode("SMS_154950909")
+                .setSignName(registerConfig.getSignName())
+                .setTemplateCode(registerConfig.getSetTemplateCode())
                 .setPhoneNumbers(phone)
-                .setTemplateParam("{\"code\":\"1234\"}");
+                .setTemplateParam(templateParam);
         com.aliyun.teautil.models.RuntimeOptions runtime = new com.aliyun.teautil.models.RuntimeOptions();
         com.aliyun.dysmsapi20170525.models.SendSmsResponse resp = null;
         try {
@@ -48,7 +55,7 @@ public class registerServiceImp implements registerService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return "1234";
+        return code;
     }
     @Override
     public int addAccount(account account){
@@ -61,9 +68,5 @@ public class registerServiceImp implements registerService {
             result = accountDao.insert(account);
             return result;
         }
-    }
-    @Override
-    public String getCode(){
-        return "1234";
     }
 }

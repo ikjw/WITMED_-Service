@@ -41,3 +41,9 @@ diet plan:
 config:
   env: dev
   imagPath: D:\Smartheal\service\static\images\
+
+register-config:
+  accessKeyId: LTAI5tP8KFown9kHhpbSmVRD
+  accessKeySecret: c2ZVcjqmDY5iUKvwzNQj3ZPiNUoUoc
+  signName: 阿里云短信测试
+  setTemplateCode: SMS_154950909

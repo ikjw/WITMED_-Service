@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -37,7 +38,7 @@ public class RegisterController {
  * 因为只能用一个手机
  * */
     @PostMapping("/send")
-    public RespResult<?> send(@RequestBody Map<String,String> map)
+    public RespResult<?> send(@RequestBody Map<String,String> map,HttpSession session)
     {
         RespResult<?> result;
         String phone = map.get("phone");
@@ -47,13 +48,13 @@ public class RegisterController {
             return result;
         }
         String test =registerService.sendMs(phone);
+        session.setAttribute("code",test);
         result = new RespResult<>(BaseRespResultCode.OK,test, config.getEnv(),"");
         return result;
     }
     /**
      * RequestBody:
      * {
-     *    'UID':
      *    'phone':'******'
      *    ......
      * }
@@ -62,9 +63,16 @@ public class RegisterController {
     @PostMapping("/register")
     public RespResult<?> register(@RequestBody Map<String,String> map, HttpSession session){
         RespResult<?> result;
-        String UID = map.getOrDefault("UID",null);
+        int p  = (int)((Math.random()*9+1)*1000);
+        String q = String.valueOf(p);
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        LocalDateTime time = LocalDateTime.now();
+        String localTime = df.format(time);
+        String UID = localTime+q;
         String password = map.getOrDefault("password",null);
         String code = map.get("code");
+        String realCode = (String) session.getAttribute("code");
+        String phone = map.getOrDefault("phone",null);
         int type = -1;
         if(map.containsKey("type")){
             try{
@@ -73,9 +81,9 @@ public class RegisterController {
                 type = -1;
             }
         }
-        if (UID == null)
+        if (phone == null)
         {
-            result = new RespResult<>(101001,"账号不能为空","账号不能为空","", config.getEnv(), "");
+            result = new RespResult<>(101001,"手机号不能为空","手机号不能为空","", config.getEnv(), "");
             return result;
         }
         if (password == null)
@@ -83,12 +91,12 @@ public class RegisterController {
             result = new RespResult<>(101002,"密码不能为空","密码不能为空","", config.getEnv(), "");
             return result;
         }
-        if(atService.login(UID,type)!=null)
+        if(atService.login(phone,type)!=null)
         {
-            result = new RespResult<>(101003,"用户名被使用","用户名被使用","", config.getEnv(), "");
+            result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定","", config.getEnv(), "");
             return result;
         }
-        if (!code.equals(registerService.getCode()))
+        if (!code.equals(realCode))
         {
             result = new RespResult<>(101004,"验证码错误","验证码错误","", config.getEnv(), "");
             return result;
@@ -102,7 +110,9 @@ public class RegisterController {
         account.setPhone(map.get("phone"));
         account.setRegisterTime(LocalDateTime.now());
         registerService.addAccount(account);
-        result = new RespResult<>(BaseRespResultCode.OK,account, config.getEnv(),"");
+        session.setAttribute("UID",UID);
+        session.setAttribute("type",type);
+        result = new RespResult<>(BaseRespResultCode.OK,"", config.getEnv(),"");
         return result;
     }
 }
