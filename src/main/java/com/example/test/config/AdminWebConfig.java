@@ -23,10 +23,6 @@ public class AdminWebConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/api/v2/login","/login","/register","/image/**");
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/image/").addResourceLocations("file:"+config.getImgPath());
-        WebMvcConfigurer.super.addResourceHandlers(registry);
-    }
+
 
 }
