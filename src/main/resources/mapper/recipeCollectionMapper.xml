@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.recipeCollectionDao">
+    <resultMap id="result" type="com.example.test.bean.recipeCollection">
+        <result property="UID" column="UID"/>
+        <result property="time" column="time"/>
+        <result property="id" column="id"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.bean.recipeCollection">
+        insert into collection_dish (UID,dish_id,time)
+        values (#{UID},${dishId},#{time})
+    </insert>
+    <delete id="delete" parameterType="com.example.test.bean.recipeCollection">
+        delete from collection_dish
+        where (UID=#{UID} and dish_id=#{dishId})
+    </delete>
+    <select id="getTime" resultMap="result">
+        select time from collection_dish
+        where(UID=#{UID} and dish_id=#{dishId})
+    </select>
+</mapper>

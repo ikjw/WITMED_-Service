@@ -1,6 +1,7 @@
 package com.example.test.service.intf;
 
 import com.example.test.bean.doctorUser;
+import com.example.test.bean.userInfo;
 
 import java.util.List;
 
@@ -51,4 +52,6 @@ public interface doctorUserService {
      * @return doctorUser
      */
     int Find(String dUID,String uUID);
+
+    List<userInfo> getUnbind();
 }

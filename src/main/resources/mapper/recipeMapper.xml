@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.recipeDao">
+    <resultMap id="recipe" type="com.example.test.bean.recipe">
+        <result property="id" column="id"/>
+        <result property="name" column="菜名"/>
+        <result property="cookMethod" column="加工工艺"/>
+        <result property="cookTime" column="烹饪时间"/>
+        <result property="calorie" column="热量(千卡)"/>
+        <result property="carbohydrate" column="碳水化合物(克)"/>
+        <result property="protein" column="蛋白质(克)"/>
+        <result property="fat" column="脂肪(克)"/>
+        <result property="cholesterol" column="胆固醇(克)"/>
+        <result property="dietaryFiber" column="膳食纤维(克)"/>
+        <result property="minerals" column="矿物质元素(毫克)" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
+        <result property="vitamin" column="维生素(毫克)" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
+        <result property="others" column="其他" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
+        <result property="mainMaterials" column="主料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
+        <result property="accessories" column="辅料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
+        <result property="notCalculated" column="无法计算"/>
+    </resultMap>
+    <select id="queryByName" resultMap="recipe">
+        select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
+        from recipe
+        WHERE `菜名` like "%"#{keyWord}"%"
+        LIMIT #{ignoreNum},#{pageCount}
+    </select>
+    <select id="queryByRaw" resultMap="recipe">
+        select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
+        from recipe
+        WHERE `主料` like "%"#{keyWord}"%" or `辅料` like "%"#{keyWord}"%"
+        LIMIT #{ignoreNum},#{pageCount}
+    </select>
+    <select id="queryByNameAndRaw" resultMap="recipe">
+        select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
+        from recipe
+        WHERE (`主料` like "%"#{keyWord}"%" or `辅料` like "%"#{keyWord}"%") and (`菜名` like "%"#{keyWord}"%")
+        LIMIT #{ignoreNum},#{pageCount}
+    </select>
+    <select id="queryByCollection" resultMap="recipe">
+        select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
+        from `recipe`,`collection_dish`
+        WHERE (recipe.id = collection_dish.dish_id and collection_dish.UID=#{UID})
+    </select>
+</mapper>

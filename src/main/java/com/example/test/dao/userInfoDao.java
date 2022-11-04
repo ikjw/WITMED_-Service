@@ -28,4 +28,7 @@ public interface userInfoDao {
      * @return 成功1 失败0
      */
     int update(userInfo userInfo);
+
+    List<userInfo> getUnbind();
+
 }
