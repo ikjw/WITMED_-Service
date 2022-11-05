@@ -1,9 +1,15 @@
 package com.example.test.bean;
 
+import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.example.test.typehandler.ObjectJsonHandler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.sf.json.JSONObject;
+
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +33,5 @@ public class recipe {
     Map<String,Float> others; //其它
     Map<String,String> mainMaterials; // 主要原料
     Map<String,String> accessories; // 辅料
-    List<String> notCalculated; //无法计算的食物
+    String notCalculated; //无法计算的食物
 }

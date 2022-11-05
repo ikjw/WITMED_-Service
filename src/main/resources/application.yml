@@ -23,6 +23,7 @@ mybatis:
   type-aliases-package: com.example.test.bean
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-handlers-package: package com.example.test.typehandler
 
 
 logging:

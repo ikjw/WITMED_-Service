@@ -1,6 +1,7 @@
 package com.example.test.dao;
 
 import com.example.test.bean.doctorUser;
+import com.example.test.bean.userInfo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,4 +42,5 @@ public interface doctorUserDao {
      * @return doctorInfo对象
      */
     doctorUser find(String dUID,String uUID);
+
 }

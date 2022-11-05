@@ -152,5 +152,16 @@ public class BindController implements IPermission {
         result = new RespResult<>(BaseRespResultCode.OK,userInfoList,config.getEnv(), "");
         return result;
     }
-
+    @PostMapping("/getUnbindPatient")
+    public RespResult<?> getUnbindPatients(HttpSession session){
+        String dUID = (String) session.getAttribute("UID");
+        RespResult<?> result;
+        if(dUID==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        List<userInfo> lst = doctorUserService.getUnbind();
+        result = new RespResult<>(BaseRespResultCode.OK,lst,config.getEnv(), "");
+        return result;
+    }
 }

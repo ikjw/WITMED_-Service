@@ -22,4 +22,7 @@
         update user_info set name=#{name},gender=#{gender},birthday=#{birthDay},face_base64=#{faceBase64}
         where UID =#{UID}
     </update>
+    <select id="getUnbind" resultMap="result">
+        select * from user_info where (user_info.UID not in (select uUID from doctor_user where state =1))
+    </select>
 </mapper>

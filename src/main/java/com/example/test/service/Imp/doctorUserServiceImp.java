@@ -1,7 +1,9 @@
 package com.example.test.service.Imp;
 
 import com.example.test.bean.doctorUser;
+import com.example.test.bean.userInfo;
 import com.example.test.dao.doctorUserDao;
+import com.example.test.dao.userInfoDao;
 import com.example.test.service.intf.doctorUserService;
 import com.example.test.utils.CheckPreCondition;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,8 @@ import java.util.List;
 public class doctorUserServiceImp implements doctorUserService {
     @Resource
     doctorUserDao doctorUserDao;
+    @Resource
+    userInfoDao userInfoDao;
     @Override
     @Transactional
     public int bind(String dUID,String uUID){
@@ -66,5 +70,9 @@ public class doctorUserServiceImp implements doctorUserService {
             return 0;
         }
         else return 1;
+    }
+    @Override
+    public List<userInfo> getUnbind(){
+        return userInfoDao.getUnbind();
     }
 }
