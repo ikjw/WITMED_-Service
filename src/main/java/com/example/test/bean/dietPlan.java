@@ -29,4 +29,5 @@ public class dietPlan {
     private float nuts;
     private float oils;
     private String details;
+    private int machineId;
 }
