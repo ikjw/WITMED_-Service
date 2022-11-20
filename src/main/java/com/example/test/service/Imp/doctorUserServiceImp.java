@@ -28,7 +28,7 @@ public class doctorUserServiceImp implements doctorUserService {
         CheckPreCondition.notNull(dUID);
         CheckPreCondition.notNull(uUID);
         int success= 0;
-        if(doctorUserDao.query(uUID)!=null)
+        if(doctorUserDao.query(uUID).size()!=0)
             return success;
         LocalDateTime time = LocalDateTime.now();
         int state = 1;

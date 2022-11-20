@@ -1,6 +1,7 @@
 package com.example.test.bean;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class dietPlan {
     private int id;
+    @JsonProperty("uUID")
     private String uUID;
+    @JsonProperty("dUID")
     private String dUID;
     private LocalDate startDate;
     private LocalDate endDate;

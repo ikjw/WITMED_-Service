@@ -16,6 +16,6 @@
         select UID,start,end,step
         from step_record
         where UID=#{param1}
-        and (start &gt;= #{param2} and end =&lt; #{param3})
+        and (start &gt;= #{param2} and end &lt;= #{param3})
     </select>
 </mapper>

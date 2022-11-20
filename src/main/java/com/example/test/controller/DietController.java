@@ -28,6 +28,7 @@ public class DietController implements IPermission {
     envConfig config;
     @Resource
     dietRecordService dietService;
+
     @PostMapping("/add")
     public RespResult<?> get(@RequestBody dietRecord diet, HttpSession session){
         RespResult<?> result;
