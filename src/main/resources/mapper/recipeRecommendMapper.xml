@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.recipeRecommendDao">
+    <resultMap id="result" type="com.example.test.bean.recipeRecommend">
+        <result property="id" column="id"/>
+        <result property="dietPlanId" column="diet_plan_id"/>
+        <result property="breakfast" column="breakfast" typeHandler="com.example.test.typehandler.recipeListHandler"/>
+        <result property="lunch" column="lunch" typeHandler="com.example.test.typehandler.recipeListHandler"/>
+        <result property="dinner" column="dinner" typeHandler="com.example.test.typehandler.recipeListHandler"/>
+        <result property="createTime" column="create_time"/>
+        <result property="state" column="state"/>
+        <result property="changeTime" column="change_time"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.bean.recipeRecommend">
+        insert into recipe_recommend (diet_plan_id,breakfast,lunch,dinner,create_time,state,change_time)
+        values (#{dietPlanId},#{breakfast},#{lunch},#{dinner},#{createTime},#{state},#{changeTime})
+    </insert>
+    <select id="getByDietPlan" resultMap="result">
+        select id,diet_plan_id,breakfast,lunch,dinner,create_time,state,change_time from recipe_recommend
+        where (diet_plan_id=#{param0} and (state = 1 or state = 2)) ORDER BY create_time DESC LIMIT 1;
+    </select>
+    <select id="getById" resultMap="result">
+        select id,diet_plan_id,breakfast,lunch,dinner,create_time,state,change_time from recipe_recommend
+        where id = #{param0};
+    </select>
+    <update id="update">
+        update recipe_recommend set state = #{state},change_time = #{changeTime} where id = #{id};
+    </update>
+</mapper>

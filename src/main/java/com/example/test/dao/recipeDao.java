@@ -17,4 +17,6 @@ public interface recipeDao {
 
     List<recipe> queryByCollection(String UID);
 
+    recipe queryById(int id);
+
 }

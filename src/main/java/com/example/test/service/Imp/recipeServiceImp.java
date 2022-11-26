@@ -62,4 +62,9 @@ public class recipeServiceImp implements recipeService {
         }
         return recipeCollectionList;
     }
+
+    @Override
+    public recipe queryById(int id) {
+        return recipeDao.queryById(id);
+    }
 }

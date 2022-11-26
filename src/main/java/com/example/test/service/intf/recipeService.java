@@ -14,4 +14,6 @@ public interface recipeService {
     int delete(String UID, int dishId);
 
     List<recipeCollection> queryCollection(String UID);
+
+    recipe queryById(int id);
 }

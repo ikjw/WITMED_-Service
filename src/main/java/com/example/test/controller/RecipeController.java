@@ -2,8 +2,10 @@ package com.example.test.controller;
 
 import com.example.test.bean.recipe;
 import com.example.test.bean.recipeCollection;
+import com.example.test.bean.recipeRecommend;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
+import com.example.test.service.intf.recipeRecommendService;
 import com.example.test.service.intf.recipeService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +28,8 @@ public class RecipeController implements IPermission {
     envConfig config;
     @Resource
     recipeService recipeService;
+    @Resource
+    recipeRecommendService recipeRecommendService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
         return role == 2||role == 1;
@@ -101,4 +106,41 @@ public class RecipeController implements IPermission {
         result = new RespResult<>(BaseRespResultCode.OK,lst,config.getEnv(),"");
         return result;
     }
+
+    @PostMapping("/getRecommend")
+    public RespResult<?> getRecommend(HttpSession session){
+        RespResult<?> result;
+        String UID = (String) session.getAttribute("UID");
+        recipeRecommend rr = null;
+        try {
+            rr = recipeRecommendService.getRecommend(UID);
+            result = new RespResult<>(BaseRespResultCode.OK,rr, config.getEnv(), "");
+        } catch (IOException | InterruptedException e) {
+            result = new RespResult<>(1001001,"生成失败",e.getMessage(),null,config.getEnv(),"");
+        }
+        return result;
+    }
+    @PostMapping("/changeRecommend")
+    public RespResult<?> changeRecommend(HttpSession session){
+        RespResult<?> result;
+        String UID = (String) session.getAttribute("UID");
+        recipeRecommend rr = null;
+        try {
+            rr = recipeRecommendService.changeRecommend(UID);
+            result = new RespResult<>(BaseRespResultCode.OK,rr, config.getEnv(), "");
+        } catch (IOException | InterruptedException e) {
+            result = new RespResult<>(1001001,"生成失败",e.getMessage(),null,config.getEnv(),"");
+        }
+        return result;
+    }
+    @PostMapping("/likeRecommend")
+    public RespResult<?> likeRecommend(HttpSession session){
+        RespResult<?> result;
+        String UID = (String) session.getAttribute("UID");
+        recipeRecommend rr = null;
+        recipeRecommendService.likeRecommend(UID);
+        result = new RespResult<>(BaseRespResultCode.OK,"",config.getEnv(),"");
+        return result;
+    }
+
 }

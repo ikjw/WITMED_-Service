@@ -42,4 +42,8 @@
         from `recipe`,`collection_dish`
         WHERE (recipe.id = collection_dish.dish_id and collection_dish.UID=#{UID})
     </select>
+    <select id="queryById" resultMap="recipe">
+        select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(毫克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
+        from `recipe` where id = #{param0}
+    </select>
 </mapper>

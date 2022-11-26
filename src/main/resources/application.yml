@@ -36,7 +36,7 @@ server:
 
 diet plan:
   pythonExe: E:\Anaconda3\envs\sklearn\python.exe
-  recipeScript: D:\Smartheal\后端\harmony-osapp-server\src\main\java\com\example\test\python\recipe_generation.py
+  recipeScript: D:\Smartheal\model\recipe\main.py
   dietScript: D:\Smartheal\后端\harmony-osapp-server\src\main\java\com\example\test\python\read_data.py
 
 config:
