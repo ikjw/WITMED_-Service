@@ -1,9 +1,14 @@
 package com.example.test.controller;
 
+import com.example.test.bean.pregnancyInfo;
 import com.example.test.bean.userInfo;
+import com.example.test.bean.weight;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
+import com.example.test.service.intf.heightService;
+import com.example.test.service.intf.pregnancyInfoService;
 import com.example.test.service.intf.userInfoService;
+import com.example.test.service.intf.weightService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import org.apache.commons.collections.set.PredicatedSet;
@@ -15,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+
 /**
  *  该Controller只能由管理员或用户访问
  *  错误码范围：[100300,100399]
@@ -31,6 +39,12 @@ public class UserInfoController implements IPermission {
     envConfig config;
     @Resource
     userInfoService userInfoService;
+    @Resource
+    weightService weightService;
+    @Resource
+    heightService heightService;
+    @Resource
+    pregnancyInfoService pregnancyInfoService;
     /**
      *
      * 获取用户个人信息，若对应用户的个人信息未初始化，但账号存在，
@@ -104,6 +118,62 @@ public class UserInfoController implements IPermission {
             i = userInfoService.update(userInfo1);
         }
         result =new RespResult<>(BaseRespResultCode.OK,i, config.getEnv(), "");
+        return result;
+    }
+    @PostMapping("/init")
+    public RespResult<?> init(@RequestBody Map<String,String>map, HttpSession session)
+    {
+        RespResult<?> result;
+        int success = 0;
+        DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String UID = (String) session.getAttribute("UID");
+        String name = map.getOrDefault("name",null);
+        String genderStr= map.getOrDefault("gender",null);
+        String birthDayStr= map.getOrDefault("birthDay",null);
+        String faceBase = map.getOrDefault("faceBase64",null);
+        String weightStr = map.getOrDefault("weight",null);
+        String heightStr = map.getOrDefault("height",null);
+        String isPregnancyStr = map.getOrDefault("isPregnancy",null);
+        if (name == null||genderStr == null||isPregnancyStr == null||heightStr==null||weightStr==null||birthDayStr==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        LocalDate birthDay = LocalDate.parse(birthDayStr,fm);
+        int gender = Integer.parseInt(genderStr);
+        int isPregnancy = Integer.parseInt(isPregnancyStr);
+        double weight = Double.parseDouble(weightStr);
+        double height = Double.parseDouble(heightStr);
+        if ((gender!=0&&gender!=1)||(isPregnancy!=0&&isPregnancy!=1)){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        userInfo userInfo = new userInfo(UID,name,gender,birthDay,faceBase);
+        success+=userInfoService.insert(userInfo,UID);
+        if (isPregnancy==1){
+            String ppWeightStr = map.getOrDefault("ppWeight",null);
+            String ppHeightStr = map.getOrDefault("ppHeight",null);
+            String numberOfFetusesStr = map.getOrDefault("numberOfFetuses",null);
+            String pDateStr = map.getOrDefault("pDate",null);
+            String partiyStr = map.getOrDefault("partiy",null);
+            if (ppHeightStr==null||ppWeightStr==null||numberOfFetusesStr==null||pDateStr==null||partiyStr==null)
+            {
+                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+                return result;
+            }
+            double ppWeight = Double.parseDouble(ppWeightStr);
+            double ppHeight = Double.parseDouble(ppHeightStr);
+            int numberOfFetuses = Integer.parseInt(numberOfFetusesStr);
+            int partiy = Integer.parseInt(partiyStr);
+            LocalDate pDate;
+            pDate = LocalDate.parse(pDateStr,fm);
+            pregnancyInfo pregnancyInfo = new pregnancyInfo(UID,ppHeight,ppWeight,pDate,numberOfFetuses,partiy);
+            success+=pregnancyInfoService.init(pregnancyInfo);
+        }
+        LocalDate time = LocalDate.now();
+        weight wt = new weight(UID,weight,time,0,null);
+        success+=weightService.insert(wt,UID);
+        success+= heightService.init(UID,height,time);
+        result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
         return result;
     }
 }

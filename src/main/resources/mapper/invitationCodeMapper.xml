@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.dao.invitationCodeDao">
+    <resultMap id="result" type="com.example.test.bean.invitationCode">
+        <result property="dUID" column="dUID"/>
+        <result property="code" column="code"/>
+        <result property="createTime" column="create_time"/>
+        <result property="state" column="state"/>
+        <association property="uUID" javaType="com.example.test.bean.userInfo" select="getUserInfo" column="uUID">
+            <result property="UID" column="UID"/>
+            <result property="name" column="name"/>
+            <result property="gender" column="gender"/>
+            <result property="birthDay" column="birthday"/>
+            <result property="faceBase64" column="face_base64"/>
+        </association>
+    </resultMap>
+    <insert id="insert" parameterType="com.example.test.bean.invitationCode">
+        insert into invitation_code (dUID,code,create_time,state)
+        VALUES(#{param2},#{param1},#{param3},0)
+    </insert>
+    <update id="update" parameterType="com.example.test.bean.invitationCode">
+        update invitation_code set state = 1,uUID =#{param2}
+        where code =#{param1} and state =0
+    </update>
+    <select id="query" resultMap="result">
+        SELECT* FROM `invitation_code`
+        LIMIT #{ignoreNum},#{pageCount}
+    </select>
+    <select id="getUserInfo" resultType="com.example.test.bean.userInfo">
+        select * from user_info where UID=#{uUID}
+    </select>
+    <select id="get" resultMap="result">
+        select dUID,code,create_time
+        from invitation_code
+        where state = 0
+    </select>
+    <update id="delete" parameterType="com.example.test.bean.invitationCode">
+        update invitation_code set state = 2
+        where dUID=#{dUID} and code = #{code}
+    </update>
+</mapper>

@@ -79,14 +79,7 @@ public class RecipeController implements IPermission {
     public RespResult<?>collect(@RequestBody Map<String,String>map,HttpSession session){
         RespResult<?> result;
         String UID = (String) session.getAttribute("UID");
-        int dishId = -1;
-        if(map.containsKey("dishId")){
-            try{
-                dishId = Integer.parseInt(map.get("dishId"));
-            }catch (NumberFormatException e){
-                dishId = -1;
-            }
-        }
+        int dishId = Integer.parseInt(map.get("dishId"));
         int success = recipeService.insert(UID,dishId, LocalDateTime.now());
         result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
         return result;
@@ -95,14 +88,7 @@ public class RecipeController implements IPermission {
     public RespResult<?>cancel(@RequestBody Map<String,String>map,HttpSession session){
         RespResult<?> result;
         String UID = (String) session.getAttribute("UID");
-        int dishId = -1;
-        if(map.containsKey("dishId")){
-            try{
-                dishId = Integer.parseInt(map.get("dishId"));
-            }catch (NumberFormatException e){
-                dishId = -1;
-            }
-        }
+        int dishId = Integer.parseInt(map.get("dishId"));
         int success = recipeService.delete(UID,dishId);
         result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
         return result;

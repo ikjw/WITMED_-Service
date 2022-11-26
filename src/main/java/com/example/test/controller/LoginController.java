@@ -4,6 +4,7 @@ import com.example.test.bean.account;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.accountService;
+import com.example.test.service.intf.invitationCodeService;
 import com.example.test.service.intf.registerService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
@@ -28,6 +29,8 @@ public class LoginController implements IPermission {
     registerService registerService;
     @Resource
     envConfig config;
+    @Resource
+    invitationCodeService invitationCodeService;
     /**
      * 登录功能
      * pre-condition：
@@ -102,9 +105,11 @@ public class LoginController implements IPermission {
         String localTime = df.format(time);
         String UID = localTime+q;
         String password = map.getOrDefault("password",null);
-        String code = map.get("code");
-        String realCode = (String) session.getAttribute("code");
+        //String code = map.get("code");
+        //String realCode = (String) session.getAttribute("code");
+        String invitationCode = map.get("invitationCode");
         String phone = map.getOrDefault("phone",null);
+        int success = invitationCodeService.findCode(UID,invitationCode);
         int type = -1;
         if(map.containsKey("type")){
             try{
@@ -128,16 +133,16 @@ public class LoginController implements IPermission {
             result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定","", config.getEnv(), "");
             return result;
         }
-        if (!code.equals(realCode))
+        if (success == 0)
         {
             result = new RespResult<>(101004,"验证码错误","验证码错误","", config.getEnv(), "");
             return result;
         }
         account account =new account();
-        account.setMail(map.get("mail"));
+        account.setMail(map.getOrDefault("mail",null));
         account.setType(type);
         account.setPassword(password);
-        account.setWechatId(map.get("wechatId"));
+        account.setWechatId(map.getOrDefault("wechatId",null));
         account.setUID(UID);
         account.setPhone(map.get("phone"));
         account.setRegisterTime(LocalDateTime.now());

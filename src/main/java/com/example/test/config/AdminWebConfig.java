@@ -20,7 +20,7 @@ public class AdminWebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new PermissionInterceptor(config))
                 .addPathPatterns("/**")
-                .excludePathPatterns("/api/v2/login","/login","/register","/image/**");
+                .excludePathPatterns("/api/v2/login","/login","/api/v2/register","/api/v2/send","/image/**");
     }
 
 

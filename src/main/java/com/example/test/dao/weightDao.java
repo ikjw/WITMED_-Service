@@ -38,4 +38,5 @@ public interface weightDao {
      * @return 最近的一次体重记录
      */
     weight queryRecent(String UID);
+    int init(String UID,double weight,String date);
 }

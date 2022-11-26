@@ -15,7 +15,7 @@ public class invitationCode {
     String dUID;
     String code;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime creatTime;
+    LocalDateTime createTime;
     int state;
     userInfo uUID;
 }

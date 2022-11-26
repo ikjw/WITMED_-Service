@@ -24,4 +24,8 @@
         insert into weight(UID, value, date, source, detail)
         VALUES(#{UID},#{value},#{date},#{source},#{detail})
     </insert>
+    <insert id="init" parameterType="com.example.test.bean.bloodSugar">
+        insert into weight(UID, value, date)
+        VALUES(#{UID},#{value},#{date})
+    </insert>
 </mapper>
