@@ -91,15 +91,17 @@ public class UserInfoController implements IPermission {
      *
      * 更新用户个人信息，若对应用户个人信息为初始化，则先初始化再更新。
      */
-    @PostMapping("update")
+    @PostMapping("/update")
     public RespResult<?> update(@RequestBody userInfo userInfo,HttpSession session){
         String UID =(String) session.getAttribute("UID");
         userInfo userInfo1 = userInfoService.query(UID);
         userInfo.setUID(UID);
         int i;
         RespResult<?> result;
-        if(userInfo.getName()==null)
-            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+        if(userInfo.getName()==null) {
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+            return result;
+        }
         userInfo.setUID(UID);
         if(userInfo1 ==null)
         {
@@ -174,6 +176,42 @@ public class UserInfoController implements IPermission {
         success+=weightService.insert(wt,UID);
         success+= heightService.init(UID,height,time);
         result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
+        return result;
+    }
+    @PostMapping("/pregUpdate")
+    public RespResult<?> pregUpdate(@RequestBody pregnancyInfo pregnancyInfo, HttpSession session){
+        String UID = (String) session.getAttribute("UID");
+        RespResult<?> result;
+        int success;
+        pregnancyInfo pregnancyInfo1 = pregnancyInfoService.query(UID);
+        pregnancyInfo.setUID(UID);
+        if (pregnancyInfo1 == null)
+        {
+            success = pregnancyInfoService.init(pregnancyInfo);
+        }
+        else
+        {
+            if (pregnancyInfo.getPpHeight()!=0)
+                pregnancyInfo1.setPpHeight(pregnancyInfo1.getPpHeight());
+            if (pregnancyInfo.getPpWeight()!=0)
+                pregnancyInfo1.setPpWeight(pregnancyInfo.getPpWeight());
+            if (pregnancyInfo.getPartiy()!=0)
+                pregnancyInfo1.setPartiy(pregnancyInfo.getPartiy());
+            if (pregnancyInfo.getPDate() != null)
+                pregnancyInfo1.setPDate(pregnancyInfo.getPDate());
+            if (pregnancyInfo.getNumberOfFetuses()!=0)
+                pregnancyInfo1.setNumberOfFetuses(pregnancyInfo.getNumberOfFetuses());
+            success = pregnancyInfoService.update(pregnancyInfo1);
+        }
+        result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
+        return result;
+    }
+    @PostMapping("/pregGet")
+    public RespResult<?> pregGet(HttpSession session){
+        RespResult<?> result;
+        String UID = (String) session.getAttribute("UID");
+        pregnancyInfo pregnancyInfo = pregnancyInfoService.query(UID);
+        result = new RespResult<>(BaseRespResultCode.OK,pregnancyInfo,config.getEnv(),"");
         return result;
     }
 }
