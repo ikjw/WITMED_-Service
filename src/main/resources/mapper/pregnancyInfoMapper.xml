@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.test.dao.pregnancyInfoDao">
+    <resultMap id="result" type="com.example.test.bean.pregnancyInfo">
+        <result property="UID" column="UID"/>
+        <result property="ppHeight" column="pp_height"/>
+        <result property="pDate" column="p_date"/>
+        <result property="numberOfFetuses" column="number_of_fetuses"/>
+        <result property="partiy" column="partiy"/>
+    </resultMap>
     <insert id="init" parameterType="com.example.test.bean.pregnancyInfo">
         insert into pregnancy_info (UID,pp_height,pp_weight,p_date,number_of_fetuses,partiy)
         values(#{UID},#{ppHeight},#{ppWeight},#{pDate},#{numberOfFetuses},#{partiy})
     </insert>
+    <update id="update" parameterType="com.example.test.bean.pregnancyInfo">
+        update pregnancy_info set pp_height=#{ppHeight},pp_weight=#{ppWeight},p_date=#{pDate},number_of_fetuses=#{numberOfFetuses},partiy=#{partiy}
+        where UID=#{UID}
+    </update>
+    <select id="query" resultMap="result">
+        select * from pregnancy_info
+        where UID=#{param1}
+    </select>
 </mapper>

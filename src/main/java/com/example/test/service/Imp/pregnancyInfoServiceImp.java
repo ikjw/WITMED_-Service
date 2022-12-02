@@ -30,4 +30,15 @@ public class pregnancyInfoServiceImp implements pregnancyInfoService {
         }
         return result;
     }
+    @Override
+    public int update(pregnancyInfo pregnancyInfo)
+    {
+        CheckPreCondition.notNull(pregnancyInfo);
+        return pregnancyInfoDao.update(pregnancyInfo);
+    }
+    @Override
+    public pregnancyInfo query(String UID){
+        CheckPreCondition.notNull(UID);
+        return pregnancyInfoDao.query(UID);
+    }
 }
