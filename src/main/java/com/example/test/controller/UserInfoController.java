@@ -192,7 +192,7 @@ public class UserInfoController implements IPermission {
         else
         {
             if (pregnancyInfo.getPpHeight()!=0)
-                pregnancyInfo1.setPpHeight(pregnancyInfo1.getPpHeight());
+                pregnancyInfo1.setPpHeight(pregnancyInfo.getPpHeight());
             if (pregnancyInfo.getPpWeight()!=0)
                 pregnancyInfo1.setPpWeight(pregnancyInfo.getPpWeight());
             if (pregnancyInfo.getPartiy()!=0)

@@ -4,6 +4,7 @@
     <resultMap id="result" type="com.example.test.bean.pregnancyInfo">
         <result property="UID" column="UID"/>
         <result property="ppHeight" column="pp_height"/>
+        <result property="ppWeight" column="pp_weight"/>
         <result property="pDate" column="p_date"/>
         <result property="numberOfFetuses" column="number_of_fetuses"/>
         <result property="partiy" column="partiy"/>
