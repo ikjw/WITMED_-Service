@@ -9,4 +9,5 @@ public interface invitationCodeService {
     int findCode(String uUID,String code);
     List<invitationCode> query(int pageIndex,int pageCount);
     int deleteCode();
+    invitationCode queryDoctor(String code,String uUID);
 }

@@ -38,4 +38,7 @@
         update invitation_code set state = 2
         where dUID=#{dUID} and code = #{code}
     </update>
+    <select id="queryDoctor" resultMap="result">
+        select* from invitation_code where uUID=#{uUID} and code=#{code}
+    </select>
 </mapper>

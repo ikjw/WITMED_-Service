@@ -10,4 +10,5 @@ public interface invitationCodeDao {
     List<invitationCode> query(int ignoreNum,int pageCount);
     List<invitationCode> get();
     int delete(String dUID,String code);
+    invitationCode queryDoctor(String code,String uUID);
 }

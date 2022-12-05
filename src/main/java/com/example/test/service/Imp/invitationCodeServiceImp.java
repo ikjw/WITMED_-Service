@@ -72,4 +72,10 @@ public class invitationCodeServiceImp implements invitationCodeService {
         }
         return success;
     }
+    @Override
+    public invitationCode queryDoctor(String code,String uUID){
+        CheckPreCondition.notNull(code);
+        CheckPreCondition.notNull(uUID);
+        return invitationCodeDao.queryDoctor(code,uUID);
+    }
 }

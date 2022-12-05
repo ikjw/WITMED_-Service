@@ -128,7 +128,11 @@
             <version>1.1.14</version>
         </dependency>
     </dependencies>
-
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-mock</artifactId>
+        <version>2.0.8</version>
+    </dependency>
     <build>
         <finalName>Service-v2-dev</finalName>
         <plugins>

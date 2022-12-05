@@ -4,6 +4,7 @@ import com.example.test.bean.account;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.accountService;
+import com.example.test.service.intf.doctorUserService;
 import com.example.test.service.intf.invitationCodeService;
 import com.example.test.service.intf.registerService;
 import com.example.test.utils.Imp.BaseRespResultCode;
@@ -31,6 +32,8 @@ public class LoginController implements IPermission {
     envConfig config;
     @Resource
     invitationCodeService invitationCodeService;
+    @Resource
+    doctorUserService doctorUserService;
     /**
      * 登录功能
      * pre-condition：
@@ -138,6 +141,8 @@ public class LoginController implements IPermission {
             result = new RespResult<>(101004,"验证码错误","验证码错误","", config.getEnv(), "");
             return result;
         }
+        String dUID = invitationCodeService.queryDoctor(invitationCode,UID).getDUID();
+        doctorUserService.bind(dUID,UID);
         account account =new account();
         account.setMail(map.getOrDefault("mail",null));
         account.setType(type);

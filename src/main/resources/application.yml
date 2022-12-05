@@ -42,6 +42,8 @@ diet plan:
 config:
   env: dev
   imgPath: D:\Smartheal\service\static\images\
+  image-path: D:\images\
+
 
 register-config:
   accessKeyId: LTAI5tP8KFown9kHhpbSmVRD

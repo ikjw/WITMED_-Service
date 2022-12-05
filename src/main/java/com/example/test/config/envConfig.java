@@ -10,4 +10,5 @@ import org.springframework.context.annotation.Configuration;
 public class envConfig {
     private String env;
     private String imgPath;
+    private String imgPath1;
 }
