@@ -7,22 +7,23 @@
         <result property="type" column="type"/>
         <result property="time" column="time"/>
         <result property="source" column="source"/>
+        <result property="device" column="device"/>
         <result property="detail" column="detail"/>
     </resultMap>
     <select id="query" resultMap="result">
-        select UID,value,type,time,source,detail
+        select UID,value,type,time,source,detail,device
         from blood_sugar
         where UID=#{param1}
           and (time &gt;= #{param2} and time &lt; #{param3})
     </select>
     <select id="queryRecent" resultMap="result">
-        select UID,value,type,time,source,detail
+        select UID,value,type,time,source,detail,device
         from ( select * from blood_sugar where UID = #{param1}) as a
         order by time desc limit 1
     </select>
 
     <insert id="insert" parameterType="com.example.test.bean.bloodSugar">
-        insert into blood_sugar(UID, value, type, time, source, detail)
-        VALUES(#{UID},#{value},#{type},#{time},#{source},#{detail})
+        insert into blood_sugar(UID, value, type, time, source, detail,device)
+        VALUES(#{UID},#{value},#{type},#{time},#{source},#{detail},#{device})
     </insert>
 </mapper>

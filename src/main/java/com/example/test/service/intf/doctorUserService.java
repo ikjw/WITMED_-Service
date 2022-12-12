@@ -54,4 +54,6 @@ public interface doctorUserService {
     int Find(String dUID,String uUID);
 
     List<userInfo> getUnbind();
+
+    doctorUser isBind(String dUID,String uUID);
 }

@@ -42,7 +42,7 @@ diet plan:
 config:
   env: dev
   imgPath: D:\Smartheal\service\static\images\
-  image-path: D:\images\
+  recipeImage: D:\images\
 
 
 register-config:

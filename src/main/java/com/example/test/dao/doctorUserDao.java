@@ -43,4 +43,5 @@ public interface doctorUserDao {
      */
     doctorUser find(String dUID,String uUID);
 
+    doctorUser isBind(String dUID,String uUID);
 }

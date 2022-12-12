@@ -7,6 +7,7 @@ import com.example.test.dao.recipeDao;
 import com.example.test.service.intf.recipeService;
 import com.example.test.utils.CheckPreCondition;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,5 +67,19 @@ public class recipeServiceImp implements recipeService {
     @Override
     public recipe queryById(int id) {
         return recipeDao.queryById(id);
+    }
+    @Override
+    public int update(String name,String base) {
+        CheckPreCondition.notNull(name);
+        CheckPreCondition.notNull(base);
+        recipe recipe = recipeDao.queryName(name);
+        JSONArray jsonArray;
+        if (recipe.getBase64() == null) {
+            jsonArray = new JSONArray();
+        } else {
+            jsonArray = JSONArray.fromObject(recipe.getBase64());
+        }
+        jsonArray.add(base);
+        return recipeDao.updateImage(name, jsonArray.toString());
     }
 }

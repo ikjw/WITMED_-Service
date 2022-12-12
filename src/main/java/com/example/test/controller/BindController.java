@@ -1,14 +1,10 @@
 package com.example.test.controller;
-import com.example.test.bean.doctorUser;
-import com.example.test.bean.userInfo;
+import com.example.test.bean.*;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
-import com.example.test.service.intf.doctorUserService;
-import com.example.test.service.intf.userInfoService;
+import com.example.test.service.intf.*;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
-import com.example.test.service.intf.doctorInfoService;
-import com.example.test.bean.doctorInfo;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +30,12 @@ public class BindController implements IPermission {
     doctorInfoService doctorINfoService;
     @Resource
     userInfoService userInfoService;
+    @Resource
+    pregnancyInfoService pregnancyInfoService;
+    @Resource
+    weightService weightService;
+    @Resource
+    heightService heightService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
         return role == 2||role == 1;
@@ -162,6 +164,32 @@ public class BindController implements IPermission {
         }
         List<userInfo> lst = doctorUserService.getUnbind();
         result = new RespResult<>(BaseRespResultCode.OK,lst,config.getEnv(), "");
+        return result;
+    }
+    @PostMapping("/getPatientAllInfo")
+    public RespResult<?> getAll(@RequestBody Map<String,String> map,HttpSession session){
+        String dUID = (String) session.getAttribute("UID");
+        RespResult<?> result;
+        String uUID = map.get("uUID");
+        if (uUID==null){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        if (doctorUserService.isBind(dUID,uUID)==null)
+        {
+            result = new RespResult<>(100502,"权限不足","权限不足","", config.getEnv(), "");
+            return result;
+        }
+        userInfo userInfo = userInfoService.query(uUID);
+        pregnancyInfo pregnancyInfo = pregnancyInfoService.query(uUID);
+        double weight = weightService.queryRecent(uUID).getValue();
+        double height = heightService.queryRecent(uUID).getValue();
+        allInfo info = new allInfo();
+        info.setHeight(height);
+        info.setWeight(weight);
+        info.setPregnancyInfo(pregnancyInfo);
+        info.setUserInfo(userInfo);
+        result = new RespResult<>(BaseRespResultCode.OK,info,config.getEnv(), "");
         return result;
     }
 }

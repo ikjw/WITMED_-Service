@@ -18,6 +18,7 @@
         <result property="mainMaterials" column="主料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
         <result property="accessories" column="辅料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
         <result property="notCalculated" column="无法计算"/>
+        <result property="base64" column="图片" />
     </resultMap>
     <select id="queryByName" resultMap="recipe">
         select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(毫克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
@@ -46,4 +47,11 @@
         select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(毫克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`
         from `recipe` where id = #{param0}
     </select>
+    <select id="queryName" resultMap="recipe">
+        select * from `recipe`
+        where `菜名`=#{name}
+    </select>
+    <update id="updateImage" parameterType="com.example.test.bean.recipe">
+        update `recipe` set `图片`=#{image} where `菜名`=#{name}
+    </update>
 </mapper>

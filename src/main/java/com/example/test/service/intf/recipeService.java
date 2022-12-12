@@ -16,4 +16,5 @@ public interface recipeService {
     List<recipeCollection> queryCollection(String UID);
 
     recipe queryById(int id);
+    int update(String name,String base);
 }

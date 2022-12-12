@@ -26,4 +26,9 @@
         from doctor_user
         where (uUID=#{param2} and dUID=#{param1}) and state = 1
     </select>
+    <select id="isBind" resultMap="result">
+        select id,dUID,uUID,time,state
+        from doctor_user
+        where (uUID=#{param2} and dUID=#{param1}) and state = 1
+    </select>
 </mapper>

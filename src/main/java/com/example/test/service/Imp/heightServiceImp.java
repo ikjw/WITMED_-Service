@@ -1,5 +1,6 @@
 package com.example.test.service.Imp;
 
+import com.example.test.bean.height;
 import com.example.test.dao.heightDao;
 import com.example.test.service.intf.heightService;
 import com.example.test.utils.CheckPreCondition;
@@ -23,5 +24,10 @@ public class heightServiceImp implements heightService {
             return 0;
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         return heightDao.init(UID,height,time.format(fm));
+    }
+    @Override
+    public height queryRecent(String UID){
+        CheckPreCondition.notNull(UID);
+        return heightDao.queryRecent(UID);
     }
 }

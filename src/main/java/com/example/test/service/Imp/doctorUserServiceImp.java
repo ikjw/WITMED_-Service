@@ -75,4 +75,10 @@ public class doctorUserServiceImp implements doctorUserService {
     public List<userInfo> getUnbind(){
         return userInfoDao.getUnbind();
     }
+    @Override
+    public  doctorUser isBind(String dUID,String uUID){
+        CheckPreCondition.notNull(dUID);
+        CheckPreCondition.notNull(uUID);
+        return doctorUserDao.isBind(dUID,uUID);
+    }
 }
