@@ -23,6 +23,7 @@ public class dietPlanServiceImp implements dietPlanService {
         CheckPreCondition.notNull(uUID);
         dietPlan dp = dietPlanDao.queryRecent(uUID);
         LocalDate date = LocalDate.now();
+        if (dp == null) return null;
         int i = dp.getEndDate().compareTo(date);
         if (i < 0)
             return null;

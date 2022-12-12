@@ -20,6 +20,8 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,16 +52,20 @@ public class recipeRecommendImp implements recipeRecommendService {
     public recipeRecommend getRecommend(String UID) throws IOException, InterruptedException {
         CheckPreCondition.notNull(UID);
         dietPlan plan = dietPlanService.queryRecent(UID);
-        recipeRecommend rr = dao.getByDietPlan(plan.getId());
-        if(rr == null){
-            float[] tmp = new float[8];
-            if(plan == null){
-                //主食，蔬菜，水果，肉蛋，豆，奶，坚果，油
-                tmp = new float[]{9,1,1,3,1,2,1,1};
-            }else{
+        recipeRecommend rr = null;
+        float[] tmp = new float[8];
+        if(plan == null || plan.getDUID() == null){
+            rr = dao.getByDietPlan(-1);
+            //主食，蔬菜，水果，肉蛋，豆，奶，坚果，油
+            tmp = new float[]{9,1,1,3,1,2,1,1};
+        }else{
+             rr = dao.getByDietPlan(plan.getId());
+            if(rr == null){
                 tmp = new float[]{plan.getMainFood(),plan.getVegetables(),plan.getFruits(),plan.getMeat_egg(),
                         plan.getSoybeans(),plan.getDairy(),plan.getNuts(),plan.getOils()};
             }
+        }
+        if(rr == null){
             float[] nutr = new float[]{0,0,0};
             for(int i=0;i< tmp.length;i++){
                 for(int j= 0;j<nutr.length;j++){
@@ -67,9 +73,12 @@ public class recipeRecommendImp implements recipeRecommendService {
                 }
             }
             rr = algorithm(nutr);
-            rr.setDietPlanId(plan.getId());
-            if(rr!=null)
-                dao.insert(rr);
+            if(plan == null || plan.getDUID() == null){
+                rr.setDietPlanId(-1);
+            }else{
+                rr.setDietPlanId(plan.getId());
+            }
+            dao.insert(rr);
         }
         return rr;
     }

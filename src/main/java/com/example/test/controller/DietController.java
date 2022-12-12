@@ -73,4 +73,5 @@ public class DietController implements IPermission {
         }
         return result;
     }
+
 }

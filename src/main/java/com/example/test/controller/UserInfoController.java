@@ -58,6 +58,7 @@ public class UserInfoController implements IPermission {
         userInfo userInfo = userInfoService.query(UID);
         if(userInfo == null)
         {
+            userInfo = new userInfo();
             userInfo.setName("神秘用户");
             userInfo.setUID(UID);
             userInfo.setGender(1);

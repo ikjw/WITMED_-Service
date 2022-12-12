@@ -15,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Map;
 /**
  *  该Controller 所有人都能访问
@@ -63,7 +64,9 @@ public class LoginController implements IPermission {
                result = new RespResult<>(100101,"账号不存在","账号不存在","", config.getEnv(), "");
            }else if(var.getPassword().equals(password)){
                //登录成功
-               result = new RespResult<>(BaseRespResultCode.OK,"",config.getEnv(),"");
+               Map<String,String> tmp = new HashMap<>();
+               tmp.put("UID",var.getUID());
+               result = new RespResult<>(BaseRespResultCode.OK,tmp,config.getEnv(),"");
                session.setAttribute("UID",var.getUID());
                session.setAttribute("type",var.getType());
            }else{
