@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -27,6 +28,10 @@ public class versionServiceImp implements versionService {
     public int insert(version version){
         CheckPreCondition.notNull(version);
         return versionDao.insert(version);
+    }
+    @Override
+    public List<version> query(int start, int end){
+        return versionDao.query(start,end);
     }
 }
 

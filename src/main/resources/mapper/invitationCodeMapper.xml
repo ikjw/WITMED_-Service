@@ -23,7 +23,7 @@
         where code =#{param1} and state =0
     </update>
     <select id="query" resultMap="result">
-        SELECT* FROM `invitation_code`
+        SELECT* FROM (SELECT * FROM invitation_code   ORDER BY create_time DESC) AS A
         LIMIT #{ignoreNum},#{pageCount}
     </select>
     <select id="getUserInfo" resultType="com.example.test.bean.userInfo">

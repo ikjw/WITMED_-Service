@@ -21,4 +21,7 @@
         insert into version_control (id,name,version_code,version_name,max_compatible_version,description,detail_description)
         values(#{id},#{name},#{versionCode},#{versionName},#{maxCompatibleVersion},#{description},#{detailDescription})
     </insert>
+    <select id="query" resultMap="result">
+        select * from version_control where version_code>#{start} and version_code&lt;=#{end}
+    </select>
 </mapper>

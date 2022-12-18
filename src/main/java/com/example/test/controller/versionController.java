@@ -39,29 +39,14 @@ public class versionController {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return result;
         }
-        version diffVersion = new version();
-        diffVersion.setName(latestVersion.getName());
-        diffVersion.setVersionCode(latestVersion.getVersionCode());
-        diffVersion.setVersionName(latestVersion.getVersionName());
-        if(latestVersion.getMaxCompatibleVersion()!= nowVersion.getMaxCompatibleVersion()){
-            diffVersion.setMaxCompatibleVersion(latestVersion.getMaxCompatibleVersion());
-        }
-        if (!latestVersion.getDescription().equals(nowVersion.getDescription())){
-            diffVersion.setDescription(latestVersion.getDescription());
-        }
-        if (!latestVersion.getDetailDescription().equals(nowVersion.getDetailDescription())){
-            diffVersion.setDetailDescription(latestVersion.getDetailDescription());
-        }
-        int update;
-        if (latestVersion.getMaxCompatibleVersion() > nowVersion.getMaxCompatibleVersion()){
-            update = 1;
-        }
-        else update = 0;
-        if (update == 1)
-            diffVersion.setMaxCompatibleVersion(latestVersion.getMaxCompatibleVersion());
+        List<version> diffVersion = versionService.query(versionCode,latestVersion.getVersionCode());
+        int forceUpdate;
+        if (latestVersion.getMaxCompatibleVersion()>versionCode)
+            forceUpdate = 1;
+        else forceUpdate = 0;
         Map<String,Object>map1=new HashMap<>();
         map1.put("latestVersion",latestVersion);
-        map1.put("update",update);
+        map1.put("forceUpdate",forceUpdate);
         map1.put("diffVersion",diffVersion);
         result = new RespResult<>(BaseRespResultCode.OK,map1,config.getEnv(),"");
         return result;
