@@ -157,7 +157,9 @@ public class LoginController implements IPermission {
         registerService.addAccount(account);
         session.setAttribute("UID",UID);
         session.setAttribute("type",type);
-        result = new RespResult<>(BaseRespResultCode.OK,"", config.getEnv(),"");
+        Map<String,String> ret = new HashMap<>();
+        ret.put("UID",UID);
+        result = new RespResult<>(BaseRespResultCode.OK,ret, config.getEnv(),"");
         return result;
     }
 }
