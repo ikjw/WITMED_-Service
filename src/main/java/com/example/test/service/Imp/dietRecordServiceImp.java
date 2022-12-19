@@ -6,6 +6,7 @@ import com.example.test.dao.dietRecordDao;
 import com.example.test.service.intf.dietRecordService;
 import com.example.test.utils.CheckPreCondition;
 import com.example.test.utils.ImageToBase64Util;
+import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -42,7 +43,9 @@ public class dietRecordServiceImp implements dietRecordService {
             if(file == null){
                 record.setImg("");
             }else{
-                record.setImg(file.getName());
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.add(file.getName());
+                record.setImg(jsonArray.toString());
             }
         }
         return  dao.insert(record);

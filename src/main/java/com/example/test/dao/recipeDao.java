@@ -18,7 +18,7 @@ public interface recipeDao {
     List<recipe> queryByCollection(String UID);
 
     recipe queryById(int id);
-    recipe queryName(String name);
-    int updateImage(String name, String image);
+    int updateImage(int id, String image);
+    int updateName(int id,String newName);
 
 }

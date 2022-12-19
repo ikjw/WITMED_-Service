@@ -23,22 +23,16 @@ public class ImageController {
     @Resource
     recipeService recipeService;
     @PostMapping("/upload")
-    public RespResult<?> upload(@RequestBody Map<String,String> map) throws IOException {
+    public RespResult<?> upload(@RequestBody Map<String,Object> map) throws IOException {
         RespResult<?> result;
-        if (map.get("name")==null||map.get("image")==null)
+        if (map.get("newName")==null||map.get("image")==null)
         {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,config.getEnv(),"");
             return result;
         }
-        File file = ImageToBase64Util.convertBase64ToFile(map.get("image"), config.getRecipeImage());
+        File file = ImageToBase64Util.convertBase64ToFile((String) map.get("image"), config.getRecipeImage());
         String fileName = file.getName();
-        long length = file.length();
-        if (length >5000000)
-        {
-            result = new RespResult<>(102001,"文件过大","文件过大","", config.getEnv(), "");
-            return result;
-        }
-        int success = recipeService.update(map.get("name"), fileName);
+        int success = recipeService.update((String) map.get("newName"), fileName,Integer.parseInt(map.get("id").toString()));
         result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(), "");
         return result;
     }

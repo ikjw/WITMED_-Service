@@ -69,17 +69,18 @@ public class recipeServiceImp implements recipeService {
         return recipeDao.queryById(id);
     }
     @Override
-    public int update(String name,String base) {
-        CheckPreCondition.notNull(name);
+    public int update(String newName,String base,int id) {
+        CheckPreCondition.notNull(newName);
         CheckPreCondition.notNull(base);
-        recipe recipe = recipeDao.queryName(name);
+        recipe recipe = recipeDao.queryById(id);
+        int success = recipeDao.updateName(id, newName);
         JSONArray jsonArray;
-        if (recipe.getBase64() == null) {
+        if (recipe.getImg() == null) {
             jsonArray = new JSONArray();
         } else {
-            jsonArray = JSONArray.fromObject(recipe.getBase64());
+            jsonArray = JSONArray.fromObject(recipe.getImg());
         }
         jsonArray.add(base);
-        return recipeDao.updateImage(name, jsonArray.toString());
+        return success*recipeDao.updateImage(id, jsonArray.toString());
     }
 }
