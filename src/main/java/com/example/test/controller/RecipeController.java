@@ -9,6 +9,7 @@ import com.example.test.service.intf.recipeRecommendService;
 import com.example.test.service.intf.recipeService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
+import net.sf.json.JSONArray;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,18 +63,90 @@ public class RecipeController implements IPermission {
             if(count<=0) count = 20;
             if (raw.equals("true")&&name.equals("false"))
             {
-                List<recipe> lst = recipeService.query(keyWord,false,true,index,count);
-                result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+                List<recipe> lst = recipeService.query(keyWord,true,false,index,count);
+                List lst1 = new ArrayList<>();
+                for (recipe recipe : lst) {
+                    Map<String,Object> map1 = new HashMap<>();
+                    map1.put("id",recipe.getId());
+                    map1.put("name",recipe.getName());
+                    map1.put("cookMethod",recipe.getCookMethod());
+                    map1.put("cookTime",recipe.getCookTime());
+                    map1.put("calorie",recipe.getCalorie());
+                    map1.put("carbohydrate",recipe.getCarbohydrate());
+                    map1.put("protein",recipe.getProtein());
+                    map1.put("fat",recipe.getFat());
+                    map1.put("cholesterol",recipe.getCholesterol());
+                    map1.put("dietaryFiber",recipe.getDietaryFiber());
+                    map1.put("minerals",recipe.getMinerals());
+                    map1.put("vitamin",recipe.getVitamin());
+                    map1.put("others",recipe.getOthers());
+                    map1.put("mainMaterials",recipe.getMainMaterials());
+                    map1.put("accessories",recipe.getAccessories());
+                    map1.put("notCalculated",recipe.getNotCalculated());
+                    if (recipe.getImg()!=null&&!recipe.getImg().equals(""))
+                        map1.put("img",JSONArray.fromObject(recipe.getImg()));
+                    else map1.put("img",null);
+                    lst1.add(map1);
+                }
+                result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
             }
             else if (raw.equals("false")&&name.equals("true"))
             {
-                List<recipe> lst = recipeService.query(keyWord,true,false,index,count);
-                result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+                List<recipe> lst = recipeService.query(keyWord,false,true,index,count);
+                List lst1 = new ArrayList<>();
+                for (recipe recipe : lst) {
+                    Map<String,Object> map1 = new HashMap<>();
+                    map1.put("id",recipe.getId());
+                    map1.put("name",recipe.getName());
+                    map1.put("cookMethod",recipe.getCookMethod());
+                    map1.put("cookTime",recipe.getCookTime());
+                    map1.put("calorie",recipe.getCalorie());
+                    map1.put("carbohydrate",recipe.getCarbohydrate());
+                    map1.put("protein",recipe.getProtein());
+                    map1.put("fat",recipe.getFat());
+                    map1.put("cholesterol",recipe.getCholesterol());
+                    map1.put("dietaryFiber",recipe.getDietaryFiber());
+                    map1.put("minerals",recipe.getMinerals());
+                    map1.put("vitamin",recipe.getVitamin());
+                    map1.put("others",recipe.getOthers());
+                    map1.put("mainMaterials",recipe.getMainMaterials());
+                    map1.put("accessories",recipe.getAccessories());
+                    map1.put("notCalculated",recipe.getNotCalculated());
+                    if (recipe.getImg()!=null&&!recipe.getImg().equals(""))
+                        map1.put("img",JSONArray.fromObject(recipe.getImg()));
+                    else map1.put("img",null);
+                    lst1.add(map1);
+                }
+                result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
             }
             else if (raw.equals("true")&&name.equals("true"))
             {
                 List<recipe> lst = recipeService.query(keyWord,true,true,index,count);
-                result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+                List lst1 = new ArrayList<>();
+                for (recipe recipe : lst) {
+                    Map<String,Object> map1 = new HashMap<>();
+                    map1.put("id",recipe.getId());
+                    map1.put("name",recipe.getName());
+                    map1.put("cookMethod",recipe.getCookMethod());
+                    map1.put("cookTime",recipe.getCookTime());
+                    map1.put("calorie",recipe.getCalorie());
+                    map1.put("carbohydrate",recipe.getCarbohydrate());
+                    map1.put("protein",recipe.getProtein());
+                    map1.put("fat",recipe.getFat());
+                    map1.put("cholesterol",recipe.getCholesterol());
+                    map1.put("dietaryFiber",recipe.getDietaryFiber());
+                    map1.put("minerals",recipe.getMinerals());
+                    map1.put("vitamin",recipe.getVitamin());
+                    map1.put("others",recipe.getOthers());
+                    map1.put("mainMaterials",recipe.getMainMaterials());
+                    map1.put("accessories",recipe.getAccessories());
+                    map1.put("notCalculated",recipe.getNotCalculated());
+                    if (recipe.getImg()!=null&&!recipe.getImg().equals(""))
+                        map1.put("img",JSONArray.fromObject(recipe.getImg()));
+                    else map1.put("img",null);
+                    lst1.add(map1);
+                }
+                result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
             }
             else result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
         }catch (NumberFormatException e){
