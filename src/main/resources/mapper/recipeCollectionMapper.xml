@@ -15,7 +15,8 @@
         where (UID=#{UID} and dish_id=#{dishId})
     </delete>
     <select id="getTime" resultMap="result">
-        select time from collection_dish
-        where(UID=#{UID} and dish_id=#{dishId})
+        select * from( select time from collection_dish
+        where(UID=#{UID} and dish_id=#{dishId})) as a
+        order by time desc limit 1
     </select>
 </mapper>

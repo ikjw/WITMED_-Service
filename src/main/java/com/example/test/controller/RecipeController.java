@@ -178,7 +178,35 @@ public class RecipeController implements IPermission {
         RespResult<?> result;
         String UID = (String) session.getAttribute("UID");
         List<recipeCollection> lst = recipeService.queryCollection(UID);
-        result = new RespResult<>(BaseRespResultCode.OK,lst,config.getEnv(),"");
+        List lst1 = new ArrayList<>();
+        for (recipeCollection recipeCollection : lst) {
+            Map<String,Object>map = new HashMap<>();
+            Map<String,Object> map1 = new HashMap<>();
+            map1.put("id",recipeCollection.getDish().getId());
+            map1.put("name",recipeCollection.getDish().getName());
+            map1.put("cookMethod",recipeCollection.getDish().getCookMethod());
+            map1.put("cookTime",recipeCollection.getDish().getCookTime());
+            map1.put("calorie",recipeCollection.getDish().getCalorie());
+            map1.put("carbohydrate",recipeCollection.getDish().getCarbohydrate());
+            map1.put("protein",recipeCollection.getDish().getProtein());
+            map1.put("fat",recipeCollection.getDish().getFat());
+            map1.put("cholesterol",recipeCollection.getDish().getCholesterol());
+            map1.put("dietaryFiber",recipeCollection.getDish().getDietaryFiber());
+            map1.put("minerals",recipeCollection.getDish().getMinerals());
+            map1.put("vitamin",recipeCollection.getDish().getVitamin());
+            map1.put("others",recipeCollection.getDish().getOthers());
+            map1.put("mainMaterials",recipeCollection.getDish().getMainMaterials());
+            map1.put("accessories",recipeCollection.getDish().getAccessories());
+            map1.put("notCalculated",recipeCollection.getDish().getNotCalculated());
+            if (recipeCollection.getDish().getImg()!=null&&!recipeCollection.getDish().getImg().equals(""))
+                map1.put("img",JSONArray.fromObject(recipeCollection.getDish().getImg()));
+            else map1.put("img",null);
+            map.put("dish",map1);
+            map.put("time",recipeCollection.getTime());
+            map.put("uid",recipeCollection.getUID());
+            lst1.add(map);
+        }
+        result = new RespResult<>(BaseRespResultCode.OK,lst1,config.getEnv(),"");
         return result;
     }
 
