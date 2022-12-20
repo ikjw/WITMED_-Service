@@ -1,5 +1,6 @@
 package com.example.test.controller;
 
+import com.example.test.bean.recipe;
 import com.example.test.service.intf.recipeService;
 import com.example.test.utils.ImageToBase64Util;
 import com.example.test.utils.Imp.BaseRespResultCode;
@@ -33,7 +34,8 @@ public class ImageController {
         File file = ImageToBase64Util.convertBase64ToFile((String) map.get("image"), config.getRecipeImage());
         String fileName = file.getName();
         int success = recipeService.update((String) map.get("newName"), fileName,Integer.parseInt(map.get("id").toString()));
-        result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(), "");
+        recipe recipe = recipeService.queryById(Integer.parseInt(map.get("id").toString()));
+        result = new RespResult<>(BaseRespResultCode.OK,recipe, config.getEnv(), "");
         return result;
     }
 }

@@ -35,7 +35,7 @@ public class RecipeController implements IPermission {
     recipeRecommendService recipeRecommendService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 2||role == 1;
+        return role == 2||role == 1||role == 3;
     }
     @PostMapping("/get")
     /**

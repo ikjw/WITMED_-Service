@@ -31,7 +31,7 @@ public class DietPlanController implements IPermission {
     dietPlanService dietPlanService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 1||role == 2;
+        return role == 1||role == 2 || role == 3;
     }
     @PostMapping("/getPlan")
     public RespResult<?> getPlan(HttpSession session){
