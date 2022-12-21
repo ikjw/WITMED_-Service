@@ -7,6 +7,7 @@ import com.example.test.service.intf.dietRecordService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import net.sf.json.JSONArray;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 @RequestMapping("/api/v2/diet")
 @RestController
@@ -68,7 +66,24 @@ public class DietController implements IPermission {
             }
             if(from != null && to != null){
                 List<dietRecord> lst = dietService.query(UID,from,to);
-                result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+                List lst1 = new ArrayList<>();
+                for (dietRecord dietRecord : lst) {
+                    Map<String,Object> map1 = new HashMap<>();
+                    map1.put("id",dietRecord.getId());
+                    map1.put("name",dietRecord.getName());
+                    map1.put("amount",dietRecord.getAmount());
+                    map1.put("startTime",dietRecord.getStartTime());
+                    map1.put("endTime",dietRecord.getEndTime());
+                    map1.put("detail",dietRecord.getDetail());
+                    if (dietRecord.getImg()!=null&&!dietRecord.getImg().equals("")){
+                        map1.put("img", JSONArray.fromObject(dietRecord.getImg()));
+                    }
+                    else map1.put("img",null);
+                    map1.put("source",dietRecord.getSource());
+                    map1.put("UID",dietRecord.getUID());
+                    lst1.add(map1);
+                }
+                result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
             }
         }
         return result;
