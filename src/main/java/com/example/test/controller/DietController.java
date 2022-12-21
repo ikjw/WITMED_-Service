@@ -81,6 +81,7 @@ public class DietController implements IPermission {
                     else map1.put("img",null);
                     map1.put("source",dietRecord.getSource());
                     map1.put("UID",dietRecord.getUID());
+                    map1.put("type",dietRecord.getType());
                     lst1.add(map1);
                 }
                 result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
