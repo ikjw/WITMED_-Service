@@ -7,6 +7,7 @@ import com.example.test.service.intf.dietRecordService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.google.gson.JsonObject;
 import net.sf.json.JSONArray;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +29,24 @@ public class DietController implements IPermission {
     dietRecordService dietService;
 
     @PostMapping("/add")
-    public RespResult<?> get(@RequestBody dietRecord diet, HttpSession session){
+    public RespResult<?> add(@RequestBody JsonObject params, HttpSession session){
         RespResult<?> result;
         Map<String,Integer> map = new HashMap<>();
+        dietRecord diet = new dietRecord();
+        DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        try{
+            diet.setName(params.get("name").getAsString());
+            diet.setAmount(params.get("amount").getAsInt());
+            diet.setType(params.get("type").getAsInt());
+            diet.setSource(params.get("source").getAsInt());
+            diet.setDetail(params.get("detail").getAsString());
+            diet.setStartTime(LocalDateTime.parse(params.get("startTime").getAsString(),fm));
+            diet.setEndTime(LocalDateTime.parse(params.get("endTime").getAsString(),fm));
+            diet.setImg(params.get("img").getAsJsonArray().toString());
+        }catch (Exception e){
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null, config.getEnv(),"");
+            return result;
+        }
         String UID = (String) session.getAttribute("UID");
         int type = (int) session.getAttribute("type");
         if(type !=1 && type != 3){

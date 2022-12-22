@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 @Service
@@ -37,16 +38,19 @@ public class dietRecordServiceImp implements dietRecordService {
             }
         }
         if(record.getImg()==null || record.getImg().length() == 0){
-            record.setImg("");
+            record.setImg("[]");
         }else{
-            File file = ImageToBase64Util.convertBase64ToFile(record.getImg(),config.getImgPath());
-            if(file == null){
-                record.setImg("");
-            }else{
-                JSONArray jsonArray = new JSONArray();
-                jsonArray.add(file.getName());
-                record.setImg(jsonArray.toString());
+            JSONArray arr = JSONArray.fromObject(record.getImg());
+            JSONArray fileName = new JSONArray();
+            for(Object i : arr){
+                File file = ImageToBase64Util.convertBase64ToFile((String)i,config.getImgPath());
+                if(file == null){
+                    record.setImg("");
+                }else{
+                    fileName.add(file.getName());
+                }
             }
+            record.setImg(fileName.toString());
         }
         return  dao.insert(record);
     }
