@@ -9,6 +9,7 @@ import com.example.test.utils.Imp.RespResult;
 import com.fasterxml.jackson.databind.ser.Serializers;
 import com.google.gson.JsonObject;
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,20 +30,20 @@ public class DietController implements IPermission {
     dietRecordService dietService;
 
     @PostMapping("/add")
-    public RespResult<?> add(@RequestBody JsonObject params, HttpSession session){
+    public RespResult<?> add(@RequestBody JSONObject params, HttpSession session){
         RespResult<?> result;
         Map<String,Integer> map = new HashMap<>();
         dietRecord diet = new dietRecord();
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         try{
-            diet.setName(params.get("name").getAsString());
-            diet.setAmount(params.get("amount").getAsInt());
-            diet.setType(params.get("type").getAsInt());
-            diet.setSource(params.get("source").getAsInt());
-            diet.setDetail(params.get("detail").getAsString());
-            diet.setStartTime(LocalDateTime.parse(params.get("startTime").getAsString(),fm));
-            diet.setEndTime(LocalDateTime.parse(params.get("endTime").getAsString(),fm));
-            diet.setImg(params.get("img").getAsJsonArray().toString());
+            diet.setName(params.getString("name"));
+            diet.setAmount(params.getInt("amount"));
+            diet.setType(params.getInt("type"));
+            diet.setSource(params.getInt("source"));
+            diet.setDetail(params.getString("detail"));
+            diet.setStartTime(LocalDateTime.parse(params.getString("startTime"),fm));
+            diet.setEndTime(LocalDateTime.parse(params.getString("endTime"),fm));
+            diet.setImg(params.getJSONArray("img").toString());
         }catch (Exception e){
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null, config.getEnv(),"");
             return result;

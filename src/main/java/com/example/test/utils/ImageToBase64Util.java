@@ -61,7 +61,7 @@ public class ImageToBase64Util {
             fileName = fileName+suffix.get();
             File dir = new File(filePath);
             //判断文件目录是否存在
-            if (!dir.exists() && dir.isDirectory()) {
+            if (!dir.exists()) {
                 dir.mkdirs();
             }
             File files = new File(fileName);

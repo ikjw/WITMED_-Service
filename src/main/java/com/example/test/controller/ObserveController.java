@@ -6,6 +6,7 @@ import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.*;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
+import net.sf.json.JSONArray;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -167,7 +170,25 @@ public class ObserveController implements IPermission {
         if (dataType.equals("diet"))
         {
             List<dietRecord> lst = dietRecordService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
+            List lst1 = new ArrayList<>();
+            for (dietRecord dietRecord : lst) {
+                Map<String,Object> map1 = new HashMap<>();
+                map1.put("id",dietRecord.getId());
+                map1.put("name",dietRecord.getName());
+                map1.put("amount",dietRecord.getAmount());
+                map1.put("startTime",dietRecord.getStartTime());
+                map1.put("endTime",dietRecord.getEndTime());
+                map1.put("detail",dietRecord.getDetail());
+                if (dietRecord.getImg()!=null&&!dietRecord.getImg().equals("")){
+                    map1.put("img", JSONArray.fromObject(dietRecord.getImg()));
+                }
+                else map1.put("img",null);
+                map1.put("source",dietRecord.getSource());
+                map1.put("UID",dietRecord.getUID());
+                map1.put("type",dietRecord.getType());
+                lst1.add(map1);
+            }
+            result = new RespResult<>(BaseRespResultCode.OK,lst1, config.getEnv(), "");
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
         }
