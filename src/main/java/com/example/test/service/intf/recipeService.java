@@ -17,4 +17,5 @@ public interface recipeService {
 
     recipe queryById(int id);
     int update(String newName,String base,int id);
+    int updateName(String newName,int id);
 }
