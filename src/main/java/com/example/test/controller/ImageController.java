@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,16 +34,33 @@ public class ImageController {
             return result;
         }
         JSONArray jsonArray = JSONArray.fromObject(map.get("image"));
-        for (int i = 0 ; i < jsonArray.size();i++)
-        {
-            String s  = jsonArray.getString(i);
-            File file = ImageToBase64Util.convertBase64ToFile(s, config.getRecipeImage());
-            String fileName = file.getName();
-            int success = recipeService.update((String) map.get("newName"), fileName,Integer.parseInt(map.get("id").toString()));
+        int success = recipeService.update((String) map.get("newName"),jsonArray,Integer.parseInt(map.get("id").toString()));
+        if(success!=0){
+            recipe r = recipeService.queryById(Integer.parseInt(map.get("id").toString()));
+            Map<String,Object> map1 = new HashMap<>();
+            map1.put("id",r.getId());
+            map1.put("name",r.getName());
+            map1.put("cookMethod",r.getCookMethod());
+            map1.put("cookTime",r.getCookTime());
+            map1.put("calorie",r.getCalorie());
+            map1.put("carbohydrate",r.getCarbohydrate());
+            map1.put("protein",r.getProtein());
+            map1.put("fat",r.getFat());
+            map1.put("cholesterol",r.getCholesterol());
+            map1.put("dietaryFiber",r.getDietaryFiber());
+            map1.put("minerals",r.getMinerals());
+            map1.put("vitamin",r.getVitamin());
+            map1.put("others",r.getOthers());
+            map1.put("mainMaterials",r.getMainMaterials());
+            map1.put("accessories",r.getAccessories());
+            map1.put("notCalculated",r.getNotCalculated());
+            if (r.getImg()!=null&&!r.getImg().equals(""))
+                map1.put("img",JSONArray.fromObject(r.getImg()));
+            else map1.put("img",null);
+            result = new RespResult<>(BaseRespResultCode.OK,map1, config.getEnv(), "");
+        }else{
+            result = new RespResult<>(BaseRespResultCode.OK,null,config.getEnv(),"");
         }
-        recipe recipe = recipeService.queryById(Integer.parseInt(map.get("id").toString()));
-        recipeService.updateName((String) map.get("NewName"),Integer.parseInt(map.get("id").toString()));
-        result = new RespResult<>(BaseRespResultCode.OK,recipe, config.getEnv(), "");
         return result;
     }
 }

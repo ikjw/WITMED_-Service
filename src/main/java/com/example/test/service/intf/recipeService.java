@@ -2,6 +2,7 @@ package com.example.test.service.intf;
 
 import com.example.test.bean.recipe;
 import com.example.test.bean.recipeCollection;
+import net.sf.json.JSONArray;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +17,6 @@ public interface recipeService {
     List<recipeCollection> queryCollection(String UID);
 
     recipe queryById(int id);
-    int update(String newName,String base,int id);
+    int update(String newName, JSONArray imgs, int id);
     int updateName(String newName,int id);
 }

@@ -2,15 +2,18 @@ package com.example.test.service.Imp;
 
 import com.example.test.bean.recipe;
 import com.example.test.bean.recipeCollection;
+import com.example.test.config.envConfig;
 import com.example.test.dao.recipeCollectionDao;
 import com.example.test.dao.recipeDao;
 import com.example.test.service.intf.recipeService;
 import com.example.test.utils.CheckPreCondition;
+import com.example.test.utils.ImageToBase64Util;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -19,6 +22,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class recipeServiceImp implements recipeService {
+    @Resource
+    envConfig config;
     @Resource
     recipeDao recipeDao;
     @Resource
@@ -69,23 +74,27 @@ public class recipeServiceImp implements recipeService {
         return recipeDao.queryById(id);
     }
     @Override
-    public int update(String newName,String base,int id) {
+    public int update(String newName,JSONArray imgs,int id) {
         CheckPreCondition.notNull(newName);
-        CheckPreCondition.notNull(base);
-        recipe recipe = recipeDao.queryById(id);
-
-        JSONArray jsonArray;
-        if (recipe.getImg() == null) {
-            jsonArray = new JSONArray();
-        } else {
-            jsonArray = JSONArray.fromObject(recipe.getImg());
+        CheckPreCondition.notNull(imgs);
+        int success = recipeDao.updateName(id, newName);
+        JSONArray jsonArray = imgs;
+        for(int i=0;i<jsonArray.size();i++){
+            String str = jsonArray.getString(i);
+            if(!isFileName(str)){
+                File file = ImageToBase64Util.convertBase64ToFile(str,config.getRecipeImage());
+                String fileName = file.getName();
+                jsonArray.set(i,fileName);
+            }
         }
-        jsonArray.add(base);
-        return recipeDao.updateImage(id, jsonArray.toString());
+        return success*recipeDao.updateImage(id, jsonArray.toString());
     }
     @Override
     public int updateName(String newName,int id){
         CheckPreCondition.notNull(newName);
         return recipeDao.updateName(id, newName);
+    }
+    private boolean isFileName(String str){
+        return str.matches("[0-9]*-[0-9]*.[A-Za-z]*") || str.matches("[0-9]*.[A-Za-z]*");
     }
 }

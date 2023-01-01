@@ -14,6 +14,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ImageToBase64Util {
+    public static Random random = new Random();
     public static  Map<String,String> fileHeader = new HashMap<>(){{
         put("/9j",".jpg");
         put("iVB",".jpg");
@@ -45,8 +46,6 @@ public class ImageToBase64Util {
         try {
             LocalDateTime now = LocalDateTime.now();
             DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
-            Random random = new Random();
-            random.setSeed(now.toEpochSecond(ZoneOffset.of("+8")));
             fileName = now.format(fm) + (random.nextInt()%10000);
             AtomicReference<String> suffix = new AtomicReference<>();
             suffix.set("");
