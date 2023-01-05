@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,6 +26,6 @@ public class dietRecord {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
     private String detail;
-    private String img;//上传时，该项应该为Base64。获取时该项为图片的相对路径。
+    private List<String> img;//上传时，该项应该为Base64。获取时该项为图片的相对路径。
     private int source;
 }

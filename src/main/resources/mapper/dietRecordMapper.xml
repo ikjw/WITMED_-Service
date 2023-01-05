@@ -9,7 +9,7 @@
         <result property="amount" column="amount"/>
         <result property="startTime" column="startTime"/>
         <result property="endTime" column="endTime"/>
-        <result property="img" column="img"/>
+        <result property="img" column="img" typeHandler="com.example.test.typehandler.stringListHandler"/>
         <result property="source" column="source"/>
         <result property="detail" column="detail"/>
     </resultMap>
@@ -23,4 +23,7 @@
         where UID=#{param1}
           and (startTime &gt;= #{param2} and startTime &lt; #{param3})
     </select>
+    <update id="update" parameterType="com.example.test.bean.dietRecord">
+        update diet_record set img=#{param1} where id=#{param2}
+    </update>
 </mapper>

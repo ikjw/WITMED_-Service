@@ -14,7 +14,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 @Service
@@ -28,6 +27,7 @@ public class dietRecordServiceImp implements dietRecordService {
         CheckPreCondition.notNull(mUID);
         CheckPreCondition.notNull(record);
         record.setUID(mUID);
+        JSONArray jsonArray = new JSONArray();
         List<dietRecord> lst = this.query(mUID,record.getStartTime(),record.getEndTime().plusMinutes(1));
         for(dietRecord i: lst){
             if(i.getType() == record.getType()
@@ -37,22 +37,21 @@ public class dietRecordServiceImp implements dietRecordService {
                 return 0;
             }
         }
-        if(record.getImg()==null || record.getImg().length() == 0){
-            record.setImg("[]");
+        if(record.getImg()==null){
+            record.setImg(null);
         }else{
-            JSONArray arr = JSONArray.fromObject(record.getImg());
-            JSONArray fileName = new JSONArray();
-            for(Object i : arr){
-                File file = ImageToBase64Util.convertBase64ToFile((String)i,config.getImgPath());
+            List<String> lst1 = record.getImg();
+            for (String s : lst1) {
+                File file = ImageToBase64Util.convertBase64ToFile(s,config.getImgPath());
                 if(file == null){
-                    record.setImg("");
+                    record.setImg(null);
                 }else{
-                    fileName.add(file.getName());
+                    jsonArray.add(file.getName());
                 }
             }
-            record.setImg(fileName.toString());
         }
-        return  dao.insert(record);
+        dao.insert(record);
+        return  dao.update(jsonArray.toString(),record.getId());
     }
 
     @Override

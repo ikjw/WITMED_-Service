@@ -9,4 +9,5 @@ import java.util.List;
 public interface dietRecordDao {
     Integer insert(dietRecord record);
     List<dietRecord> query(String UID,String from,String to);
+    int update(String img,int id);
 }
