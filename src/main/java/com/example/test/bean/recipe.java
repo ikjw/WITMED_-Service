@@ -33,6 +33,6 @@ public class recipe {
     Map<String,Float> others; //其它
     Map<String,String> mainMaterials; // 主要原料
     Map<String,String> accessories; // 辅料
-    String notCalculated; //无法计算的食物
-    String img;
+    List<String> notCalculated; //无法计算的食物
+    List<String> img;
 }

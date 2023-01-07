@@ -17,8 +17,8 @@
         <result property="others" column="其他" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
         <result property="mainMaterials" column="主料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
         <result property="accessories" column="辅料" typeHandler="com.example.test.typehandler.ObjectJsonHandler"/>
-        <result property="notCalculated" column="无法计算"/>
-        <result property="img" column="图片" />
+        <result property="notCalculated" column="无法计算" typeHandler="com.example.test.typehandler.stringListHandler"/>
+        <result property="img" column="图片" typeHandler="com.example.test.typehandler.stringListHandler" />
     </resultMap>
     <select id="queryByName" resultMap="recipe">
         select id,菜名,加工工艺,烹饪时间,`热量(千卡)`,`碳水化合物(克)`,`蛋白质(克)`,`脂肪(克)`,`胆固醇(毫克)`,`膳食纤维(克)`,`矿物质元素(毫克)`,`维生素(毫克)`,`其他`,`主料`,`辅料`,`无法计算`,`图片`

@@ -72,10 +72,19 @@ public class versionController {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return result;
         }
+        String url = "";
         version version = versionService.queryRecent(name);
         map1.put("versionCode",version.getVersionCode());
         map1.put("versionName",version.getVersionName());
-        map1.put("url",config.getUrl());
+        String versionName = version.getVersionName();
+        versionName =  versionName.replace(".","_");
+        if (name.equals("医生端(Android)")){
+            url = "http://www.wi.xdrv.cn/apk/doctor_"+versionName+".apk";
+        }
+        else if (name.equals("患者端(Android)")){
+            url = "http://www.wi.xdrv.cn/apk/client_"+versionName+".apk";
+        }
+        map1.put("url",url);
         result = new RespResult<>(BaseRespResultCode.OK,map1,config.getEnv(),"");
         return result;
     }
