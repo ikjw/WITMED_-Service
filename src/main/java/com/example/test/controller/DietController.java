@@ -28,7 +28,7 @@ public class DietController implements IPermission {
     dietRecordService dietService;
 
     @PostMapping("/add")
-    public RespResult<?> get(@RequestBody dietRecord diet, HttpSession session){
+    public RespResult<?> add(@RequestBody dietRecord diet, HttpSession session){
         RespResult<?> result;
         Map<String,Integer> map = new HashMap<>();
         String UID = (String) session.getAttribute("UID");

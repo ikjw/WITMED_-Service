@@ -12,6 +12,7 @@ import com.example.test.utils.CheckPreCondition;
 import com.example.test.utils.fastJsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
+@Slf4j
 @Service
 public class recipeRecommendImp implements recipeRecommendService {
     @Resource
@@ -99,6 +100,7 @@ public class recipeRecommendImp implements recipeRecommendService {
             builder.append(line);
         }
         String tmp = builder.toString();
+        log.info(tmp);
         rr = parserFromJson(tmp);
         in.close();
         proc.waitFor();

@@ -9,10 +9,11 @@
         <result property="amount" column="amount"/>
         <result property="startTime" column="startTime"/>
         <result property="endTime" column="endTime"/>
-        <result property="img" column="img" typeHandler="com.example.test.typehandler.stringListHandler"/>
+        <result property="img" column="img" typeHandler="com.example.test.typehandler.ListToStringHandler" javaType="java.util.List" jdbcType="VARCHAR"/>
         <result property="source" column="source"/>
         <result property="detail" column="detail"/>
     </resultMap>
+
     <insert id="insert" parameterType="com.example.test.bean.dietRecord">
         insert into diet_record(UID, name, type, amount,startTime,endTime,img,detail,source)
         VALUES(#{UID},#{name},#{type},#{amount},#{startTime},#{endTime},#{img},#{detail},#{source})

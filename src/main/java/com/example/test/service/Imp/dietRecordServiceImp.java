@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 @Service
@@ -27,7 +28,7 @@ public class dietRecordServiceImp implements dietRecordService {
         CheckPreCondition.notNull(mUID);
         CheckPreCondition.notNull(record);
         record.setUID(mUID);
-        JSONArray jsonArray = new JSONArray();
+        List<String> imgLst = new ArrayList<>();
         List<dietRecord> lst = this.query(mUID,record.getStartTime(),record.getEndTime().plusMinutes(1));
         for(dietRecord i: lst){
             if(i.getType() == record.getType()
@@ -46,12 +47,12 @@ public class dietRecordServiceImp implements dietRecordService {
                 if(file == null){
                     record.setImg(null);
                 }else{
-                    jsonArray.add(file.getName());
+                    imgLst.add(file.getName());
                 }
             }
         }
-        dao.insert(record);
-        return  dao.update(jsonArray.toString(),record.getId());
+        record.setImg(imgLst);
+        return dao.insert(record);
     }
 
     @Override

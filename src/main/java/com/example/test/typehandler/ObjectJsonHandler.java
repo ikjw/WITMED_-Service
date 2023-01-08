@@ -1,6 +1,7 @@
 package com.example.test.typehandler;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.apache.ibatis.type.MappedJdbcTypes;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  * MappedTypes注解中的类代表此转换器可以自动转换为的java对象
  * MappedJdbcTypes注解中设置的是对应的jdbctype
  */
-
+@Slf4j
 @MappedTypes(JSONObject.class)
 @MappedJdbcTypes(JdbcType.VARCHAR)
 public class ObjectJsonHandler extends BaseTypeHandler<JSONObject>{
@@ -22,6 +23,7 @@ public class ObjectJsonHandler extends BaseTypeHandler<JSONObject>{
     //设置非空参数
     @Override
     public void setNonNullParameter(PreparedStatement ps, int i, JSONObject parameter, JdbcType jdbcType) throws SQLException {
+        log.info("ObjectJsonHandler...");
         ps.setString(i, String.valueOf(parameter.toJSONString()));
     }
     //根据列名，获取可以为空的结果

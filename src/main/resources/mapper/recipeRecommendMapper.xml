@@ -4,9 +4,9 @@
     <resultMap id="result" type="com.example.test.bean.recipeRecommend">
         <result property="id" column="id"/>
         <result property="dietPlanId" column="diet_plan_id"/>
-        <result property="breakfast" column="breakfast" typeHandler="com.example.test.typehandler.recipeListHandler"/>
-        <result property="lunch" column="lunch" typeHandler="com.example.test.typehandler.recipeListHandler"/>
-        <result property="dinner" column="dinner" typeHandler="com.example.test.typehandler.recipeListHandler"/>
+        <result property="breakfast" column="breakfast" typeHandler="com.example.test.typehandler.ListToStringHandler" javaType="java.util.List" jdbcType="VARCHAR"/>
+        <result property="lunch" column="lunch" typeHandler="com.example.test.typehandler.ListToStringHandler" javaType="java.util.List" jdbcType="VARCHAR"/>
+        <result property="dinner" column="dinner" typeHandler="com.example.test.typehandler.ListToStringHandler" javaType="java.util.List" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time"/>
         <result property="state" column="state"/>
         <result property="changeTime" column="change_time"/>
