@@ -17,4 +17,5 @@ public class version {
     private int maxCompatibleVersion;
     private String description;
     private String detailDescription;
+    private String file;
 }

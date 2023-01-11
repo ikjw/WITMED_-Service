@@ -19,6 +19,13 @@ public class RequestWrapperFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException
             , IOException {
+        // 排除multipart/form-data类型的请求，不以json形式读取
+        String requestContentType=request.getContentType();
+        if (requestContentType != null && requestContentType.contains("multipart/form-data")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         ServletRequest requestWrapper = null;
         if (request instanceof HttpServletRequest) {
             requestWrapper = new BodyReaderHttpServletRequestWrapper((HttpServletRequest) request);

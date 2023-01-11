@@ -9,4 +9,6 @@ public interface versionService {
     version queryVersion(int versionCode,String name);
     int insert(version version);
     List<version> query(int start, int end);
+    version queryVersionById(int id);
+    int uploadFile(int id,String filename);
 }

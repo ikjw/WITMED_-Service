@@ -44,7 +44,8 @@ config:
   env: dev
   imgPath: I:\Smartheal\service\static\images\
   recipeImage: D:\images\
-  url: "http://www.wi.xdrv.cn/apk/client_2_0_1.apk"
+  apkPath: D:\java\tmp\ # 需要加末尾斜杠
+  apkBaseUrl: http://wi.xdrv.cn/apk/ # 需要加末尾斜杠
 
 
 

@@ -33,5 +33,13 @@ public class versionServiceImp implements versionService {
     public List<version> query(int start, int end){
         return versionDao.query(start,end);
     }
+    public version queryVersionById(int id){
+        return versionDao.queryVersionById(id);
+    }
+    @Override
+    public int uploadFile(int id, String filename){
+        CheckPreCondition.notNull(filename);
+        return versionDao.uploadFile(id,filename);
+    }
 }
 

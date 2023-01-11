@@ -5,10 +5,9 @@ import com.example.test.config.envConfig;
 import com.example.test.service.intf.versionService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -53,6 +52,11 @@ public class versionController {
     }
     @PostMapping("/add")
     public RespResult<?> add(@RequestBody version version,HttpSession session){
+        // 仅管理员有权发新版本
+        if(session.getAttribute("UID") == null || (Integer) session.getAttribute("type") != 3){
+            return new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
+        }
+
         RespResult<?> result;
         if (version.getVersionCode()==0||version.getVersionName()==null||version.getName()==null||version.getDescription()==null||version.getDetailDescription()==null||version.getMaxCompatibleVersion()==0){
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
@@ -72,20 +76,55 @@ public class versionController {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return result;
         }
-        String url = "";
         version version = versionService.queryRecent(name);
         map1.put("versionCode",version.getVersionCode());
         map1.put("versionName",version.getVersionName());
-        String versionName = version.getVersionName();
-        versionName =  versionName.replace(".","_");
-        if (name.equals("医生端(Android)")){
-            url = "http://www.wi.xdrv.cn/apk/doctor_"+versionName+".apk";
+        String url=version.getFile();
+        if (url!=null){
+            url=config.getApkBaseUrl()+url;
         }
-        else if (name.equals("患者端(Android)")){
-            url = "http://www.wi.xdrv.cn/apk/client_"+versionName+".apk";
+        else {
+            url="";
         }
         map1.put("url",url);
         result = new RespResult<>(BaseRespResultCode.OK,map1,config.getEnv(),"");
         return result;
+    }
+    @PostMapping("upload_file")
+    public RespResult<?> uploadFile(int id, MultipartFile file,HttpSession session){
+        // 仅管理员有权上传文件
+        if(session.getAttribute("UID") == null || (Integer) session.getAttribute("type") != 3){
+            return new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
+        }
+        System.out.println("OK");
+        version version=versionService.queryVersionById(id);
+        if (version==null){
+            return new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"该id不存在",config.getEnv(),"");
+        }
+
+        // apk命名
+        String name=version.getName();
+        String versionName = version.getVersionName();
+        String filename=null;
+        versionName =  versionName.replace(".","_");
+        if (name.equals("医生端(Android)")){
+            filename="doctor_"+versionName+".apk";
+        }
+        else if (name.equals("患者端(Android)")){
+            filename="client_"+versionName+".apk";
+        }
+
+        // 写到本地
+        String savePath = config.getApkPath()+filename;
+        try {
+            file.transferTo(new java.io.File(savePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new RespResult<>(BaseRespResultCode.SYS_EXCEPTION,"apk文件保存失败",config.getEnv(),"");
+        }
+
+        // 更新数据库
+        int success = versionService.uploadFile(id,filename);
+        return new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
     }
 }

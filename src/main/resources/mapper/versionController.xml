@@ -9,6 +9,7 @@
         <result property="maxCompatibleVersion" column="max_compatible_version"/>
         <result property="description" column="description"/>
         <result property="detailDescription" column="detail_description"/>
+        <result property="file" column="file"/>
     </resultMap>
     <select id="queryRecent" resultMap="result">
         select * from (select * from version_control where `name`=#{param1}) as a
@@ -24,4 +25,10 @@
     <select id="query" resultMap="result">
         select * from version_control where version_code>#{start} and version_code&lt;=#{end}
     </select>
+    <select id="queryVersionById" resultMap="result">
+        select * from version_control where id=#{param1}
+    </select>
+    <update id="uploadFile" parameterType="com.example.test.bean.version">
+        update version_control set file=#{param2} where id=#{param1}
+    </update>
 </mapper>
