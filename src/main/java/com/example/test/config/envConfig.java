@@ -13,4 +13,5 @@ public class envConfig {
     private String recipeImage;
     private String apkPath;
     private String apkBaseUrl;
+    private String casesImage;
 }
