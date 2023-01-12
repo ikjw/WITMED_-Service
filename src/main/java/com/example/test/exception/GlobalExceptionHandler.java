@@ -6,6 +6,7 @@ import com.example.test.utils.HttpHelper;
 import com.example.test.utils.Imp.RespResult;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @ControllerAdvice
-@Log4j2
+@Slf4j
 public class GlobalExceptionHandler {
     @Autowired
     envConfig config;
@@ -30,12 +31,14 @@ public class GlobalExceptionHandler {
         Map<String,Object> map = new HashMap<>();
         map.put("url",request.getRequestURI());
         map.put("headers",parseRequestHeaders(request));
-        map.put("body", JSON.parse(HttpHelper.getBodyString(request)));
+        if(request.getContentType().contains("application/json")){
+            map.put("body", JSON.parse(HttpHelper.getBodyString(request)));
+        }
         map.put("method",request.getMethod());
         map.put("params",parseParams(request));
         map.put("message",throwable.getMessage());
         map.put("stackTrace",Arrays.toString(throwable.getStackTrace()));
-        log.atError().log(JSON.toJSONString(map));
+        log.error(JSON.toJSONString(map));
         return result;
     }
     public static Map<?,?> parseParams (HttpServletRequest request) {

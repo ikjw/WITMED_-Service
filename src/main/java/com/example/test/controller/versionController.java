@@ -54,7 +54,7 @@ public class versionController {
     public RespResult<?> add(@RequestBody version version,HttpSession session){
         // 仅管理员有权发新版本
         if(session.getAttribute("UID") == null || (Integer) session.getAttribute("type") != 3){
-            return new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"",config.getEnv(),"");
         }
 
         RespResult<?> result;
