@@ -30,8 +30,8 @@ public class versionServiceImp implements versionService {
         return versionDao.insert(version);
     }
     @Override
-    public List<version> query(int start, int end){
-        return versionDao.query(start,end);
+    public List<version> query(int start, int end,String name){
+        return versionDao.query(start,end,name);
     }
     public version queryVersionById(int id){
         return versionDao.queryVersionById(id);
