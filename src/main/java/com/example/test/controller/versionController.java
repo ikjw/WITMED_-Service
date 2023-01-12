@@ -38,7 +38,7 @@ public class versionController {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return result;
         }
-        List<version> diffVersion = versionService.query(versionCode,latestVersion.getVersionCode());
+        List<version> diffVersion = versionService.query(versionCode,latestVersion.getVersionCode(),name);
         int forceUpdate;
         if (latestVersion.getMaxCompatibleVersion()>versionCode)
             forceUpdate = 1;
@@ -63,7 +63,8 @@ public class versionController {
             return result;
         }
         int success = versionService.insert(version);
-        result = new RespResult<>(BaseRespResultCode.OK,success,config.getEnv(),"");
+        version version1 = versionService.queryVersion(version.getVersionCode(), version.getName());
+        result = new RespResult<>(BaseRespResultCode.OK,version1,config.getEnv(),"");
         return result;
     }
     @PostMapping("/latest")
