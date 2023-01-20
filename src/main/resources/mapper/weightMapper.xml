@@ -20,11 +20,11 @@
         order by date desc limit 1
     </select>
 
-    <insert id="insert" parameterType="com.example.test.bean.bloodSugar">
+    <insert id="insert" parameterType="com.example.test.bean.weight">
         insert into weight(UID, value, date, source, detail)
         VALUES(#{UID},#{value},#{date},#{source},#{detail})
     </insert>
-    <insert id="init" parameterType="com.example.test.bean.bloodSugar">
+    <insert id="init" parameterType="com.example.test.bean.weight">
         insert into weight(UID, value, date)
         VALUES(#{UID},#{value},#{date})
     </insert>

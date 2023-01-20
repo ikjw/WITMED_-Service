@@ -6,7 +6,6 @@ import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.*;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
-import net.sf.json.JSONArray;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,6 +52,8 @@ public class ObserveController implements IPermission {
     stepRecordService stepRecordService;
     @Resource
     dietRecordService dietRecordService;
+    @Resource
+    ketoneBodyService ketoneBodyService;
     @PostMapping("/health")
     public RespResult<?> getHealthData(@RequestBody Map<String,String> map, HttpSession session){
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -81,28 +80,47 @@ public class ObserveController implements IPermission {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return  result;
         }
-        if(dataType.equals("bloodSugar")){
-            List<bloodSugar> lst = sugarService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if(dataType.equals("weight")){
-            LocalDate new_from = from.toLocalDate();
-            LocalDate new_to = to.toLocalDate();
-            List<weight> lst = weightService.query(uUID,new_from,new_to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if(dataType.equals("insulinRecord")){
-            List<insulinRecord> lst = insulinService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if (dataType.equals("heartRate")) {
-            List<heartRate> lst = heartRateService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        } else if (dataType.equals("sleep")) {
-            List<sleep> lst = sleepService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if (dataType.equals("bloodOxygen")) {
-            List<bloodOxygen> lst = bloodOxygenService.query(uUID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        } else{
-            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
+        switch (dataType) {
+            case "bloodSugar": {
+                List<bloodSugar> lst = sugarService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "weight": {
+                LocalDate new_from = from.toLocalDate();
+                LocalDate new_to = to.toLocalDate();
+                List<weight> lst = weightService.query(uUID, new_from, new_to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "insulinRecord": {
+                List<insulinRecord> lst = insulinService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "heartRate": {
+                List<heartRate> lst = heartRateService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "sleep": {
+                List<sleep> lst = sleepService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "bloodOxygen": {
+                List<bloodOxygen> lst = bloodOxygenService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "ketoneBody": {
+                List<ketoneBody> lst = ketoneBodyService.query(uUID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            default:
+                result = new RespResult<>(100201, "不支持该类型数据", "不支持该类型数据", "", config.getEnv(), "");
+                break;
         }
         return result;
     }

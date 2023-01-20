@@ -6,6 +6,7 @@ import com.example.test.bean.heartRate;
 import com.example.test.bean.insulinRecord;
 import com.example.test.bean.weight;
 import com.example.test.bean.bloodOxygen;
+import com.example.test.bean.ketoneBody;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.bloodSugarService;
@@ -14,6 +15,7 @@ import com.example.test.service.intf.insulinRecordService;
 import com.example.test.service.intf.weightService;
 import com.example.test.service.intf.sleepService;
 import com.example.test.service.intf.bloodOxygenService;
+import com.example.test.service.intf.ketoneBodyService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import com.example.test.utils.fastJsonUtils;
@@ -55,6 +57,8 @@ public class DataController implements IPermission {
     sleepService sleepService;
     @Resource
     bloodOxygenService bloodOxygenService;
+    @Resource
+    ketoneBodyService ketoneBodyService;
     /**
      * RequestBody:
      * {
@@ -104,28 +108,47 @@ public class DataController implements IPermission {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return  result;
         }
-        if(dataType.equals("bloodSugar")){
-            List<bloodSugar> lst = sugarService.query(UID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if(dataType.equals("weight")){
-            LocalDate new_from = from.toLocalDate();
-            LocalDate new_to = to.toLocalDate();
-            List<weight> lst = weightService.query(UID,new_from,new_to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if(dataType.equals("insulinRecord")){
-            List<insulinRecord> lst = insulinService.query(UID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if (dataType.equals("heartRate")) {
-            List<heartRate> lst = heartRateService.query(UID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        } else if (dataType.equals("sleep")) {
-            List<sleep> lst = sleepService.query(UID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        }else if (dataType.equals("bloodOxygen")) {
-            List<bloodOxygen> lst = bloodOxygenService.query(UID,from,to);
-            result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
-        } else{
-            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
+        switch (dataType) {
+            case "bloodSugar": {
+                List<bloodSugar> lst = sugarService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "weight": {
+                LocalDate new_from = from.toLocalDate();
+                LocalDate new_to = to.toLocalDate();
+                List<weight> lst = weightService.query(UID, new_from, new_to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "insulinRecord": {
+                List<insulinRecord> lst = insulinService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "heartRate": {
+                List<heartRate> lst = heartRateService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "sleep": {
+                List<sleep> lst = sleepService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "bloodOxygen": {
+                List<bloodOxygen> lst = bloodOxygenService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            case "ketoneBody": {
+                List<ketoneBody> lst = ketoneBodyService.query(UID, from, to);
+                result = new RespResult<>(BaseRespResultCode.OK, lst, config.getEnv(), "");
+                break;
+            }
+            default:
+                result = new RespResult<>(100201, "不支持该类型数据", "不支持该类型数据", "", config.getEnv(), "");
+                break;
         }
         return result;
     }
@@ -165,75 +188,94 @@ public class DataController implements IPermission {
         }
         int success = 0;
         int total = 0;
-        if(dataType.equals("bloodSugar")){
-            try{
-                List<bloodSugar> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data, bloodSugar[].class);
-                total = lst.size();
-                success = sugarService.batchInsert(lst,UID);
-            }catch (Exception e){
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
-                result.setDetailMessage(e.getMessage());
-                return  result;
-            }
-        }else if(dataType.equals("weight")){
-            try{
-                List<weight> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data, weight[].class);
-                total = lst.size();
-                success = weightService.batchInsert(lst,UID);
-            }catch (Exception e) {
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
-                result.setDetailMessage(e.getMessage());
+        switch (dataType) {
+            case "bloodSugar":
+                try {
+                    List<bloodSugar> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, bloodSugar[].class);
+                    total = lst.size();
+                    success = sugarService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "weight":
+                try {
+                    List<weight> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, weight[].class);
+                    total = lst.size();
+                    success = weightService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "insulinRecord":
+                try {
+                    List<insulinRecord> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, insulinRecord[].class);
+                    total = lst.size();
+                    success = insulinService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "heartRate":
+                try {
+                    List<heartRate> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, heartRate[].class);
+                    total = lst.size();
+                    success = heartRateService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "sleep":
+                try {
+                    List<sleep> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, sleep[].class);
+                    total = lst.size();
+                    success = sleepService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "bloodOxygen":
+                try {
+                    List<bloodOxygen> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, bloodOxygen[].class);
+                    total = lst.size();
+                    success = bloodOxygenService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            case "ketoneBody":
+                try {
+                    List<ketoneBody> lst;
+                    lst = fastJsonUtils.linkedMapTypeListToObjectList(data, ketoneBody[].class);
+                    total = lst.size();
+                    success = ketoneBodyService.batchInsert(lst, UID);
+                } catch (Exception e) {
+                    result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
+                    result.setDetailMessage(e.getMessage());
+                    return result;
+                }
+                break;
+            default:
+                result = new RespResult<>(100201, "不支持该类型数据", "不支持该类型数据", "", config.getEnv(), "");
                 return result;
-            }
-        }else if(dataType.equals("insulinRecord")){
-            try{
-                List<insulinRecord> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,insulinRecord[].class);
-                total = lst.size();
-                success = insulinService.batchInsert(lst,UID);
-            }catch (Exception e){
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
-                result.setDetailMessage(e.getMessage());
-                return result;
-            }
-        }else if (dataType.equals("heartRate")) {
-            try {
-                List<heartRate> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,heartRate[].class);
-                total =lst.size();
-                success = heartRateService.batchInsert(lst,UID);
-            } catch (Exception e) {
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
-                result.setDetailMessage(e.getMessage());
-                return result;
-            }
-        } else if (dataType.equals("sleep")) {
-            try {
-                List<sleep> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,sleep[].class);
-                total =lst.size();
-                success = sleepService.batchInsert(lst,UID);
-            } catch (Exception e) {
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
-                result.setDetailMessage(e.getMessage());
-                return result;
-            }
-        }else if (dataType.equals("bloodOxygen")) {
-            try {
-                List<bloodOxygen> lst;
-                lst = fastJsonUtils.linkedMapTypeListToObjectList(data,bloodOxygen[].class);
-                total =lst.size();
-                success = bloodOxygenService.batchInsert(lst,UID);
-            } catch (Exception e) {
-                result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "", config.getEnv(), "");
-                result.setDetailMessage(e.getMessage());
-                return result;
-            }
-        } else{
-            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
-            return  result;
         }
         Map<String,Object> resultInfo = new HashMap<>();
         resultInfo.put("success",success);
@@ -265,14 +307,22 @@ public class DataController implements IPermission {
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
             return result;
         }
-        if(dataType.equals("bloodSugar")){
-            bloodSugar bloodSugar = sugarService.queryRecent(UID);
-            result = new RespResult<>(BaseRespResultCode.OK,bloodSugar, config.getEnv(), "");
-        } else if (dataType.equals("weight")) {
-            weight weight = weightService.queryRecent(UID);
-            result = new RespResult<>(BaseRespResultCode.OK,weight, config.getEnv(), "");
-        } else {
-            result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");
+        switch (dataType) {
+            case "bloodSugar":
+                bloodSugar bloodSugar = sugarService.queryRecent(UID);
+                result = new RespResult<>(BaseRespResultCode.OK, bloodSugar, config.getEnv(), "");
+                break;
+            case "weight":
+                weight weight = weightService.queryRecent(UID);
+                result = new RespResult<>(BaseRespResultCode.OK, weight, config.getEnv(), "");
+                break;
+            case "ketoneBody":
+                ketoneBody ketoneBody = ketoneBodyService.queryRecent(UID);
+                result = new RespResult<>(BaseRespResultCode.OK, ketoneBody, config.getEnv(), "");
+                break;
+            default:
+                result = new RespResult<>(100201, "不支持该类型数据", "不支持该类型数据", "", config.getEnv(), "");
+                break;
         }
         return result;
     }

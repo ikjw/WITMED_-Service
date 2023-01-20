@@ -5,13 +5,11 @@ import com.example.test.config.envConfig;
 import com.example.test.service.intf.versionService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +93,7 @@ public class versionController {
     public RespResult<?> uploadFile(int id, MultipartFile file,HttpSession session){
         // 仅管理员有权上传文件
         if(session.getAttribute("UID") == null || (Integer) session.getAttribute("type") != 3){
-            return new RespResult<>(BaseRespResultCode.LOGIN_TIMEOUT,"",config.getEnv(),"");
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"",config.getEnv(),"");
         }
         System.out.println("OK");
         version version=versionService.queryVersionById(id);
