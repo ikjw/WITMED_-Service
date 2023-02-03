@@ -5,22 +5,65 @@
         <result property="UID" column="UID"/>
         <result property="name" column="name"/>
         <result property="birthDay" column="birthday"/>
+        <result property="gender" column="gender"/>
+        <result property="faceBase64" column="face_base64"/>
+        <result property="domain" column="domain"/>
+        <result property="profile" column="profile"/>
+    </resultMap>
+    <resultMap id="resultFull" type="com.example.test.controller.AdminInfoController$FullDoctorInfo">
+        <result property="UID" column="UID"/>
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="type" column="type"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="name" column="name"/>
+        <result property="birthDay" column="birthday"/>
+        <result property="gender" column="gender"/>
         <result property="faceBase64" column="face_base64"/>
         <result property="domain" column="domain"/>
         <result property="profile" column="profile"/>
     </resultMap>
     <select id="query" resultMap="result">
-        select UID,name,gender,birthday,face_base64,domain,profile
+        select UID, name, gender, birthday, face_base64, domain, profile
         from doctor_info
-        where UID=#{param1}
-        or name=#{param1}
+        where UID = #{param1}
+           or name = #{param1}
+    </select>
+    <select id="queryAll" resultMap="resultFull">
+        SELECT a.UID,
+               a.phone,
+               a.mail,
+               a.type,
+               a.register_time,
+               d.name,
+               IFNULL(d.gender, 0) AS gender,
+               d.birthday,
+               d.face_base64,
+               d.domain,
+               d.profile
+        FROM account a
+                 LEFT JOIN doctor_info d on a.UID = d.UID
+        WHERE a.type = 2
     </select>
     <insert id="insert" parameterType="com.example.test.bean.doctorInfo">
+        insert into doctor_info (UID, name, gender, birthday, face_base64, domain, profile)
+        values (#{UID}, #{name}, #{gender}, #{birthDay}, #{faceBase64}, #{domain}, #{profile})
+    </insert>
+    <insert id="batchInsert">
         insert into doctor_info (UID,name,gender,birthday,face_base64,domain,profile)
-        values(#{UID},#{name},#{gender},#{birthDay},#{faceBase64},#{domain},#{profile})
+        VALUES
+        <foreach collection="doctorlist" item='doctorInfo' separator=','>
+            (#{doctorInfo.UID},#{doctorInfo.name},#{doctorInfo.gender},#{doctorInfo.birthDay},#{doctorInfo.faceBase64},#{doctorInfo.domain},#{doctorInfo.profile})
+        </foreach>
     </insert>
     <update id="update" parameterType="com.example.test.bean.doctorInfo">
-        update doctor_info set name=#{name},gender=#{gender},birthday=#{birthDay},face_base64=#{faceBase64},domain=#{domain},profile=#{profile}
-        where UID =#{UID}
+        update doctor_info
+        set name=#{name},
+            gender=#{gender},
+            birthday=#{birthDay},
+            face_base64=#{faceBase64},
+            domain=#{domain},
+            profile=#{profile}
+        where UID = #{UID}
     </update>
 </mapper>

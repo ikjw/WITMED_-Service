@@ -1,6 +1,8 @@
 package com.example.test.service.intf;
+
 import com.example.test.bean.userInfo;
-import com.example.test.bean.weight;
+
+import java.util.List;
 
 public interface userInfoService {
     /**
@@ -9,11 +11,25 @@ public interface userInfoService {
      * UID不为空
      * post-condition:
      * 只插入满足，UID，name,gender字段不为空，且不与数据库内数据重复的数据；
+     *
      * @param userInfo 用户信息记录
-     * @param mUID 用户唯一标识
+     * @param mUID     用户唯一标识
      * @return 0成功 1失败
      */
-    int insert(userInfo userInfo,String mUID);
+    int insert(userInfo userInfo, String mUID);
+
+    /**
+     * 高速批量插入用户信息
+     * pre-condition:
+     * UID不为空
+     * post-condition:
+     * 只插入满足，UID，name,gender字段不为空，且不与数据库内数据重复的数据；
+     *
+     * @param userlist 用户信息记录列表
+     * @return 成功条数
+     */
+    int batchInsert(List<? extends userInfo> userlist);
+
     /**
      * pre-condition:
      * at不为空
@@ -24,7 +40,13 @@ public interface userInfoService {
      */
     userInfo query(String at);
 
-
+    /**
+     * pre-condition:
+     * post-condition：
+     *
+     * @return useInfo对象列表
+     */
+    List<? extends userInfo> queryAll();
 
     int update(userInfo userInfo);
 }

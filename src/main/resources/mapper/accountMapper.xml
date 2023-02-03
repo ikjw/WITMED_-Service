@@ -8,7 +8,7 @@
         <result property="mail" column="mail"/>
         <result property="type" column="type"/>
         <result property="registerTime" column="register_time"/>
-        <result property="weChatId" column="wechat_id"/>
+        <result property="wechatId" column="wechat_id"/>
     </resultMap>
     <select id="query" resultMap="result">
         select UID,phone,mail,type,register_time,wechat_id,password
@@ -16,8 +16,23 @@
         where (UID=#{param1} or mail=#{param1} or phone=#{param1} or mail=#{param1})
           and type = #{param2}
     </select>
+    <select id="queryByUIDWithoutPW" resultMap="result">
+        select UID, phone, mail, type, register_time, wechat_id
+        from account
+        where UID = #{param1}
+    </select>
     <insert id="insert" parameterType="com.example.test.bean.account">
-        insert into account (UID,password,phone,mail,type,register_time,wechat_id)
-        VALUES(#{UID},#{password},#{phone},#{mail},#{type},#{registerTime},#{wechatId})
+        insert into account (UID, password, phone, mail, type, register_time, wechat_id)
+        VALUES (#{UID}, #{password}, #{phone}, #{mail}, #{type}, #{registerTime}, #{wechatId})
     </insert>
+    <update id="update" parameterType="com.example.test.bean.account">
+        update account
+        set password=#{password},
+            phone=#{phone},
+            mail=#{mail},
+            type=#{type},
+            register_time=#{registerTime},
+            wechat_id=#{wechatId}
+        where UID = #{UID}
+    </update>
 </mapper>

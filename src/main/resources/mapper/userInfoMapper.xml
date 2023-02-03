@@ -8,21 +8,59 @@
         <result property="birthDay" column="birthday"/>
         <result property="faceBase64" column="face_base64"/>
     </resultMap>
+    <resultMap id="resultFull" type="com.example.test.controller.AdminInfoController$FullUserInfo">
+        <result property="UID" column="UID"/>
+        <result property="phone" column="phone"/>
+        <result property="mail" column="mail"/>
+        <result property="type" column="type"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="name" column="name"/>
+        <result property="birthDay" column="birthday"/>
+        <result property="gender" column="gender"/>
+        <result property="faceBase64" column="face_base64"/>
+    </resultMap>
     <select id="query" resultMap="result">
-        select UID,name,gender,birthDay,face_base64
+        select UID, name, gender, birthDay, face_base64
         from user_info
-        where UID=#{param1}
-        or name=#{param1}
+        where UID = #{param1}
+           or name = #{param1}
+    </select>
+    <select id="queryAll" resultMap="resultFull">
+        SELECT a.UID,
+               a.phone,
+               a.mail,
+               a.type,
+               a.register_time,
+               u.name,
+               IFNULL(u.gender, 0) AS gender,
+               u.birthday,
+               u.face_base64
+        FROM account a
+                 LEFT JOIN user_info u on a.UID = u.UID
+        WHERE a.type = 1
     </select>
     <insert id="insert" parameterType="com.example.test.bean.userInfo">
         insert into user_info(UID, name, gender, birthday, face_base64)
-        VALUES(#{UID},#{name},#{gender},#{birthDay},#{faceBase64})
+        VALUES (#{UID}, #{name}, #{gender}, #{birthDay}, #{faceBase64})
+    </insert>
+    <insert id="batchInsert">
+        insert into user_info(UID, name, gender, birthday, face_base64)
+        VALUES
+        <foreach collection="userlist" item='userInfo' separator=','>
+            (#{userInfo.UID},#{userInfo.name},#{userInfo.gender},#{userInfo.birthDay},#{userInfo.faceBase64})
+        </foreach>
     </insert>
     <update id="update" parameterType="com.example.test.bean.userInfo">
-        update user_info set name=#{name},gender=#{gender},birthday=#{birthDay},face_base64=#{faceBase64}
-        where UID =#{UID}
+        update user_info
+        set name=#{name},
+            gender=#{gender},
+            birthday=#{birthDay},
+            face_base64=#{faceBase64}
+        where UID = #{UID}
     </update>
     <select id="getUnbind" resultMap="result">
-        select * from user_info where (user_info.UID not in (select uUID from doctor_user where state =1))
+        select *
+        from user_info
+        where (user_info.UID not in (select uUID from doctor_user where state = 1))
     </select>
 </mapper>

@@ -79,6 +79,13 @@ public class DoctorInfoController implements IPermission {
         RespResult<?> result;
         String UID = (String) session.getAttribute("UID");
         doctorInfo info = doctorInfoService.query(UID);
+        if (info == null) {
+            info = new doctorInfo();
+            info.setUID(UID);
+            info.setName("未知用户");
+            info.setGender(0);
+            doctorInfoService.insert(info,UID);
+        }
         result = new RespResult<>(BaseRespResultCode.OK,info,config.getEnv(), "");
         return result;
     }
