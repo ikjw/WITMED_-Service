@@ -125,13 +125,14 @@ public class ObserveController implements IPermission {
         return result;
     }
     @PostMapping("/sports")
-    public RespResult<?>getSports(@RequestBody Map<String,String>map,HttpSession session){
+    public RespResult<?>getSports(@RequestBody Map<String,Object>map,HttpSession session){
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String dUID = (String) session.getAttribute("UID");
-        String uUID = map.get("uUID");
-        String dataType = map.get("dataType");
-        String fromStr = map.getOrDefault("from","2020-01-01 00:00:00");
-        String toStr = map.getOrDefault("to", LocalDateTime.now().format(fm));
+        String uUID = (String) map.get("uUID");
+        String dataType = (String) map.get("dataType");
+        String fromStr = (String) map.getOrDefault("from","2020-01-01 00:00:00");
+        String toStr = (String) map.getOrDefault("to", LocalDateTime.now().format(fm));
+        int source = Integer.parseInt(map.get("source").toString());
         RespResult<?> result;
         if (doctorUserService.Find(dUID,uUID) == 0){
             result = new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"", config.getEnv(),"");
@@ -152,7 +153,7 @@ public class ObserveController implements IPermission {
         }
         if (dataType.equals("step"))
         {
-            List<stepRecord> lst = stepRecordService.query(uUID,from,to);
+            List<stepRecord> lst = stepRecordService.queryWithSource(uUID,from,to,source);
             result = new RespResult<>(BaseRespResultCode.OK,lst, config.getEnv(), "");
         }else{
             result = new RespResult<>(100201,"不支持该类型数据","不支持该类型数据","", config.getEnv(), "");

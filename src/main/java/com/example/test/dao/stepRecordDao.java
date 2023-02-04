@@ -9,4 +9,5 @@ import java.util.List;
 public interface stepRecordDao {
     int insert(stepRecord record);
     List<stepRecord> query(String uUID,String from,String to);
+    List<stepRecord> queryWithSource(String uUID,String from,String to,int source);
 }

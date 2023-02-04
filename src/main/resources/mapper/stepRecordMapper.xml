@@ -13,9 +13,15 @@
         values(#{UID},#{start},#{end},#{step},#{source})
     </insert>
     <select id="query" resultMap="result">
-        select UID,start,end,step
+        select UID,start,end,step,source
         from step_record
         where UID=#{param1}
         and (start &gt;= #{param2} and end &lt;= #{param3})
+    </select>
+    <select id="queryWithSource" resultMap="result">
+        select UID,start,end,step,source
+        from step_record
+        where UID=#{param1}
+        and (start &gt;= #{param2} and end &lt;= #{param3}) and source=#{param4}
     </select>
 </mapper>

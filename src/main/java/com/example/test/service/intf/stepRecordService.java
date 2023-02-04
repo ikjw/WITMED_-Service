@@ -9,4 +9,5 @@ public interface stepRecordService {
     int insert(String UID, stepRecord record);
     int batchInsert(String UID, List<stepRecord> record);
     List<stepRecord> query(String UID, LocalDateTime from,LocalDateTime to);
+    List<stepRecord> queryWithSource(String UID, LocalDateTime from,LocalDateTime to,int source);
 }

@@ -31,4 +31,11 @@ public class accountServiceImp implements accountService {
         CheckPreCondition.notNull(account.getUID());
         return accountDao.update(account);
     }
+    @Override
+    public int updatePsw(String UID,String oldPsw,String newPsw){
+        CheckPreCondition.notNull(UID);
+        CheckPreCondition.notNull(oldPsw);
+        CheckPreCondition.notNull(newPsw);
+        return accountDao.updatePsw(oldPsw,newPsw,UID);
+    }
 }

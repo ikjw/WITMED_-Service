@@ -33,5 +33,5 @@ public interface accountService {
      * @return 1/0
      */
     int update(account account);
-
+    int updatePsw(String UID,String oldPsw,String newPsw);
 }

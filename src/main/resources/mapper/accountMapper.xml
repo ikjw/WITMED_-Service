@@ -35,4 +35,7 @@
             wechat_id=#{wechatId}
         where UID = #{UID}
     </update>
+    <update id="updatePsw">
+        update account set password=#{param2} where password=#{param1} and UID=#{param3}
+    </update>
 </mapper>

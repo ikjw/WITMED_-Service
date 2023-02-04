@@ -35,5 +35,5 @@ public interface accountDao {
      * @return 1/0
      */
     int update(account account);
-
+    int updatePsw(String oldPwd,String newPwd,String UID);
 }

@@ -58,20 +58,20 @@ public class LoginController implements IPermission {
             }
         }
         if(at!=null && password !=null && type != -1){
-           account var = atService.login(at,type);
-           if(var == null){
-               //账号不存在
-               result = new RespResult<>(100101,"账号不存在","账号不存在","", config.getEnv(), "");
-           }else if(var.getPassword().equals(password)){
-               //登录成功
-               Map<String,String> tmp = new HashMap<>();
-               tmp.put("UID",var.getUID());
-               result = new RespResult<>(BaseRespResultCode.OK,tmp,config.getEnv(),"");
-               session.setAttribute("UID",var.getUID());
-               session.setAttribute("type",var.getType());
-           }else{
-               result = new RespResult<>(100102,"密码错误","密码错误","",config.getEnv(),"");
-           }
+            account var = atService.login(at,type);
+            if(var == null){
+                //账号不存在
+                result = new RespResult<>(100101,"账号不存在","账号不存在","", config.getEnv(), "");
+            }else if(var.getPassword().equals(password)){
+                //登录成功
+                Map<String,String> tmp = new HashMap<>();
+                tmp.put("UID",var.getUID());
+                result = new RespResult<>(BaseRespResultCode.OK,tmp,config.getEnv(),"");
+                session.setAttribute("UID",var.getUID());
+                session.setAttribute("type",var.getType());
+            }else{
+                result = new RespResult<>(100102,"密码错误","密码错误","",config.getEnv(),"");
+            }
         }else{
             result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
         }
@@ -160,6 +160,21 @@ public class LoginController implements IPermission {
         Map<String,String> ret = new HashMap<>();
         ret.put("UID",UID);
         result = new RespResult<>(BaseRespResultCode.OK,ret, config.getEnv(),"");
+        return result;
+    }
+    @PostMapping("/modifyPwd")
+    public RespResult<?> modifyPwd(@RequestBody Map<String,String>map,HttpSession session){
+        RespResult<?> result;
+        String UID = (String) session.getAttribute("UID");
+        String oldPsw = map.get("oldPassword");
+        String newPsw = map.get("newPassword");
+        if (oldPsw == null||newPsw == null)
+        {
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            return result;
+        }
+        int success = atService.updatePsw(UID,oldPsw,newPsw);
+        result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(),"");
         return result;
     }
 }

@@ -56,4 +56,12 @@ public class stepRecordServiceImp implements stepRecordService {
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return recordDao.query(UID, from.format(fm),to.format(fm));
     }
+    @Override
+    public List<stepRecord> queryWithSource(String UID, LocalDateTime from,LocalDateTime to,int source){
+        CheckPreCondition.notNull(UID);
+        CheckPreCondition.notNull(from);
+        CheckPreCondition.notNull(to);
+        DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return recordDao.queryWithSource(UID, from.format(fm),to.format(fm),source);
+    }
 }
