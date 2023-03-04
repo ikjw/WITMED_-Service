@@ -36,4 +36,10 @@ public interface accountDao {
      */
     int update(account account);
     int updatePsw(String oldPwd,String newPwd,String UID);
+    /**
+     * 更新用户类型
+     *
+     * @return 1/0
+     */
+    int updateType(String UID);
 }

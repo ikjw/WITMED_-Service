@@ -38,4 +38,7 @@
     <update id="updatePsw">
         update account set password=#{param2} where password=#{param1} and UID=#{param3}
     </update>
+    <update id="updateType">
+        update account set type = 1 where UID=#{param1}
+    </update>
 </mapper>
