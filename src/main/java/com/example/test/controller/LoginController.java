@@ -115,7 +115,6 @@ public class LoginController implements IPermission {
         //String realCode = (String) session.getAttribute("code");
         String invitationCode = map.get("invitationCode");
         String phone = map.getOrDefault("phone",null);
-        int success = invitationCodeService.findCode(UID,invitationCode);
         int type = -1;
         if(map.containsKey("type")){
             try{
@@ -139,13 +138,15 @@ public class LoginController implements IPermission {
             result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定","", config.getEnv(), "");
             return result;
         }
-        if (success == 0)
-        {
-            result = new RespResult<>(101004,"验证码错误","验证码错误","", config.getEnv(), "");
-            return result;
+        if (type!=4) {
+            int success = invitationCodeService.findCode(UID,invitationCode);
+            if (success == 0) {
+                result = new RespResult<>(101004, "验证码错误", "验证码错误", "", config.getEnv(), "");
+                return result;
+            }
+            String dUID = invitationCodeService.queryDoctor(invitationCode, UID).getDUID();
+            doctorUserService.bind(dUID, UID);
         }
-        String dUID = invitationCodeService.queryDoctor(invitationCode,UID).getDUID();
-        doctorUserService.bind(dUID,UID);
         account account =new account();
         account.setMail(map.getOrDefault("mail",null));
         account.setType(type);
@@ -175,6 +176,23 @@ public class LoginController implements IPermission {
         }
         int success = atService.updatePsw(UID,oldPsw,newPsw);
         result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(),"");
+        return result;
+    }
+    @PostMapping("/change")
+    public RespResult<?> change(@RequestBody Map<String,String>map,HttpSession session) {
+        RespResult<?> result;
+        String code = map.get("invitationCode");
+        String UID = (String) session.getAttribute("UID");
+        int success = invitationCodeService.findCode(UID,code);
+        if (success == 1){
+            String dUID = invitationCodeService.queryDoctor(code, UID).getDUID();
+            doctorUserService.bind(dUID, UID);
+            atService.updateType("UID");
+            result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(),"");
+        }
+        else {
+            result = new RespResult<>(101004, "验证码错误", "验证码错误", "", config.getEnv(), "");
+        }
         return result;
     }
 }

@@ -34,4 +34,13 @@ public interface accountService {
      */
     int update(account account);
     int updatePsw(String UID,String oldPsw,String newPsw);
+    /**
+     * pre-condition:
+     * UID 不为空
+     * post-condition：
+     *
+     * @param UID UID
+     * @return 0,1
+     */
+    int updateType(String UID);
 }

@@ -38,7 +38,7 @@ public class BindController implements IPermission {
     heightService heightService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 2||role == 1;
+        return role == 2||role == 1||role == 3;
     }
     /**
      * 只有医生用户可以访问

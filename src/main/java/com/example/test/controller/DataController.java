@@ -41,7 +41,7 @@ public class DataController implements IPermission {
 
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 1 || role == 3;
+        return role == 1 || role == 3|| role == 4;
     }
     @Resource
     envConfig config;

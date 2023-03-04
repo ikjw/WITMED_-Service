@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 public class DoctorInfoController implements IPermission {
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 2;
+        return role == 2||role == 3;
     }
     @Resource
     envConfig config;
