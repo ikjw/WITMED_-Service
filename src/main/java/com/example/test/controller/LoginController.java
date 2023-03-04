@@ -61,7 +61,7 @@ public class LoginController implements IPermission {
             account var = atService.login(at,type);
             if(var == null){
                 //账号不存在
-                result = new RespResult<>(100101,"账号不存在","账号不存在","", config.getEnv(), "");
+                result = new RespResult<>(100101,"账号不存在","账号不存在",null, config.getEnv(), "");
             }else if(var.getPassword().equals(password)){
                 //登录成功
                 Map<String,String> tmp = new HashMap<>();
@@ -70,10 +70,10 @@ public class LoginController implements IPermission {
                 session.setAttribute("UID",var.getUID());
                 session.setAttribute("type",var.getType());
             }else{
-                result = new RespResult<>(100102,"密码错误","密码错误","",config.getEnv(),"");
+                result = new RespResult<>(100102,"密码错误","密码错误",null,config.getEnv(),"");
             }
         }else{
-            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null, config.getEnv(),"");
         }
         return result;
     }
@@ -85,7 +85,7 @@ public class LoginController implements IPermission {
         String phone = map.get("phone");
         if(phone==null)
         {
-            result = new RespResult<>(101005,"手机号不能为空","手机号不能为空","", config.getEnv(), "");
+            result = new RespResult<>(101005,"手机号不能为空","手机号不能为空",null, config.getEnv(), "");
             return result;
         }
         String test =registerService.sendMs(phone);
@@ -125,23 +125,23 @@ public class LoginController implements IPermission {
         }
         if (phone == null)
         {
-            result = new RespResult<>(101001,"手机号不能为空","手机号不能为空","", config.getEnv(), "");
+            result = new RespResult<>(101001,"手机号不能为空","手机号不能为空",null, config.getEnv(), "");
             return result;
         }
         if (password == null)
         {
-            result = new RespResult<>(101002,"密码不能为空","密码不能为空","", config.getEnv(), "");
+            result = new RespResult<>(101002,"密码不能为空","密码不能为空",null, config.getEnv(), "");
             return result;
         }
         if(atService.login(phone,type)!=null)
         {
-            result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定","", config.getEnv(), "");
+            result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定",null, config.getEnv(), "");
             return result;
         }
         if (type!=4) {
             int success = invitationCodeService.findCode(UID,invitationCode);
             if (success == 0) {
-                result = new RespResult<>(101004, "验证码错误", "验证码错误", "", config.getEnv(), "");
+                result = new RespResult<>(101004, "验证码错误", "验证码错误", null, config.getEnv(), "");
                 return result;
             }
             String dUID = invitationCodeService.queryDoctor(invitationCode, UID).getDUID();
@@ -171,7 +171,7 @@ public class LoginController implements IPermission {
         String newPsw = map.get("newPassword");
         if (oldPsw == null||newPsw == null)
         {
-            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,"", config.getEnv(),"");
+            result = new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL,null, config.getEnv(),"");
             return result;
         }
         int success = atService.updatePsw(UID,oldPsw,newPsw);
@@ -191,7 +191,7 @@ public class LoginController implements IPermission {
             result = new RespResult<>(BaseRespResultCode.OK,success, config.getEnv(),"");
         }
         else {
-            result = new RespResult<>(101004, "验证码错误", "验证码错误", "", config.getEnv(), "");
+            result = new RespResult<>(101004, "验证码错误", "验证码错误", null, config.getEnv(), "");
         }
         return result;
     }
