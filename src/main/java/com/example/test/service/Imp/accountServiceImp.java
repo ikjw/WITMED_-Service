@@ -7,6 +7,8 @@ import com.example.test.utils.CheckPreCondition;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service("accountService")
@@ -14,9 +16,9 @@ public class accountServiceImp implements accountService {
     @Resource
     accountDao  accountDao;
     @Override
-    public account login(String at, int type) {
+    public account login(String at, List<Integer> typeList) {
         //todo
-        return accountDao.query(at, type);
+        return accountDao.query(at, typeList);
     }
 
     @Override

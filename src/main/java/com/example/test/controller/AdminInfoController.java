@@ -125,7 +125,7 @@ public class AdminInfoController implements IPermission {
         int result;
 
         // 更新phone、mail、password
-        account at = accountService.login(jsonObject.getString("UID"), jsonObject.getInteger("type"));
+        account at = accountService.login(jsonObject.getString("UID"), new ArrayList<>(jsonObject.getInteger("type")));
         if (at == null)
             return new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "用户不存在", config.getEnv(), null);
         if (jsonObject.containsKey("phone") && jsonObject.getString("phone") != null)
@@ -137,7 +137,7 @@ public class AdminInfoController implements IPermission {
         result = accountService.update(at);
 
         // 患者
-        if (jsonObject.getInteger("type") == 1) {
+        if (jsonObject.getInteger("type") == 1 || jsonObject.getInteger("type") == 4) {
             userInfo user = userInfoService.query(jsonObject.getString("UID"));
             if (user == null) {
                 user = new userInfo();
@@ -204,7 +204,7 @@ public class AdminInfoController implements IPermission {
         if (accountInfo == null)
             return new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "用户不存在", config.getEnv(), null);
 
-        if (accountInfo.getType() == 1) {
+        if (accountInfo.getType() == 1 || accountInfo.getType() == 4) {
             userInfo user = userInfoService.query(map.get("UID"));
             if (user == null) {
                 user = new userInfo();
@@ -263,7 +263,7 @@ public class AdminInfoController implements IPermission {
         at.setRegisterTime(time);
 
         // 手机号已被注册
-        if (accountService.login(at.getPhone(), at.getType()) != null)
+        if (accountService.login(at.getPhone(), new ArrayList<>(at.getType())) != null)
             return new RespResult<>(BaseRespResultCode.ERR_PARAM_NOT_LEGAL, "手机号已被注册", config.getEnv(), null);
 
         if (registerService.addAccount(at) == 0) {
@@ -271,7 +271,7 @@ public class AdminInfoController implements IPermission {
         }
 
         // 普通用户
-        if (at.getType() == 1) {
+        if (at.getType() == 1 || at.getType() == 4) {
             userInfo user = new userInfo();
             user.setName(jsonObject.getString("name"));
             user.setGender(jsonObject.getInteger("gender"));

@@ -15,7 +15,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 /**
  *  该Controller 所有人都能访问
@@ -58,7 +60,12 @@ public class LoginController implements IPermission {
             }
         }
         if(at!=null && password !=null && type != -1){
-            account var = atService.login(at,type);
+            // 已绑定患者和未绑定患者共用一个登录接口
+            account var = null;
+            if (type==1 || type==4)
+                var=atService.login(at,new ArrayList<>(List.of(1,4)));
+            else
+                var= atService.login(at,new ArrayList<>(type));
             if(var == null){
                 //账号不存在
                 result = new RespResult<>(100101,"账号不存在","账号不存在",null, config.getEnv(), "");
@@ -135,7 +142,7 @@ public class LoginController implements IPermission {
             result = new RespResult<>(101002,"密码不能为空","密码不能为空",null, config.getEnv(), "");
             return result;
         }
-        if(atService.login(phone,type)!=null)
+        if(atService.login(phone,new ArrayList<>(type))!=null)
         {
             result = new RespResult<>(101003,"此手机号已被绑定","此手机号已被绑定",null, config.getEnv(), "");
             return result;
