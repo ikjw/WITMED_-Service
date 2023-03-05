@@ -20,7 +20,7 @@ import java.util.Map;
 public class recipe {
     int id;
     String name; // 菜名
-    String cookMethod; // 烹饪方式
+    List<String> cookMethod; // 烹饪方式
     String cookTime; //烹饪时间
     Float calorie; // 卡路里 单位：千卡
     Float carbohydrate; // 碳水化合物 单位：克
