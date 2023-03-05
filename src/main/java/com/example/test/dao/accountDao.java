@@ -3,6 +3,8 @@ package com.example.test.dao;
 import com.example.test.bean.account;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface accountDao {
     /**
@@ -10,10 +12,10 @@ public interface accountDao {
      *      (UID==at || 手机号==at || 邮箱地址==at) && 用户类型==type
      *      的account记录
      * @param at UID/手机号/邮箱地址
-     * @param type 角色类型
+     * @param typeList 角色类型列表
      * @return account对象
      */
-    account query( String at, int type);
+    account query( String at, List<Integer> typeList);
 
     /**
      * 按UID查询，不返回密码

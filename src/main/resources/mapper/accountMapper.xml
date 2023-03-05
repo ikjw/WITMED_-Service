@@ -14,7 +14,10 @@
         select UID,phone,mail,type,register_time,wechat_id,password
         from account
         where (UID=#{param1} or mail=#{param1} or phone=#{param1} or mail=#{param1})
-          and type = #{param2}
+          and type in
+        <foreach collection="typeList" item="type" index="index" open="(" separator="," close=")">
+            #{type}
+        </foreach>
     </select>
     <select id="queryByUIDWithoutPW" resultMap="result">
         select UID, phone, mail, type, register_time, wechat_id

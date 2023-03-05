@@ -1,5 +1,6 @@
 package com.example.test.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.test.bean.pregnancyInfo;
 import com.example.test.bean.userInfo;
 import com.example.test.bean.weight;
@@ -65,7 +66,10 @@ public class UserInfoController implements IPermission {
             userInfo.setBirthDay(LocalDate.ofEpochDay(2020-01-01));
             i = userInfoService.insert(userInfo,UID);
         }
-        result = new RespResult<>(BaseRespResultCode.OK,userInfo, config.getEnv(), "");
+        String type=session.getAttribute("type").toString();
+        JSONObject userInfoWithType=(JSONObject)JSONObject.toJSON(userInfo);
+        userInfoWithType.put("type",type);
+        result = new RespResult<>(BaseRespResultCode.OK,userInfoWithType, config.getEnv(), "");
         return result;
     }
 

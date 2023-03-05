@@ -9,6 +9,7 @@ import com.example.test.utils.CheckPreCondition;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 
 
 @Service
@@ -61,7 +62,7 @@ public class registerServiceImp implements registerService {
     public int addAccount(account account){
         CheckPreCondition.notNull(account);
         int result = 0;
-        if(accountDao.query(account.getUID(),account.getType()) != null){
+        if(accountDao.query(account.getUID(),new ArrayList<>(account.getType())) != null){
             return 0;
         }
         else {

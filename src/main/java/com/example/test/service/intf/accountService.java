@@ -2,6 +2,8 @@ package com.example.test.service.intf;
 
 import com.example.test.bean.account;
 
+import java.util.List;
+
 public interface accountService {
     /**
      * pre-condition:
@@ -9,10 +11,10 @@ public interface accountService {
      * post-condition：
      *
      * @param at   UID/手机号/邮箱地址
-     * @param type 用户类型
+     * @param typeList 用户类型
      * @return account对象
      */
-    account login(String at, int type);
+    account login(String at, List<Integer> typeList);
 
     /**
      * pre-condition:
