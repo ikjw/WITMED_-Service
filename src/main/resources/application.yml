@@ -34,6 +34,9 @@ logging:
 
 server:
   port: 8888
+  servlet:
+    session:
+      timeout: 1209600 # 2周
 
 diet plan:
   pythonExe: E:\Anaconda3\envs\sklearn\python.exe

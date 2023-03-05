@@ -69,6 +69,7 @@ public class LoginController implements IPermission {
                 result = new RespResult<>(BaseRespResultCode.OK,tmp,config.getEnv(),"");
                 session.setAttribute("UID",var.getUID());
                 session.setAttribute("type",var.getType());
+                session.setMaxInactiveInterval(60*60*24*14);
             }else{
                 result = new RespResult<>(100102,"密码错误","密码错误",null,config.getEnv(),"");
             }
@@ -90,6 +91,7 @@ public class LoginController implements IPermission {
         }
         String test =registerService.sendMs(phone);
         session.setAttribute("code",test);
+        session.setMaxInactiveInterval(60*30);
         result = new RespResult<>(BaseRespResultCode.OK,test, config.getEnv(),"");
         return result;
     }
@@ -158,6 +160,7 @@ public class LoginController implements IPermission {
         registerService.addAccount(account);
         session.setAttribute("UID",UID);
         session.setAttribute("type",type);
+        session.setMaxInactiveInterval(60*60*24*14);
         Map<String,String> ret = new HashMap<>();
         ret.put("UID",UID);
         result = new RespResult<>(BaseRespResultCode.OK,ret, config.getEnv(),"");
@@ -193,6 +196,14 @@ public class LoginController implements IPermission {
         else {
             result = new RespResult<>(101004, "验证码错误", "验证码错误", null, config.getEnv(), "");
         }
+        return result;
+    }
+
+    @PostMapping("/logout")
+    public RespResult<?> logout(HttpSession session){
+        RespResult<?> result;
+        session.invalidate();
+        result = new RespResult<>(BaseRespResultCode.OK,null, config.getEnv(),"");
         return result;
     }
 }
