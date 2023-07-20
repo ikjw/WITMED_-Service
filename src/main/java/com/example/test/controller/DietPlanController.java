@@ -4,6 +4,7 @@ import com.example.test.bean.dietPlan;
 import com.example.test.config.envConfig;
 import com.example.test.controller.intf.IPermission;
 import com.example.test.service.intf.dietPlanService;
+import com.example.test.service.intf.doctorUserService;
 import com.example.test.utils.Imp.BaseRespResultCode;
 import com.example.test.utils.Imp.RespResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,14 +30,20 @@ public class DietPlanController implements IPermission {
     envConfig config;
     @Resource
     dietPlanService dietPlanService;
+    @Resource
+    doctorUserService doctorUserService;
     @Override
     public boolean hasPermission(String username, int role, String URI) {
-        return role == 1||role == 2 || role == 3;
+        return role == 1||role == 2;
     }
     @PostMapping("/getPlan")
     public RespResult<?> getPlan(HttpSession session){
         RespResult<?> result;
         String UID = (String) session.getAttribute("UID");
+        int type= (int) session.getAttribute("type");
+        if (type!=1){
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"", config.getEnv(),"");
+        }
         dietPlan dietPlan = dietPlanService.queryRecent(UID);
         result = new RespResult<>(BaseRespResultCode.OK,dietPlan, config.getEnv(), "");
         return result;
@@ -44,6 +51,10 @@ public class DietPlanController implements IPermission {
     @PostMapping("/getPlans")
     public RespResult<?> getPlans(@RequestBody Map<String,String>map, HttpSession session){
         String UID = (String) session.getAttribute("UID");
+        int type= (int) session.getAttribute("type");
+        if (type!=1){
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"", config.getEnv(),"");
+        }
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fromStr = map.getOrDefault("from","2020-01-01");
         String toStr = map.getOrDefault("to", LocalDate.now().plusDays(1).format(fm));
@@ -65,7 +76,11 @@ public class DietPlanController implements IPermission {
     public RespResult<?> upload(@RequestBody Map<String,Object>map,HttpSession session){
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String dUID = (String) session.getAttribute("UID");
+        int type= (int) session.getAttribute("type");
         String uUID = (String) map.get("uUID");
+        if (type!=2 || doctorUserService.isBind(dUID,uUID)==null){
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"", config.getEnv(),"");
+        }
         RespResult<?> result;
         String startStr = (String) map.get("startDate");
         String endStr = (String) map.get("endDate");
@@ -111,7 +126,12 @@ public class DietPlanController implements IPermission {
     }
     @PostMapping("/get")
     public RespResult<?> get(@RequestBody Map<String,String>map,HttpSession session){
+        int type= (int) session.getAttribute("type");
+        String dUID = (String) session.getAttribute("UID");
         String uUID = map.get("uUID");
+        if (type!=2|| doctorUserService.isBind(dUID,uUID)==null){
+            return new RespResult<>(BaseRespResultCode.PERMISSION_DENIED,"", config.getEnv(),"");
+        }
         DateTimeFormatter fm = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String fromStr = map.getOrDefault("from","2020-01-01");
         String toStr = map.getOrDefault("to", LocalDate.now().plusDays(1).format(fm));
